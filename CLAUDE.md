@@ -82,6 +82,7 @@ index.html           (later)
 - [x] Prompt 5 (pose template + pose lines) written in `docs/art-guide.md` and given to Adri
 - [x] `silvia_cheer.jpg`, `silvia_oops.jpg`, `francesco_cheer.jpg`, `francesco_oops.jpg`, `mario_proud.jpg`, `mario_guilty.jpg`, `mario_rings.jpg` saved — all emotion poses done (Francesco poses: attach his sheet + Silvia's sheet)
 - [x] Code step 1: Phaser 3.90.0 (saved in `src/lib/`), split-screen touch test (`src/scenes/ProvaTocco.js`), rotate screen — tested and working on Adri's iPhone
-- [ ] **NEXT:** code step 2: title screen with "Tocca per iniziare" and sound (plan proposed to Adri, waiting for her OK). Action poses, backgrounds and objects wait until the mini games are prototyped.
+- [x] Code step 2: title screen (`src/scenes/Titolo.js`): style anchor background, falling snow and code-made chime (`src/effetti.js`), starts only when both halves are touched, then on lift. Tested on the iPhone.
+- [ ] **NEXT:** step 2b: background-removal tool (cut out the character images into `assets/game/` as transparent PNGs), then add Silvia, Francesco and Mario to the title screen (plan proposed to Adri, waiting for her OK). Action poses, backgrounds and objects wait until the mini games are prototyped.
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
 - [ ] Code build plan steps 2–10 (see `docs/game-design.md`)

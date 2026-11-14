@@ -1,4 +1,4 @@
-// Starts the game. This file is loaded last, after Phaser, the texts and the scenes.
+// Starts the game. This file is loaded last, after Phaser, the texts, the shared files and the scenes.
 
 // Put the Italian "rotate your phone" text into the portrait screen
 document.getElementById('ruota-testo').textContent = TESTI.ruotaTelefono;
@@ -13,13 +13,14 @@ const config = {
   scale: {
     mode: Phaser.Scale.FIT,            // keep the 1280×720 shape and fit it on any screen
     autoCenter: Phaser.Scale.CENTER_BOTH,
-    width: 1280,
-    height: 720,
+    width: LARGHEZZA,
+    height: ALTEZZA,
   },
   input: {
     activePointers: 4,                 // allow several fingers at once (both players)
   },
-  scene: [ProvaTocco],
+  // The first scene in the list is the one that starts
+  scene: [Titolo, ProvaTocco],
 };
 
 const gioco = new Phaser.Game(config);

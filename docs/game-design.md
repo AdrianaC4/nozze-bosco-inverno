@@ -105,7 +105,7 @@ There are four mini games, each bringing back one thing for the wedding, and the
 The game is forgiving: it's a gift, so the couple should always reach the ending.
 
 1. Rotate screen: shown while the phone is in portrait ("Ruota il telefono").
-2. Title screen: the title, Silvia, Francesco and Mario in the snow, and "Tocca per iniziare" (this tap also unlocks sound on iPhone).
+2. Title screen: the title, Silvia, Francesco and Mario in the snow, and "Tocca per iniziare". The game only starts when **both** players touch their half at the same time (the text doesn't say so on purpose: a first small co-op discovery). It starts when they lift their fingers, which also unlocks sound on iPhone.
 3. Intro: 3–4 short story panels with Mario's lines.
 4. Mini games 1–4, each starting with a 3-second card showing both players' gestures.
 5. Result card after each mini game: 1–3 stars, then "Avanti" or "Riprova".

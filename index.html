@@ -69,9 +69,12 @@
     <div id="ruota-testo"></div>
   </div>
 
-  <!-- Order matters: Phaser first, then the texts, then the scenes, then main.js which starts the game -->
+  <!-- Order matters: Phaser first, then texts and shared files, then the scenes, then main.js which starts the game -->
   <script src="src/lib/phaser.min.js"></script>
   <script src="src/testi.js"></script>
+  <script src="src/costanti.js"></script>
+  <script src="src/effetti.js"></script>
+  <script src="src/scenes/Titolo.js"></script>
   <script src="src/scenes/ProvaTocco.js"></script>
   <script src="src/main.js"></script>
 </body>
