@@ -73,6 +73,7 @@ index.html           (later)
 - [x] Prompt 4 (Mario character sheet) written in `docs/art-guide.md` and given to Adri (attaches real Mario photo + style anchor + Silvia; no glow — the spirit glow is done in code)
 - [x] Mario saved: `assets/raw/mario_sheet.jpg` (first try; lighter grey than the real cat, by Adri's choice). The real photos of Mario are NOT in the repo.
 - [x] Prompt 5 (pose template + pose lines) written in `docs/art-guide.md` and given to Adri
-- [ ] **NEXT:** emotion poses, starting with `silvia_cheer.jpg` → review each, save in `assets/raw/`, commit and push. Action poses wait until the mini games are prototyped.
+- [x] `silvia_cheer.jpg` saved
+- [ ] **NEXT:** remaining emotion poses (`silvia_oops` next, then Francesco and Mario) → review each, save in `assets/raw/`, commit and push. Action poses wait until the mini games are prototyped.
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
 - [ ] Code build plan steps 1–10 (see `docs/game-design.md`)
