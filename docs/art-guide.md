@@ -37,7 +37,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 - [ ] `intro_1.png`, `intro_2.png`, `intro_3.png` — story panels
 
 ### Character sheets
-- [ ] `silvia_sheet.jpg`
+- [x] `silvia_sheet.jpg`
 - [ ] `francesco_sheet.png`
 - [ ] `mario_sheet.png` (reference: real photo of Mario)
 
@@ -125,5 +125,6 @@ Follow-ups (one change at a time, same chat):
 - Background not white: `Put her on a plain pure white background with nothing else.`
 - Several Silvias on the image: `Show only one Silvia, front view, full body.`
 - Hair not right: `Make her hair bigger, curlier and a warm medium brown, with the red ribbon clearly visible.`
+- Looks like a child (this happened on the first try — the one used): `Keep everything the same: the painting style, the curly brown hair, the red ribbon bow, the mustard coat, the red mittens and the boots. But make her clearly a young adult woman in her late twenties, not a child: a slightly more grown-up face, a slightly taller and more womanly figure (about 4 heads tall), and a longer coat that reaches below the knee. She should still be cute, soft and round, in the same picture-book style. Plain pure white background, full body, only one character.`
 
-Save the best one as `silvia_sheet.jpg` and send it to Claude. This image becomes the reference for all her poses.
+Save the best one as `silvia_sheet.jpg` and send it to Claude. **Done** — the chosen version is the one from the "looks like a child" follow-up. This image becomes the reference for all her poses.

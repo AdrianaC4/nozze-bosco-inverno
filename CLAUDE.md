@@ -67,8 +67,8 @@ index.html           (later)
 - [x] Prompt 1 (style anchor) written and given to Adri
 - [x] Style anchor saved: `assets/raw/style_anchor.jpg` (lanterns unlit — title / "before") and `assets/raw/style_anchor_lit.jpg` (lanterns lit — ceremony / ending reference)
 - [x] Prompt 2 (Silvia character sheet) written in `docs/art-guide.md` and given to Adri
-- [ ] **NEXT:** Adri sends the Silvia image → review it, save as `assets/raw/silvia_sheet.jpg`, commit and push
-- [ ] Prompt 3: Francesco character sheet
+- [x] Silvia saved: `assets/raw/silvia_sheet.jpg` (second try — first came out looking like a child; the fix was the "young adult woman, about 4 heads tall, longer coat" follow-up)
+- [ ] **NEXT:** Prompt 3: Francesco character sheet — say "young adult man, about thirty" and ~4 heads tall from the start, attach the style anchor and `silvia_sheet.jpg` so they match
 - [ ] Prompt 4: Mario character sheet (uses the real photo of Mario as reference — ask Adri for it)
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
 - [ ] Code build plan steps 1–10 (see `docs/game-design.md`)
