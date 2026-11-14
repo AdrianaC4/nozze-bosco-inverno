@@ -43,7 +43,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 
 ### Poses
 Made with Prompt 5 (pose template). Do the **emotion poses first**: they don't depend on gameplay. The **action poses** (steer, push, hold, dig, crank, run, lick) may change once the mini games are prototyped with plain shapes, so they can wait.
-- Emotion: [x] `silvia_cheer.jpg`, [x] `silvia_oops.jpg`, [ ] `francesco_cheer.jpg`, [ ] `mario_proud.jpg`, [ ] `mario_guilty.jpg`, [ ] `mario_rings.jpg`
+- Emotion: [x] `silvia_cheer.jpg`, [x] `silvia_oops.jpg`, [x] `francesco_cheer.jpg`, [ ] `mario_proud.jpg`, [ ] `mario_guilty.jpg`, [ ] `mario_rings.jpg`
 - Action: [ ] `silvia_steer.jpg`, [ ] `francesco_push.jpg`, [ ] `francesco_hold.jpg`, [ ] `francesco_dig.jpg`, [ ] `francesco_crank.jpg`, [ ] `mario_run.jpg`, [ ] `mario_lick.jpg`
 
 ### Backgrounds (16:9)
