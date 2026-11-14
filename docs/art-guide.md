@@ -42,9 +42,9 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 - [x] `mario_sheet.jpg` (reference: real photo of Mario — not stored in the repo)
 
 ### Poses
-- [ ] `silvia_steer.png`, `silvia_cheer.png`, `silvia_oops.png`
-- [ ] `francesco_push.png`, `francesco_hold.png`, `francesco_dig.png`, `francesco_crank.png`, `francesco_cheer.png`
-- [ ] `mario_run.png`, `mario_lick.png`, `mario_guilty.png`, `mario_proud.png`, `mario_rings.png`
+Made with Prompt 5 (pose template). Do the **emotion poses first**: they don't depend on gameplay. The **action poses** (steer, push, hold, dig, crank, run, lick) may change once the mini games are prototyped with plain shapes, so they can wait.
+- Emotion: [ ] `silvia_cheer.jpg`, [ ] `silvia_oops.jpg`, [ ] `francesco_cheer.jpg`, [ ] `mario_proud.jpg`, [ ] `mario_guilty.jpg`, [ ] `mario_rings.jpg`
+- Action: [ ] `silvia_steer.jpg`, [ ] `francesco_push.jpg`, [ ] `francesco_hold.jpg`, [ ] `francesco_dig.jpg`, [ ] `francesco_crank.jpg`, [ ] `mario_run.jpg`, [ ] `mario_lick.jpg`
 
 ### Backgrounds (16:9)
 - [ ] `bg_slitta.png` — snowy hill slope with pine trees
@@ -212,3 +212,47 @@ Follow-ups (one change at a time, same chat):
 - Looks too serious: `Give him a cheekier, friendlier expression with a small smile, like a playful cat who knows he did something naughty.`
 
 Save the best one as `mario_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses. **Done** — first try, kept as is (lighter grey than the real Mario, by choice). The real photo of Mario is only a reference: keep it outside the repo (the repo will become public when the game is published).
+
+### Prompt 5 — Poses (one template for all poses)
+
+Use the **same Gemini chat as the character sheet** ("Winter Wood – Silvia", "– Francesco" or "– Mario"), and **attach the character sheet again every time** (`silvia_sheet.jpg`, `francesco_sheet.jpg` or `mario_sheet.jpg`). One pose per image. Paste the template with the character block and the pose line filled in.
+
+Template:
+
+```
+The attached image is the character sheet. Draw the same character again in a new pose, keeping everything exactly the same: [CHARACTER BLOCK]. Same proportions, same soft hand-painted watercolour style with no black outlines, same paper-white background.
+
+New pose: [POSE LINE]
+
+Full body, fully visible with some empty space around, plain pure white background, no ground, no shadow on the floor, no snow, no scenery. Do not draw any objects except the ones mentioned in the pose. Only one character, shown once. No text, no letters, no logos, no watermark.
+```
+
+Character blocks:
+- Silvia: `same face, same big curly brown hair with the red ribbon bow, same mustard yellow coat with round buttons, same red mittens, light brown tights and dark brown boots`
+- Francesco: `same face, same very short black hair, same red Christmas sweater with cream snowflakes and a green band, sleeves pushed up showing strong forearms, same dark blue trousers and brown boots`
+- Mario: `same grey and white markings (grey head and back, white blaze, white chest and white paws), same pink nose, same pale green eyes, same tiny red knitted scarf, same round chubby cartoon cat shape`
+
+Pose lines — emotion poses (do these first):
+
+| File | Pose line |
+| --- | --- |
+| `silvia_cheer.jpg` | `jumping happily with both arms raised in the air, eyes closed, big joyful smile, curls bouncing` |
+| `silvia_oops.jpg` | `a funny "oops" moment: shoulders up, both hands over her mouth, eyes wide, a little embarrassed smile` |
+| `francesco_cheer.jpg` | `celebrating with both fists raised high, big open happy grin, one knee slightly lifted` |
+| `mario_proud.jpg` | `sitting tall and very proud, chest puffed out, chin up, eyes closed, a smug little smile, tail straight up` |
+| `mario_guilty.jpg` | `sitting, looking guilty: ears flat back, eyes looking sideways, a sheepish smile, one front paw slightly raised` |
+| `mario_rings.jpg` | `sitting proudly, holding in his mouth a tiny red velvet cushion with two small shiny golden wedding rings on it` |
+
+Pose lines — action poses (wait until the mini game is prototyped; adjust if the gameplay changed):
+
+| File | Pose line |
+| --- | --- |
+| `silvia_steer.jpg` | `sitting as if on a sled, seen from the side facing right, leaning to one side, holding a short rope with both hands, focused face. Do not draw the sled` |
+| `francesco_push.jpg` | `seen from the side facing right, leaning far forward with both arms stretched out, pushing something very heavy with all his strength, cheeks puffed. Do not draw the object` |
+| `francesco_hold.jpg` | `standing with legs apart, both arms forward at waist height gripping something firmly, teeth clenched in effort. Do not draw the object` |
+| `francesco_dig.jpg` | `kneeling, digging with both hands like a dog, energetic and happy` |
+| `francesco_crank.jpg` | `seen from the side facing right, turning a big crank handle with one strong arm, the other hand on his hip, determined grin. Draw only the small crank handle in his hand` |
+| `mario_run.jpg` | `running fast, seen from the side facing right, all four paws stretched, scarf flying behind him` |
+| `mario_lick.jpg` | `standing on his hind legs, front paws up, tongue out, trying to lick something above him, eyes half closed with delight` |
+
+Check every pose: same face, hair, clothes and colours as the sheet (compare side by side); same size proportions; plain white background; only the objects mentioned; no text. If the character drifts, send: `Keep the character exactly like the attached character sheet: same face, same clothes, same colours, same proportions.`
