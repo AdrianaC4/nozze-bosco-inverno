@@ -6,6 +6,17 @@ document.getElementById('ruota-testo').textContent = TESTI.ruotaTelefono;
 // Stop iPhone Safari's pinch-zoom gesture from zooming the page while playing
 document.addEventListener('gesturestart', (evento) => evento.preventDefault());
 
+// All the scenes of the game. The first one in the list is the one that starts.
+const scene = [Titolo, Slitta, ProvaTocco];
+
+// Testing shortcut: add ?scena=Slitta to the address to start straight from that scene
+// (for example http://192.168.0.174:8000/?scena=Slitta). Without it, the game starts from the title.
+const scenaRichiesta = new URLSearchParams(window.location.search).get('scena');
+const indiceRichiesto = scene.findIndex((s) => s.name === scenaRichiesta);
+if (indiceRichiesto > 0) {
+  scene.unshift(scene.splice(indiceRichiesto, 1)[0]); // move it to the front of the list
+}
+
 const config = {
   type: Phaser.AUTO,
   parent: 'gioco',
@@ -19,8 +30,7 @@ const config = {
   input: {
     activePointers: 4,                 // allow several fingers at once (both players)
   },
-  // The first scene in the list is the one that starts
-  scene: [Titolo, ProvaTocco],
+  scene: scene,
 };
 
 const gioco = new Phaser.Game(config);

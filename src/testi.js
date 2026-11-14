@@ -15,6 +15,31 @@ const TESTI = {
     francesco: 'Francesco',
   },
 
+  // Words used in many places
+  comuni: {
+    bravissimi: 'Bravissimi!',
+    toccaPerContinuare: 'Tocca per continuare',
+  },
+
+  // Start card shown before every mini game
+  carta: {
+    accarezza: 'Accarezza Mario per iniziare',
+  },
+
+  // Mini game 1: La Slitta dei Regali
+  slitta: {
+    nome: 'La Slitta dei Regali',
+    istruzioneSilvia: 'Silvia: Trascina per guidare',
+    istruzioneFrancesco: 'Francesco: Tocca veloce per spingere!',
+    mario: 'Attenti agli alberi!',
+    via: 'Via!',
+    traguardo: 'Traguardo',
+    miao: 'Miao!',
+    ohNo: 'Oh no! Riproviamo!',
+    tempoScaduto: 'Tempo scaduto! Riproviamo!',
+    pochiRegali: 'Pochi regali… Riproviamo!',
+  },
+
   // Step 1 test screen: checks that both players can touch at the same time
   provaTocco: {
     silvia: 'Silvia',

@@ -174,8 +174,8 @@ class Titolo extends Phaser.Scene {
     this.illumina(this.francesco, true);
     this.cameras.main.fadeOut(900, 15, 26, 46);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      // For now the next screen is the touch test; later it will be the intro
-      this.scene.start('ProvaTocco');
+      // For now the next screen is mini game 1; later the story intro will come first
+      this.scene.start('Slitta');
     });
   }
 }

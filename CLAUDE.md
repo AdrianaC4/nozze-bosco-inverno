@@ -84,6 +84,8 @@ index.html           (later)
 - [x] Code step 1: Phaser 3.90.0 (saved in `src/lib/`), split-screen touch test (`src/scenes/ProvaTocco.js`), rotate screen — tested and working on Adri's iPhone
 - [x] Code step 2: title screen (`src/scenes/Titolo.js`): style anchor background, falling snow and code-made chime (`src/effetti.js`), starts only when both halves are touched, then on lift. Tested on the iPhone.
 - [x] Step 2b: cut-out tool `tools/ritaglia.py` (rembg, model birefnet-general, in `.venv/`, not committed) → 10 transparent character PNGs in `assets/game/` (max 600px tall). Characters on the title screen: breathing, hop + coloured glow when their player touches. Tested on the iPhone.
-- [ ] **NEXT:** code step 3: mini game 1 (La Slitta) with plain shapes — propose the plan to Adri first. Action poses, backgrounds and objects wait until the mini games are prototyped.
+- [x] Code step 3: mini game 1 (La Slitta, `src/scenes/Slitta.js`) with plain shapes. After Adri's playtests: uphill removed, 35 s countdown, finish line, reusable start card where petting Mario (swipe) starts every mini game (`src/cartaInizio.js`). Tested on the iPhone.
+- Testing: `?scena=Slitta` in the address starts straight from that scene. Claude can also play-test in headless Chrome (Chrome DevTools + synthetic iPhone-style TouchEvents with pageX/pageY set).
+- [ ] **NEXT:** step 3b: simple story intro between title and mini game 1, using existing art and the intro texts; real `intro_1–3` images later (plan proposed to Adri, waiting for her OK). Action poses, backgrounds and objects wait until the mini games are prototyped.
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
 - [ ] Code build plan steps 2–10 (see `docs/game-design.md`)

@@ -62,11 +62,13 @@ There are four mini games, each bringing back one thing for the wedding, and the
 
 ### 1. La Slitta dei Regali (the sled with the gifts)
 
-- **Goal:** bring the sled full of wedding gifts down to the village.
-- **Francesco:** taps fast to push the heavy sled up the hill. A strength bar fills, and at the top the sled tips over the edge.
-- **Silvia:** drags to steer down the slope, dodging trees and catching falling gifts.
-- **Win:** reach the bottom with at least 5 gifts. More gifts mean more stars.
+- **Goal:** bring the sled full of wedding gifts down to the village before time runs out.
+- **Francesco:** taps fast to push the sled. It slowly loses speed on its own, so his taps keep it fast. Faster means reaching the village sooner, but harder for Silvia to dodge.
+- **Silvia:** drags to steer down the slope (the sled follows how her finger moves, so she can steer across the whole screen from her half), dodging trees and catching gifts.
+- **Countdown:** 35 seconds to reach the village, otherwise try again. A chequered finish line ("Traguardo") scrolls in near the end.
+- **Win:** reach the village in time with at least 5 gifts. Stars: 5–9 gifts = 1 star, 10–14 = 2 stars, 15+ = 3 stars.
 - **Mario:** runs alongside the sled and meows before a tree comes up.
+- (The uphill push at the start was removed after the first iPhone playtest.)
 
 ### 2. La Torta Nuziale (the wedding cake)
 
@@ -107,7 +109,7 @@ The game is forgiving: it's a gift, so the couple should always reach the ending
 1. Rotate screen: shown while the phone is in portrait ("Ruota il telefono").
 2. Title screen: the title, Silvia, Francesco and Mario in the snow, and "Tocca per iniziare". The game only starts when **both** players touch their half at the same time (the text doesn't say so on purpose: a first small co-op discovery). It starts when they lift their fingers, which also unlocks sound on iPhone.
 3. Intro: 3–4 short story panels with Mario's lines.
-4. Mini games 1–4, each starting with a 3-second card showing both players' gestures.
+4. Mini games 1–4, each starting with a **start card**: the mini game's name, each player's instruction on their own half, and Mario in the middle with his tip. The game begins when someone **pets Mario** (a little swipe across him). Petting Mario is a start button, so it does **not** count in the gesture rule.
 5. Result card after each mini game: 1–3 stars, then "Avanti" or "Riprova".
 6. Finale and the "Appena Sposati!" ending.
 7. Ending screen: total stars and a "Gioca ancora" button.
@@ -141,7 +143,9 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Intro 1 | È la Vigilia di Natale. A mezzanotte Silvia e Francesco si sposano sotto il grande albero del bosco. | It's Christmas Eve. At midnight Silvia and Francesco marry under the great tree. |
 | Intro 2 | Ma il vento d'inverno ha portato via tutto: i regali, la torta, gli anelli e le luci! | But the winter wind blew everything away. |
 | Intro 3 (Mario) | Miao! Seguitemi, vi aiuto io! | Meow! Follow me, I'll help! |
+| Start card | Accarezza Mario per iniziare | Pet Mario to start |
 | Game 1 | Silvia: Trascina per guidare · Francesco: Tocca veloce per spingere! | Drag to steer · Tap fast to push |
+| Game 1 | Tempo scaduto! Riproviamo! · Oh no! Riproviamo! · Pochi regali… Riproviamo! | Time's up! · Oh no! · Too few gifts… Let's try again! |
 | Game 1 (Mario) | Attenti agli alberi! | Watch out for the trees! |
 | Game 2 | Silvia: Tocca al momento giusto · Francesco: Tieni premuto per tenere fermo il tavolo | Tap at the right moment · Hold to keep the table still |
 | Game 2 (Mario) | Mmm… posso assaggiare? | Mmm… can I have a taste? |

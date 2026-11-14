@@ -30,6 +30,57 @@ function aggiungiNeve(scena) {
   return neve;
 }
 
+// The Web Audio "sound card" of the game, ready to play (or null if this browser has none)
+function contestoAudio(scena) {
+  const contesto = scena.sound && scena.sound.context;
+  if (!contesto) return null;
+  if (contesto.state !== 'running') contesto.resume();
+  return contesto;
+}
+
+// One simple sound made in code: a tone that slides from frequenzaDa to frequenzaA.
+// tipo: 'sine' (soft), 'triangle' (a bit brighter), 'square' (buzzy). volume: 0 to 1.
+function suonaTono(scena, frequenzaDa, frequenzaA, durata, tipo, volume) {
+  const contesto = contestoAudio(scena);
+  if (!contesto) return;
+  const t = contesto.currentTime + 0.01;
+  const oscillatore = contesto.createOscillator();
+  const guadagno = contesto.createGain();
+  oscillatore.type = tipo;
+  oscillatore.frequency.setValueAtTime(frequenzaDa, t);
+  oscillatore.frequency.exponentialRampToValueAtTime(frequenzaA, t + durata);
+  guadagno.gain.setValueAtTime(0.0001, t);
+  guadagno.gain.exponentialRampToValueAtTime(volume, t + 0.01);
+  guadagno.gain.exponentialRampToValueAtTime(0.0001, t + durata);
+  oscillatore.connect(guadagno);
+  guadagno.connect(contesto.destination);
+  oscillatore.start(t);
+  oscillatore.stop(t + durata + 0.05);
+}
+
+// A soft thud, for mistakes (placeholder until the sound pass)
+function suonaTonfo(scena) {
+  suonaTono(scena, 160, 55, 0.35, 'sine', 0.5);
+}
+
+// A little made-up "meow" (placeholder until the sound pass, where Mario gets a real meow)
+function suonaMiao(scena) {
+  suonaTono(scena, 650, 900, 0.12, 'triangle', 0.12);
+  setTimeout(() => suonaTono(scena, 900, 520, 0.3, 'triangle', 0.12), 110);
+}
+
+// Mario purring: a few soft low rumbles (placeholder until the sound pass)
+function suonaFusa(scena) {
+  for (let i = 0; i < 4; i++) {
+    setTimeout(() => suonaTono(scena, 70, 55, 0.22, 'triangle', 0.35), i * 230);
+  }
+}
+
+// A short tick, for the last seconds of a countdown
+function suonaTic(scena) {
+  suonaTono(scena, 1500, 1400, 0.05, 'square', 0.04);
+}
+
 // A soft, music-box style bell chime, made in code (no sound file needed).
 // Must be called from inside a touch handler the first time, so iPhone allows sound.
 function suonaCampanella(scena) {
