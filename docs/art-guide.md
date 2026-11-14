@@ -5,7 +5,7 @@
 | What it's for | Tool | Notes |
 | --- | --- | --- |
 | Drawing everything (characters, backgrounds, objects) | Google Gemini — gemini.google.com | Free with a Google account, about 20 images per day. Best free option for keeping characters consistent: attach earlier images as references. |
-| Removing backgrounds, resizing, naming | Claude Code (this project) | Will be set up locally when needed (for example Python + rembg). |
+| Removing backgrounds, resizing, naming | Claude Code (this project) | `tools/ritaglia.py` (Python + rembg, model birefnet-general). |
 | Small fixes (crop, colour touch-ups) | Photopea — photopea.com | Free browser editor, rarely needed. |
 | Music and sounds | Pixabay Music and Sound Effects | Free piano / music-box Christmas music, chimes, a meow. |
 

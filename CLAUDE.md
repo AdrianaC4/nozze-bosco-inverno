@@ -64,7 +64,7 @@ index.html           (later)
 
 - Images are generated in **Google Gemini** (free) by Adri, using the prompts in `docs/art-guide.md`.
 - When Adri adds a new image: save the original in `assets/raw/` with the agreed file name, review it against the style (soft watercolour, warm lantern light vs blue snow, simple round shapes, no text or watermark), give honest feedback, and commit it.
-- Later, for game use: remove the background (transparent PNG), resize, and save into `assets/game/`. Set up a local tool for this (for example Python + `rembg`) when the time comes, after agreeing the approach with Adri.
+- For game use: run `.venv/bin/python tools/ritaglia.py <name>` (removes the background, trims, resizes, saves a transparent PNG in `assets/game/`). If `.venv/` is missing: `python3 -m venv .venv && .venv/bin/pip install "rembg[cpu]" pillow`. Always check cut-outs on a dark background (white fur can come out see-through). Backgrounds are only resized (e.g. with `sips`), not cut out.
 - Animation is done in code with Phaser tweens (bounce, wobble, breathe), not frame-by-frame drawings.
 
 ## Current status (update this section as work progresses)
@@ -83,6 +83,7 @@ index.html           (later)
 - [x] `silvia_cheer.jpg`, `silvia_oops.jpg`, `francesco_cheer.jpg`, `francesco_oops.jpg`, `mario_proud.jpg`, `mario_guilty.jpg`, `mario_rings.jpg` saved — all emotion poses done (Francesco poses: attach his sheet + Silvia's sheet)
 - [x] Code step 1: Phaser 3.90.0 (saved in `src/lib/`), split-screen touch test (`src/scenes/ProvaTocco.js`), rotate screen — tested and working on Adri's iPhone
 - [x] Code step 2: title screen (`src/scenes/Titolo.js`): style anchor background, falling snow and code-made chime (`src/effetti.js`), starts only when both halves are touched, then on lift. Tested on the iPhone.
-- [ ] **NEXT:** step 2b: background-removal tool (cut out the character images into `assets/game/` as transparent PNGs), then add Silvia, Francesco and Mario to the title screen (plan proposed to Adri, waiting for her OK). Action poses, backgrounds and objects wait until the mini games are prototyped.
+- [x] Step 2b: cut-out tool `tools/ritaglia.py` (rembg, model birefnet-general, in `.venv/`, not committed) → 10 transparent character PNGs in `assets/game/` (max 600px tall). Characters on the title screen: breathing, hop + coloured glow when their player touches. Tested on the iPhone.
+- [ ] **NEXT:** code step 3: mini game 1 (La Slitta) with plain shapes — propose the plan to Adri first. Action poses, backgrounds and objects wait until the mini games are prototyped.
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
 - [ ] Code build plan steps 2–10 (see `docs/game-design.md`)

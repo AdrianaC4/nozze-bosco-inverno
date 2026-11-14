@@ -3,3 +3,7 @@ Thumbs.db
 node_modules/
 .vscode/
 *.log
+
+# Python tools environment (background removal), never committed
+.venv/
+__pycache__/

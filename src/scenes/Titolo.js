@@ -1,7 +1,9 @@
 // Title screen.
-// Shows the snowy village, the title and falling snow.
+// Shows the snowy village with Silvia (left), Francesco (right) and Mario by the tree,
+// the title and falling snow.
 // The game starts only when Silvia (left half) and Francesco (right half) touch together:
-// once both are touching, lifting the fingers plays a chime and moves on.
+// each character lights up while their player touches; once both are touching,
+// lifting the fingers plays a chime and moves on.
 // (Starting on lift, not on touch, is on purpose: iPhone only allows sound to start when a finger is lifted.)
 
 class Titolo extends Phaser.Scene {
@@ -11,6 +13,9 @@ class Titolo extends Phaser.Scene {
 
   preload() {
     this.load.image('sfondo_titolo', 'assets/game/style_anchor.jpg');
+    this.load.image('silvia', 'assets/game/silvia_sheet.png');
+    this.load.image('francesco', 'assets/game/francesco_sheet.png');
+    this.load.image('mario', 'assets/game/mario_sheet.png');
   }
 
   create() {
@@ -39,21 +44,26 @@ class Titolo extends Phaser.Scene {
       repeat: -1,
     });
 
-    // One glowing circle per player, bottom left and bottom right
-    this.cerchioSilvia = this.creaCerchio(170, 600, COLORE_SILVIA, TESTI.titolo.silvia);
-    this.cerchioFrancesco = this.creaCerchio(LARGHEZZA - 170, 600, COLORE_FRANCESCO, TESTI.titolo.francesco);
+    // The characters, standing in the snow
+    // (x, y = where their feet are; altezza = how tall they look on screen)
+    this.mario = this.creaPersonaggio('mario', 790, 612, 130, null);
+    // Heights agreed with Adri on the iPhone: Silvia 310 / Francesco 330 (350 for Silvia looked too tall)
+    this.silvia = this.creaPersonaggio('silvia', 290, 705, 310, COLORE_SILVIA);
+    this.francesco = this.creaPersonaggio('francesco', 990, 705, 330, COLORE_FRANCESCO);
 
-    // "Tocca per iniziare", gently pulsing (both players must still touch together to start)
-    this.invito = this.add.text(LARGHEZZA / 2, 640, TESTI.titolo.toccaPerIniziare, {
+    // "Tocca per iniziare" on a soft dark band so it's easy to read on the white snow
+    const banda = this.add.graphics();
+    banda.fillStyle(COLORE_NOTTE, 0.45);
+    banda.fillRoundedRect(LARGHEZZA / 2 - 230, 638, 460, 60, 30);
+    banda.setDepth(30);
+    this.invito = this.add.text(LARGHEZZA / 2, 668, TESTI.titolo.toccaPerIniziare, {
       fontFamily: FONT,
-      fontSize: '40px',
+      fontSize: '38px',
       color: '#fdf3e1',
-      stroke: '#2a3d66',
-      strokeThickness: 6,
-    }).setOrigin(0.5);
+    }).setOrigin(0.5).setDepth(31);
     this.tweens.add({
       targets: this.invito,
-      alpha: 0.45,
+      alpha: 0.4,
       duration: 900,
       ease: 'Sine.InOut',
       yoyo: true,
@@ -70,30 +80,41 @@ class Titolo extends Phaser.Scene {
     this.cameras.main.fadeIn(600, 15, 26, 46);
   }
 
-  // A soft circle with the player's name, dim until that player touches their half
-  creaCerchio(x, y, colore, nome) {
-    const gruppo = this.add.container(x, y);
-    const alone = this.add.circle(0, 0, 78, colore, 0.25);
-    const cerchio = this.add.circle(0, 0, 58, colore, 0.9);
-    cerchio.setStrokeStyle(5, COLORE_CREMA, 0.9);
-    const testo = this.add.text(0, 0, nome, {
-      fontFamily: FONT,
-      fontSize: '22px',
-      color: '#fdf3e1',
-      stroke: '#0f1a2e',
-      strokeThickness: 4,
-    }).setOrigin(0.5);
-    gruppo.add([alone, cerchio, testo]);
-    gruppo.setAlpha(0.45);
-    gruppo.setDepth(20);
-    gruppo.alone = alone;
-    return gruppo;
+  // Places a character with their feet at (x, y), a soft shadow under them,
+  // an optional coloured glow (shown while their player touches), and a slow "breathing" animation.
+  creaPersonaggio(chiave, x, y, altezza, coloreAlone) {
+    const immagine = this.add.image(x, y, chiave).setOrigin(0.5, 1);
+    const scala = altezza / immagine.height;
+    immagine.setScale(scala);
+    immagine.setDepth(20);
+    immagine.scalaBase = scala;
+
+    // Soft shadow on the snow
+    this.add.ellipse(x, y - 4, immagine.displayWidth * 0.7, 22, COLORE_NOTTE, 0.22).setDepth(19);
+
+    // Coloured glow under the feet, invisible until the player touches
+    if (coloreAlone !== null) {
+      immagine.alone = this.add.ellipse(x, y - 6, immagine.displayWidth * 1.1, 50, coloreAlone, 1)
+        .setAlpha(0)
+        .setDepth(18);
+    }
+
+    // Breathing: a tiny slow stretch, slightly different speed for each character
+    this.tweens.add({
+      targets: immagine,
+      scaleY: scala * 1.025,
+      duration: 1400 + Phaser.Math.Between(0, 500),
+      ease: 'Sine.InOut',
+      yoyo: true,
+      repeat: -1,
+    });
+    return immagine;
   }
 
   ditoGiu(dito) {
     if (this.iniziato) return;
     this.dita.set(dito.id, latoDi(dito));
-    this.aggiornaCerchi();
+    this.aggiornaPersonaggi();
   }
 
   ditoSu(dito) {
@@ -104,38 +125,53 @@ class Titolo extends Phaser.Scene {
       this.inizia();
       return;
     }
-    this.aggiornaCerchi();
+    this.aggiornaPersonaggi();
   }
 
-  // Light up each player's circle while they touch; remember when both touch together
-  aggiornaCerchi() {
+  // Light up each character while their player touches; remember when both touch together
+  aggiornaPersonaggi() {
     const lati = new Set(this.dita.values());
     const silvia = lati.has('silvia');
     const francesco = lati.has('francesco');
-    this.illumina(this.cerchioSilvia, silvia);
-    this.illumina(this.cerchioFrancesco, francesco);
+    this.illumina(this.silvia, silvia);
+    this.illumina(this.francesco, francesco);
     if (silvia && francesco && !this.pronti) {
       this.pronti = true;
       this.invito.setText(TESTI.titolo.insieme);
+      this.saltello(this.mario); // Mario is happy too
     }
   }
 
-  illumina(cerchio, acceso) {
-    this.tweens.killTweensOf(cerchio);
+  illumina(personaggio, acceso) {
+    if (personaggio.acceso === acceso) return;
+    personaggio.acceso = acceso;
     this.tweens.add({
-      targets: cerchio,
-      alpha: acceso ? 1 : 0.45,
-      scale: acceso ? 1.15 : 1,
+      targets: personaggio.alone,
+      alpha: acceso ? 0.65 : 0,
       duration: 150,
-      ease: 'Back.Out',
+    });
+    if (acceso) {
+      this.saltello(personaggio);
+    }
+  }
+
+  // A small happy hop (always from the feet position, so quick repeated hops never drift upwards)
+  saltello(personaggio) {
+    if (personaggio.yBase === undefined) personaggio.yBase = personaggio.y;
+    this.tweens.add({
+      targets: personaggio,
+      y: { from: personaggio.yBase, to: personaggio.yBase - 18 },
+      duration: 140,
+      ease: 'Quad.Out',
+      yoyo: true,
     });
   }
 
   inizia() {
     this.iniziato = true;
     suonaCampanella(this);
-    this.illumina(this.cerchioSilvia, true);
-    this.illumina(this.cerchioFrancesco, true);
+    this.illumina(this.silvia, true);
+    this.illumina(this.francesco, true);
     this.cameras.main.fadeOut(900, 15, 26, 46);
     this.cameras.main.once('camerafadeoutcomplete', () => {
       // For now the next screen is the touch test; later it will be the intro
