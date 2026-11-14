@@ -71,6 +71,6 @@ index.html           (later)
 - [x] Prompt 3 (Francesco character sheet) written in `docs/art-guide.md` and given to Adri (attaches style anchor + Silvia; asks for an adult man from the start)
 - [x] Francesco saved: `assets/raw/francesco_sheet.jpg` (Adri's choice; slightly more realistic proportions than Silvia — keep attaching Silvia's sheet in his pose prompts, balance sizes in code)
 - [x] Prompt 4 (Mario character sheet) written in `docs/art-guide.md` and given to Adri (attaches real Mario photo + style anchor + Silvia; no glow — the spirit glow is done in code)
-- [ ] **NEXT:** Adri sends the Mario image (and ideally the real photo, to compare markings) → review it, save as `assets/raw/mario_sheet.jpg`, commit and push. Do NOT commit the real photo of Mario.
+- [x] Mario saved: `assets/raw/mario_sheet.jpg` (first try; lighter grey than the real cat, by Adri's choice). The real photos of Mario are NOT in the repo.
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
 - [ ] Code build plan steps 1–10 (see `docs/game-design.md`)

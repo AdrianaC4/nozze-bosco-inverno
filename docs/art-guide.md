@@ -39,7 +39,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 ### Character sheets
 - [x] `silvia_sheet.jpg`
 - [x] `francesco_sheet.jpg`
-- [ ] `mario_sheet.jpg` (reference: real photo of Mario — not stored in the repo)
+- [x] `mario_sheet.jpg` (reference: real photo of Mario — not stored in the repo)
 
 ### Poses
 - [ ] `silvia_steer.png`, `silvia_cheer.png`, `silvia_oops.png`
@@ -211,4 +211,4 @@ Follow-ups (one change at a time, same chat):
 - Scarf missing or too big: `Give him a tiny red knitted scarf, small and simple, the same red as Silvia's ribbon.`
 - Looks too serious: `Give him a cheekier, friendlier expression with a small smile, like a playful cat who knows he did something naughty.`
 
-Save the best one as `mario_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses. The real photo of Mario is only a reference: keep it outside the repo (the repo will become public when the game is published).
+Save the best one as `mario_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses. **Done** — first try, kept as is (lighter grey than the real Mario, by choice). The real photo of Mario is only a reference: keep it outside the repo (the repo will become public when the game is published).
