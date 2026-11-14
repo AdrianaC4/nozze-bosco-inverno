@@ -38,7 +38,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 
 ### Character sheets
 - [x] `silvia_sheet.jpg`
-- [ ] `francesco_sheet.jpg`
+- [x] `francesco_sheet.jpg`
 - [ ] `mario_sheet.png` (reference: real photo of Mario)
 
 ### Poses
@@ -169,4 +169,6 @@ Follow-ups (one change at a time, same chat):
 - Background not white: `Put him on a plain pure white background with nothing else.`
 - Sleeves not pushed up: `Push his sweater sleeves up to the elbows so his strong forearms are clearly visible.`
 
-Save the best one as `francesco_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses.
+- Proportions don't match Silvia (happened on the first try): `Keep his face, short black hair, red Christmas sweater, rolled-up sleeves, flexing pose and boots. But redraw him in exactly the same cute picture-book proportions and soft style as Silvia in the second reference image: a much bigger, rounder head compared to his body (about 4 heads tall in total, only a little taller than Silvia), simpler softer shapes, rounder chunky arms that still look strong, softer watercolour edges with no outlines, and a simpler, gentler smile. He should look like he belongs in the same storybook as Silvia. Plain pure white background, full body, only one character.`
+
+Save the best one as `francesco_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses. **Done** — Adri chose the version from the "proportions" follow-up. He is still a bit taller-proportioned and crisper than Silvia; when writing his pose prompts, keep attaching Silvia's sheet and asking for her soft style, and balance their sizes in code if needed.
