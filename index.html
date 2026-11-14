@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <!-- viewport-fit=cover lets the game use the whole iPhone screen, including around the notch -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <!-- These make the game open full screen when added to the iPhone Home Screen -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Nozze nel Bosco">
+  <title>Nozze nel Bosco d'Inverno</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #0f1a2e;            /* dark winter blue around the game */
+      /* stop iPhone Safari from scrolling, zooming, selecting text or showing the long-press menu */
+      touch-action: none;
+      -webkit-user-select: none;
+      user-select: none;
+      -webkit-touch-callout: none;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior: none;
+    }
+    #gioco {
+      position: fixed;
+      inset: 0;
+    }
+    /* "Rotate your phone" screen: hidden in landscape, shown in portrait */
+    #ruota {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10;
+      background: #0f1a2e;
+      color: #fdf3e1;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 24px;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 32px;
+      box-sizing: border-box;
+    }
+    #ruota .icona {
+      font-size: 64px;
+      margin-bottom: 20px;
+      animation: gira 2s ease-in-out infinite;
+    }
+    @keyframes gira {
+      0%, 30%   { transform: rotate(0deg); }
+      60%, 100% { transform: rotate(-90deg); }
+    }
+    @media (orientation: portrait) {
+      #ruota { display: flex; }
+    }
+  </style>
+</head>
+<body>
+  <div id="gioco"></div>
+
+  <div id="ruota">
+    <div class="icona">📱</div>
+    <div id="ruota-testo"></div>
+  </div>
+
+  <!-- Order matters: Phaser first, then the texts, then the scenes, then main.js which starts the game -->
+  <script src="src/lib/phaser.min.js"></script>
+  <script src="src/testi.js"></script>
+  <script src="src/scenes/ProvaTocco.js"></script>
+  <script src="src/main.js"></script>
+</body>
+</html>

@@ -45,6 +45,13 @@ src/                 game code (later)
 index.html           (later)
 ```
 
+## Testing on the iPhone (while the repo is private)
+
+- Start a local server from the project folder: `python3 -m http.server 8000 --bind 0.0.0.0`
+- Find the Mac's Wi-Fi address: `ipconfig getifaddr en0` (was `192.168.0.174`; it can change)
+- On the iPhone (same Wi-Fi), open `http://<that address>:8000` in Safari.
+- No build step: plain `<script>` files loaded in order from `index.html` (Phaser, `src/testi.js`, scenes, `src/main.js`).
+
 ## How Adri likes to work
 
 - **Align on the approach before implementing anything.** Explain the plan in plain words first, then wait for her OK.
@@ -74,6 +81,7 @@ index.html           (later)
 - [x] Mario saved: `assets/raw/mario_sheet.jpg` (first try; lighter grey than the real cat, by Adri's choice). The real photos of Mario are NOT in the repo.
 - [x] Prompt 5 (pose template + pose lines) written in `docs/art-guide.md` and given to Adri
 - [x] `silvia_cheer.jpg`, `silvia_oops.jpg`, `francesco_cheer.jpg`, `francesco_oops.jpg`, `mario_proud.jpg`, `mario_guilty.jpg`, `mario_rings.jpg` saved — all emotion poses done (Francesco poses: attach his sheet + Silvia's sheet)
-- [ ] **NEXT:** code build plan step 1 (Phaser project setup, split-screen touch test, rotate screen) — proposed to Adri, waiting for her OK. Action poses, backgrounds and objects wait until the mini games are prototyped.
+- [x] Code step 1: Phaser 3.90.0 (saved in `src/lib/`), split-screen touch test (`src/scenes/ProvaTocco.js`), rotate screen — tested and working on Adri's iPhone
+- [ ] **NEXT:** code step 2: title screen with "Tocca per iniziare" and sound (plan proposed to Adri, waiting for her OK). Action poses, backgrounds and objects wait until the mini games are prototyped.
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
-- [ ] Code build plan steps 1–10 (see `docs/game-design.md`)
+- [ ] Code build plan steps 2–10 (see `docs/game-design.md`)
