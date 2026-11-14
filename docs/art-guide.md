@@ -38,7 +38,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 
 ### Character sheets
 - [x] `silvia_sheet.jpg`
-- [ ] `francesco_sheet.png`
+- [ ] `francesco_sheet.jpg`
 - [ ] `mario_sheet.png` (reference: real photo of Mario)
 
 ### Poses
@@ -128,3 +128,45 @@ Follow-ups (one change at a time, same chat):
 - Looks like a child (this happened on the first try — the one used): `Keep everything the same: the painting style, the curly brown hair, the red ribbon bow, the mustard coat, the red mittens and the boots. But make her clearly a young adult woman in her late twenties, not a child: a slightly more grown-up face, a slightly taller and more womanly figure (about 4 heads tall), and a longer coat that reaches below the knee. She should still be cute, soft and round, in the same picture-book style. Plain pure white background, full body, only one character.`
 
 Save the best one as `silvia_sheet.jpg` and send it to Claude. **Done** — the chosen version is the one from the "looks like a child" follow-up. This image becomes the reference for all her poses.
+
+### Prompt 3 — Francesco character sheet (`francesco_sheet.jpg`)
+
+Start a new Gemini chat called "Winter Wood – Francesco". Attach **two** images in this order: `assets/raw/style_anchor.jpg`, then `assets/raw/silvia_sheet.jpg`. Then paste:
+
+```
+The first attached image is the style reference for a cozy Christmas storybook game. The second image is Silvia, the bride, already drawn in the final style. Match her painting style and proportions exactly: hand-painted watercolour and gouache, soft edges, no hard black outlines, gentle painterly texture, same paper-white background. Do not draw Silvia and do not copy the scene.
+
+Create a character sheet of one original cartoon character: Francesco, the groom, a young adult man about thirty years old (clearly an adult, not a boy).
+
+Look:
+- Same cute picture-book proportions as Silvia (about 4 heads tall), but a little taller than her, with broad shoulders and a strong, sturdy build.
+- Very short black hair, neatly buzzed.
+- Friendly, confident face with a big warm grin, kind dark eyes and rosy cheeks.
+- A cozy red Christmas knitted sweater with a cream snowflake pattern and a green band across the chest, with the sleeves pushed up to the elbows, showing strong muscular forearms (funny, because it is snowing).
+- Dark blue trousers and sturdy brown winter boots. No coat, no gloves, no hat.
+
+Pose: standing, full body, facing the viewer, cheerful and proud, one arm flexed showing his biceps through the sweater, the other hand on his hip, feet slightly apart.
+
+Lighting: soft, warm, cozy light, same as Silvia's image.
+
+Background: plain pure white, no ground, no shadow on the floor, no snow, no scenery. Only one character, shown once, fully visible from head to toe with some empty space around him.
+
+No text, no letters, no labels, no logos, no watermark.
+```
+
+Check:
+- Same soft watercolour style as Silvia, no black outlines. Put both images side by side: do they look like they come from the same book?
+- Clearly a young adult man, not a boy, and not a realistic bodybuilder either.
+- Very short black hair, red Christmas sweater with sleeves pushed up, visible strong arms.
+- Full body visible, plain white background, only one Francesco, no text.
+- He feels like Francesco to you.
+
+Follow-ups (one change at a time, same chat):
+- Looks like a boy: `Make him clearly a young adult man about thirty: a more grown-up face with a defined jaw, a slightly taller and broader figure. Keep everything else the same.`
+- Too realistic or too muscly: `Make him cuter and softer, in the same picture-book style as Silvia. Strong but round and friendly, not a realistic bodybuilder.`
+- Not strong enough: `Make him look stronger: broader shoulders and bigger, clearly muscular forearms and arms, still cute and picture-book style.`
+- Style doesn't match Silvia: `Paint him in exactly the same soft watercolour style as the second reference image (Silvia), with no black outlines.`
+- Background not white: `Put him on a plain pure white background with nothing else.`
+- Sleeves not pushed up: `Push his sweater sleeves up to the elbows so his strong forearms are clearly visible.`
+
+Save the best one as `francesco_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses.
