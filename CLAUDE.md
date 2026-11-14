@@ -65,8 +65,8 @@ index.html           (later)
 - [x] Game idea, story, characters and mini games agreed (`docs/game-design.md`)
 - [x] Art tools and workflow agreed (`docs/art-guide.md`)
 - [x] Prompt 1 (style anchor) written and given to Adri
-- [ ] **NEXT:** Adri sends the style anchor image → review it, save as `assets/raw/style_anchor.png`, commit and push
-- [ ] Prompt 2: Silvia character sheet
+- [x] Style anchor saved: `assets/raw/style_anchor.jpg` (lanterns unlit — title / "before") and `assets/raw/style_anchor_lit.jpg` (lanterns lit — ceremony / ending reference)
+- [ ] **NEXT:** Prompt 2: Silvia character sheet (write it, attaching the style anchor; ask for slightly warmer, cozier light than the anchor)
 - [ ] Prompt 3: Francesco character sheet
 - [ ] Prompt 4: Mario character sheet (uses the real photo of Mario as reference — ask Adri for it)
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)

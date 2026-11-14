@@ -29,10 +29,11 @@
 
 ## Asset checklist
 
-Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` after clean-up).
+Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` after clean-up). Gemini downloads are `.jpg`: keep raw files as `.jpg` exactly as downloaded; the cut-out versions in `assets/game/` become `.png`.
 
 ### Style and screens
-- [ ] `style_anchor.png` — snowy forest village at dusk (also the title background)
+- [x] `style_anchor.jpg` — snowy forest village at dusk, lanterns unlit (also the title background)
+- [x] `style_anchor_lit.jpg` — same scene with the lanterns lit (reference for ceremony / ending)
 - [ ] `intro_1.png`, `intro_2.png`, `intro_3.png` — story panels
 
 ### Character sheets
@@ -62,7 +63,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 
 ## Prompts
 
-### Prompt 1 — Style anchor (`style_anchor.png`)
+### Prompt 1 — Style anchor (`style_anchor.jpg`) — done
 
 Start a new Gemini chat called "Winter Wood – Style" and paste:
 
