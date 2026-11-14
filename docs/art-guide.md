@@ -39,7 +39,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 ### Character sheets
 - [x] `silvia_sheet.jpg`
 - [x] `francesco_sheet.jpg`
-- [ ] `mario_sheet.png` (reference: real photo of Mario)
+- [ ] `mario_sheet.jpg` (reference: real photo of Mario — not stored in the repo)
 
 ### Poses
 - [ ] `silvia_steer.png`, `silvia_cheer.png`, `silvia_oops.png`
@@ -172,3 +172,43 @@ Follow-ups (one change at a time, same chat):
 - Proportions don't match Silvia (happened on the first try): `Keep his face, short black hair, red Christmas sweater, rolled-up sleeves, flexing pose and boots. But redraw him in exactly the same cute picture-book proportions and soft style as Silvia in the second reference image: a much bigger, rounder head compared to his body (about 4 heads tall in total, only a little taller than Silvia), simpler softer shapes, rounder chunky arms that still look strong, softer watercolour edges with no outlines, and a simpler, gentler smile. He should look like he belongs in the same storybook as Silvia. Plain pure white background, full body, only one character.`
 
 Save the best one as `francesco_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses. **Done** — Adri chose the version from the "proportions" follow-up. He is still a bit taller-proportioned and crisper than Silvia; when writing his pose prompts, keep attaching Silvia's sheet and asking for her soft style, and balance their sizes in code if needed.
+
+### Prompt 4 — Mario character sheet (`mario_sheet.jpg`)
+
+Start a new Gemini chat called "Winter Wood – Mario". Attach **three** images in this order: a clear real photo of Mario (whole cat visible, good light, markings easy to see), `assets/raw/style_anchor.jpg`, then `assets/raw/silvia_sheet.jpg`. Then paste:
+
+```
+The first attached image is a photo of a real cat called Mario. Use it ONLY for his colours and markings. The second image is the style reference for a cozy Christmas storybook game. The third image is Silvia, a character already drawn in the final style. Match her painting style exactly: hand-painted watercolour and gouache, soft edges, no hard black outlines, gentle painterly texture, same paper-white background. Do not draw Silvia and do not copy the scene.
+
+Create a character sheet of one original cartoon cat: Mario, a friendly forest spirit cat who guides the heroes.
+
+Look:
+- A cute, round, soft cartoon cat in the same picture-book style as Silvia: a big round head, a small chubby body, short legs, a fluffy tail.
+- Exactly the same colours and markings as the cat in the photo: grey head and back, a white blaze on his face, white chest and white paws, a pink nose, pale green eyes.
+- A tiny red knitted scarf around his neck, the same red as Silvia's ribbon.
+- A cheeky, curious, slightly mischievous expression, with a small smile.
+
+Pose: sitting upright, full body, facing the viewer, tail curled around his front paws.
+
+Lighting: soft, warm, cozy light, same as Silvia's image. Do not add any glow, sparkles or magic light around him.
+
+Background: plain pure white, no ground, no shadow on the floor, no snow, no scenery. Only one cat, shown once, fully visible with some empty space around him.
+
+No text, no letters, no labels, no logos, no watermark.
+```
+
+Why no glow: a glow painted on a white background is very hard to cut out cleanly. Mario's spirit glow is added later in code (a soft light behind him that gently pulses).
+
+Check:
+- His markings match the real Mario (grey head and back, white blaze, white chest and paws, pink nose, pale green eyes). Would Silvia and Francesco recognise him?
+- Same soft watercolour style as Silvia, no black outlines, cute and round, not a realistic cat.
+- Red scarf, sitting pose, plain white background, only one cat, no glow, no text.
+
+Follow-ups (one change at a time, same chat):
+- Markings wrong: `Look again at the photo of the real cat and copy his markings exactly: grey head and back, white blaze on the face, white chest and white paws.`
+- Too realistic: `Make him cuter and rounder, a picture-book cartoon cat in the same soft style as Silvia, with a bigger head and a chubby body.`
+- Has a glow or sparkles: `Remove all glow, sparkles and light effects around him. Plain pure white background only.`
+- Scarf missing or too big: `Give him a tiny red knitted scarf, small and simple, the same red as Silvia's ribbon.`
+- Looks too serious: `Give him a cheekier, friendlier expression with a small smile, like a playful cat who knows he did something naughty.`
+
+Save the best one as `mario_sheet.jpg` and send it to Claude. This image becomes the reference for all his poses. The real photo of Mario is only a reference: keep it outside the repo (the repo will become public when the game is published).
