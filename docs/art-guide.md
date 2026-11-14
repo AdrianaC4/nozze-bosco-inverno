@@ -43,7 +43,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 
 ### Poses
 Made with Prompt 5 (pose template). Do the **emotion poses first**: they don't depend on gameplay. The **action poses** (steer, push, hold, dig, crank, run, lick) may change once the mini games are prototyped with plain shapes, so they can wait.
-- Emotion: [x] `silvia_cheer.jpg`, [x] `silvia_oops.jpg`, [x] `francesco_cheer.jpg`, [ ] `mario_proud.jpg`, [ ] `mario_guilty.jpg`, [ ] `mario_rings.jpg`
+- Emotion: [x] `silvia_cheer.jpg`, [x] `silvia_oops.jpg`, [x] `francesco_cheer.jpg`, [ ] `francesco_oops.jpg`, [x] `mario_proud.jpg`, [ ] `mario_guilty.jpg`, [ ] `mario_rings.jpg`
 - Action: [ ] `silvia_steer.jpg`, [ ] `francesco_push.jpg`, [ ] `francesco_hold.jpg`, [ ] `francesco_dig.jpg`, [ ] `francesco_crank.jpg`, [ ] `mario_run.jpg`, [ ] `mario_lick.jpg`
 
 ### Backgrounds (16:9)
@@ -239,6 +239,7 @@ Pose lines — emotion poses (do these first):
 | `silvia_cheer.jpg` | `jumping happily with both arms raised in the air, eyes closed, big joyful smile, curls bouncing` |
 | `silvia_oops.jpg` | `a funny "oops" moment: shoulders up, both hands over her mouth, eyes wide, a little embarrassed smile` |
 | `francesco_cheer.jpg` | `celebrating with both fists raised high, big open happy grin, one knee slightly lifted` |
+| `francesco_oops.jpg` | `a funny "oops" moment: scratching the back of his head with one hand, shoulders up, eyes squeezed, a sheepish embarrassed grin` |
 | `mario_proud.jpg` | `sitting tall and very proud, chest puffed out, chin up, eyes closed, a smug little smile, tail straight up` |
 | `mario_guilty.jpg` | `sitting, looking guilty: ears flat back, eyes looking sideways, a sheepish smile, one front paw slightly raised` |
 | `mario_rings.jpg` | `sitting proudly, holding in his mouth a tiny red velvet cushion with two small shiny golden wedding rings on it` |
