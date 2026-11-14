@@ -107,8 +107,8 @@ There are four mini games, each bringing back one thing for the wedding, and the
 The game is forgiving: it's a gift, so the couple should always reach the ending.
 
 1. Rotate screen: shown while the phone is in portrait ("Ruota il telefono").
-2. Title screen: the title, Silvia, Francesco and Mario in the snow, and "Tocca per iniziare". The game only starts when **both** players touch their half at the same time (the text doesn't say so on purpose: a first small co-op discovery). It starts when they lift their fingers, which also unlocks sound on iPhone.
-3. Intro: 3–4 short story panels with Mario's lines.
+2. Title screen: the title over the snowy village (no characters: they appear in the intro), and "Tocca per iniziare". Each finger makes a soft glow in that player's colour. The game only starts when **both** players touch their half at the same time (the text doesn't say so on purpose: a first small co-op discovery). It starts when they lift their fingers, which also unlocks sound on iPhone.
+3. Intro: 4 short story scenes with the texts below, written letter by letter (tap to show the whole sentence, tap again to continue): the lit village with Silvia and Francesco; a sudden gust blowing the lanterns out and the wedding things away; Mario appearing as a glowing spirit with his guilty face; Mario cheering up and offering to help. These taps are menu taps and don't count in the gesture rule.
 4. Mini games 1–4, each starting with a **start card**: the mini game's name, each player's instruction on their own half, and Mario in the middle with his tip. The game begins when someone **pets Mario** (a little swipe across him). Petting Mario is a start button, so it does **not** count in the gesture rule.
 5. Result card after each mini game: 1–3 stars, then "Avanti" or "Riprova".
 6. Finale and the "Appena Sposati!" ending.
@@ -127,7 +127,8 @@ The look is soft, warm and hand-made: Ghibli-inspired in mood, with no Ghibli ch
 - **Palette:** cold blue and white snow against warm orange and gold lantern light, with red accents (Silvia's ribbon, Mario's scarf, ornaments).
 - **Shapes:** round, simple characters with soft edges and no hard black outlines. Big heads and small bodies keep them cute even when the drawing is basic.
 - **Effects:** gentle falling snow on every screen, sparkles on success, and a light screen shake on mistakes (iPhone web games can't vibrate).
-- **Music:** soft piano or music-box Christmas tunes from a royalty-free source, one looping track per scene.
+- **Music:** original music composed in code (`src/musica.js`): music box, soft warm pads and a gentle bass, in the spirit of hand-made animated films (no copyrighted melodies). Tracks by mood: "neve" (slow dreamy waltz: title, story, start cards, after a win) and "corsa" (bouncy: mini games). In La Slitta the music's speed follows the sled (100–160 bpm), without changing pitch. The finale will get its own tender track.
+- **Bell chime:** only at three moments: the two-player start on the title, leaving the story intro, and winning a mini game.
 - **Sounds:** chimes for success, a soft thud for mistakes, a sleigh bell on the title screen, and a meow from Mario.
 - **Prototype first:** build each mini game with plain shapes, and add the real art only once it's fun.
 
@@ -140,9 +141,10 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Title | Nozze nel Bosco d'Inverno | A Wedding in Winter Wood |
 | Title | Tocca per iniziare | Tap to begin |
 | Portrait warning | Ruota il telefono in orizzontale | Turn your phone sideways |
-| Intro 1 | È la Vigilia di Natale. A mezzanotte Silvia e Francesco si sposano sotto il grande albero del bosco. | It's Christmas Eve. At midnight Silvia and Francesco marry under the great tree. |
-| Intro 2 | Ma il vento d'inverno ha portato via tutto: i regali, la torta, gli anelli e le luci! | But the winter wind blew everything away. |
-| Intro 3 (Mario) | Miao! Seguitemi, vi aiuto io! | Meow! Follow me, I'll help! |
+| Intro 1 | È un bellissimo giorno d'inverno. Tra non molto Silvia e Francesco si sposano sotto il grande albero del paese. | It's a beautiful winter day. Soon Silvia and Francesco will marry under the village's great tree. |
+| Intro 2 | Ma un ventaccio improvviso ha portato via tutto: i regali, la torta, gli anelli e le luci! | But a sudden nasty gust of wind blew everything away. |
+| Intro 3 (Mario, guilty) | Miao! Prometto che non è colpa mia… | Meow! I promise it's not my fault… |
+| Intro 4 (Mario) | Miao! Seguitemi, vi aiuto io! | Meow! Follow me, I'll help! |
 | Start card | Accarezza Mario per iniziare | Pet Mario to start |
 | Game 1 | Silvia: Trascina per guidare · Francesco: Tocca veloce per spingere! | Drag to steer · Tap fast to push |
 | Game 1 | Tempo scaduto! Riproviamo! · Oh no! Riproviamo! · Pochi regali… Riproviamo! | Time's up! · Oh no! · Too few gifts… Let's try again! |

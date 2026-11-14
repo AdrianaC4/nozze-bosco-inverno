@@ -1,8 +1,7 @@
 // Title screen.
-// Shows the snowy village with Silvia (left), Francesco (right) and Mario by the tree,
-// the title and falling snow.
+// Shows the snowy village, the title and falling snow (no characters: they appear in the story intro).
 // The game starts only when Silvia (left half) and Francesco (right half) touch together:
-// each character lights up while their player touches; once both are touching,
+// each finger makes a soft glow in that player's colour; once both are touching,
 // lifting the fingers plays a chime and moves on.
 // (Starting on lift, not on touch, is on purpose: iPhone only allows sound to start when a finger is lifted.)
 
@@ -12,16 +11,13 @@ class Titolo extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image('sfondo_titolo', 'assets/game/style_anchor.jpg');
-    this.load.image('silvia', 'assets/game/silvia_sheet.png');
-    this.load.image('francesco', 'assets/game/francesco_sheet.png');
-    this.load.image('mario', 'assets/game/mario_sheet.png');
+    carica(this, 'sfondo_titolo', 'assets/game/style_anchor.jpg');
   }
 
   create() {
     this.iniziato = false; // becomes true once the game is starting, so it only starts once
     this.pronti = false;   // becomes true once both players have touched at the same time
-    this.dita = new Map(); // fingers currently on the screen: finger id -> 'silvia' or 'francesco'
+    this.dita = new Map(); // fingers on the screen: finger id -> { lato, bagliore }
 
     // Background: the snowy village
     this.add.image(LARGHEZZA / 2, ALTEZZA / 2, 'sfondo_titolo');
@@ -43,13 +39,6 @@ class Titolo extends Phaser.Scene {
       yoyo: true,
       repeat: -1,
     });
-
-    // The characters, standing in the snow
-    // (x, y = where their feet are; altezza = how tall they look on screen)
-    this.mario = this.creaPersonaggio('mario', 790, 612, 130, null);
-    // Heights agreed with Adri on the iPhone: Silvia 310 / Francesco 330 (350 for Silvia looked too tall)
-    this.silvia = this.creaPersonaggio('silvia', 290, 705, 310, COLORE_SILVIA);
-    this.francesco = this.creaPersonaggio('francesco', 990, 705, 330, COLORE_FRANCESCO);
 
     // "Tocca per iniziare" on a soft dark band so it's easy to read on the white snow
     const banda = this.add.graphics();
@@ -73,6 +62,7 @@ class Titolo extends Phaser.Scene {
     aggiungiNeve(this);
 
     this.input.on('pointerdown', (dito) => this.ditoGiu(dito));
+    this.input.on('pointermove', (dito) => this.ditoMuove(dito));
     this.input.on('pointerup', (dito) => this.ditoSu(dito));
     this.input.on('pointerupoutside', (dito) => this.ditoSu(dito));
 
@@ -80,102 +70,53 @@ class Titolo extends Phaser.Scene {
     this.cameras.main.fadeIn(600, 15, 26, 46);
   }
 
-  // Places a character with their feet at (x, y), a soft shadow under them,
-  // an optional coloured glow (shown while their player touches), and a slow "breathing" animation.
-  creaPersonaggio(chiave, x, y, altezza, coloreAlone) {
-    const immagine = this.add.image(x, y, chiave).setOrigin(0.5, 1);
-    const scala = altezza / immagine.height;
-    immagine.setScale(scala);
-    immagine.setDepth(20);
-    immagine.scalaBase = scala;
-
-    // Soft shadow on the snow
-    this.add.ellipse(x, y - 4, immagine.displayWidth * 0.7, 22, COLORE_NOTTE, 0.22).setDepth(19);
-
-    // Coloured glow under the feet, invisible until the player touches
-    if (coloreAlone !== null) {
-      immagine.alone = this.add.ellipse(x, y - 6, immagine.displayWidth * 1.1, 50, coloreAlone, 1)
-        .setAlpha(0)
-        .setDepth(18);
-    }
-
-    // Breathing: a tiny slow stretch, slightly different speed for each character
-    this.tweens.add({
-      targets: immagine,
-      scaleY: scala * 1.025,
-      duration: 1400 + Phaser.Math.Between(0, 500),
-      ease: 'Sine.InOut',
-      yoyo: true,
-      repeat: -1,
-    });
-    return immagine;
-  }
-
   ditoGiu(dito) {
     if (this.iniziato) return;
-    this.dita.set(dito.id, latoDi(dito));
-    this.aggiornaPersonaggi();
+    const lato = latoDi(dito);
+    // A soft glow under the finger, in that player's colour
+    const bagliore = this.add.image(dito.x, dito.y, creaBagliore(this))
+      .setTint(lato === 'silvia' ? COLORE_SILVIA : COLORE_FRANCESCO)
+      .setBlendMode(Phaser.BlendModes.ADD)
+      .setDepth(20)
+      .setScale(0.3);
+    this.tweens.add({ targets: bagliore, scale: 1, duration: 200, ease: 'Back.Out' });
+    this.dita.set(dito.id, { lato, bagliore });
+    this.controllaInsieme();
+  }
+
+  ditoMuove(dito) {
+    const info = this.dita.get(dito.id);
+    if (info) info.bagliore.setPosition(dito.x, dito.y);
   }
 
   ditoSu(dito) {
     if (this.iniziato) return;
-    this.dita.delete(dito.id);
-    // Both players touched together, and now a finger is lifted: start!
-    if (this.pronti) {
-      this.inizia();
-      return;
+    const info = this.dita.get(dito.id);
+    if (info) {
+      this.dita.delete(dito.id);
+      this.tweens.add({ targets: info.bagliore, alpha: 0, duration: 250, onComplete: () => info.bagliore.destroy() });
     }
-    this.aggiornaPersonaggi();
+    // Both players touched together, and now a finger is lifted: start!
+    if (this.pronti) this.inizia();
   }
 
-  // Light up each character while their player touches; remember when both touch together
-  aggiornaPersonaggi() {
-    const lati = new Set(this.dita.values());
-    const silvia = lati.has('silvia');
-    const francesco = lati.has('francesco');
-    this.illumina(this.silvia, silvia);
-    this.illumina(this.francesco, francesco);
-    if (silvia && francesco && !this.pronti) {
+  // Remember when both players touch at the same time
+  controllaInsieme() {
+    const lati = new Set([...this.dita.values()].map((info) => info.lato));
+    if (lati.has('silvia') && lati.has('francesco') && !this.pronti) {
       this.pronti = true;
       this.invito.setText(TESTI.titolo.insieme);
-      this.saltello(this.mario); // Mario is happy too
     }
-  }
-
-  illumina(personaggio, acceso) {
-    if (personaggio.acceso === acceso) return;
-    personaggio.acceso = acceso;
-    this.tweens.add({
-      targets: personaggio.alone,
-      alpha: acceso ? 0.65 : 0,
-      duration: 150,
-    });
-    if (acceso) {
-      this.saltello(personaggio);
-    }
-  }
-
-  // A small happy hop (always from the feet position, so quick repeated hops never drift upwards)
-  saltello(personaggio) {
-    if (personaggio.yBase === undefined) personaggio.yBase = personaggio.y;
-    this.tweens.add({
-      targets: personaggio,
-      y: { from: personaggio.yBase, to: personaggio.yBase - 18 },
-      duration: 140,
-      ease: 'Quad.Out',
-      yoyo: true,
-    });
   }
 
   inizia() {
     this.iniziato = true;
     suonaCampanella(this);
-    this.illumina(this.silvia, true);
-    this.illumina(this.francesco, true);
+    Musica.suona(this, 'neve'); // the dreamy waltz starts here (sound is allowed now, after the touch)
     this.cameras.main.fadeOut(900, 15, 26, 46);
     this.cameras.main.once('camerafadeoutcomplete', () => {
-      // For now the next screen is mini game 1; later the story intro will come first
-      this.scene.start('Slitta');
+      // Next: the story intro, which then leads to mini game 1
+      this.scene.start('Intro');
     });
   }
 }

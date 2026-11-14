@@ -47,7 +47,7 @@ index.html           (later)
 
 ## Testing on the iPhone (while the repo is private)
 
-- Start a local server from the project folder: `python3 -m http.server 8000 --bind 0.0.0.0`
+- Start the local server from the project folder: `python3 tools/server.py` (port 8000; tells Safari not to cache, so a reload always gets the latest files — the plain `python3 -m http.server` let Safari run stale code)
 - Find the Mac's Wi-Fi address: `ipconfig getifaddr en0` (was `192.168.0.174`; it can change)
 - On the iPhone (same Wi-Fi), open `http://<that address>:8000` in Safari.
 - No build step: plain `<script>` files loaded in order from `index.html` (Phaser, `src/testi.js`, scenes, `src/main.js`).
@@ -86,6 +86,7 @@ index.html           (later)
 - [x] Step 2b: cut-out tool `tools/ritaglia.py` (rembg, model birefnet-general, in `.venv/`, not committed) → 10 transparent character PNGs in `assets/game/` (max 600px tall). Characters on the title screen: breathing, hop + coloured glow when their player touches. Tested on the iPhone.
 - [x] Code step 3: mini game 1 (La Slitta, `src/scenes/Slitta.js`) with plain shapes. After Adri's playtests: uphill removed, 35 s countdown, finish line, reusable start card where petting Mario (swipe) starts every mini game (`src/cartaInizio.js`). Tested on the iPhone.
 - Testing: `?scena=Slitta` in the address starts straight from that scene. Claude can also play-test in headless Chrome (Chrome DevTools + synthetic iPhone-style TouchEvents with pageX/pageY set).
-- [ ] **NEXT:** step 3b: simple story intro between title and mini game 1, using existing art and the intro texts; real `intro_1–3` images later (plan proposed to Adri, waiting for her OK). Action poses, backgrounds and objects wait until the mini games are prototyped.
+- [x] Step 3b: story intro (`src/scenes/Intro.js`), 4 scenes with Adri's texts (lit village; gust of wind, oops poses; Mario guilty; Mario cheers up). Title screen without characters (finger glows). Bell chime only at: title start, end of intro, mini game win. Background music in code (`src/musica.js`: 'neve' waltz, 'corsa' bouncy; La Slitta's tempo follows the sled). No-cache test server `tools/server.py`. Tested on the iPhone.
+- [ ] **NEXT:** code step 4: the finale (La Cerimonia) with its own tender music track — propose the plan to Adri first.
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
 - [ ] Code build plan steps 2–10 (see `docs/game-design.md`)

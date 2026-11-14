@@ -21,6 +21,14 @@ const TESTI = {
     toccaPerContinuare: 'Tocca per continuare',
   },
 
+  // Story intro (4 scenes)
+  intro: {
+    pannello1: "È un bellissimo giorno d'inverno. Tra non molto Silvia e Francesco si sposano sotto il grande albero del paese.",
+    pannello2: "Ma un ventaccio improvviso ha portato via tutto: i regali, la torta, gli anelli e le luci!",
+    pannello3: 'Miao! Prometto che non è colpa mia…',
+    pannello4: 'Miao! Seguitemi, vi aiuto io!',
+  },
+
   // Start card shown before every mini game
   carta: {
     accarezza: 'Accarezza Mario per iniziare',

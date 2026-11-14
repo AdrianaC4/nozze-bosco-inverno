@@ -157,12 +157,12 @@ class Slitta extends Phaser.Scene {
 
   iniziaDiscesa() {
     this.fase = 'discesa';
+    Musica.suona(this, 'corsa'); // the bouncy tune; its speed follows the sled (see aggiornaDiscesa)
     // "Via!" in big letters for a moment
     const via = this.add.text(LARGHEZZA / 2, ALTEZZA / 2 - 60, TESTI.slitta.via, {
       fontFamily: FONT, fontSize: '96px', color: '#ffe9a8', stroke: '#2a3d66', strokeThickness: 10,
     }).setOrigin(0.5).setDepth(60);
     this.tweens.add({ targets: via, scale: { from: 0.5, to: 1.2 }, alpha: { from: 1, to: 0 }, duration: 900, onComplete: () => via.destroy() });
-    suonaCampanella(this);
   }
 
   spingi() {
@@ -190,6 +190,9 @@ class Slitta extends Phaser.Scene {
     // The sled slowly loses speed; Francesco's taps keep it fast
     this.velocita = Math.max(SLITTA.VELOCITA_MINIMA, this.velocita - SLITTA.FRENATA * secondi);
     const passo = this.velocita * secondi;
+    // The music follows the sled: from 100 beats per minute (slowest) to 160 (fastest)
+    const quantoVeloce = (this.velocita - SLITTA.VELOCITA_MINIMA) / (SLITTA.VELOCITA_MASSIMA - SLITTA.VELOCITA_MINIMA);
+    Musica.tempo(100 + quantoVeloce * 60);
     this.percorso += passo;
     this.suolo.tilePositionY -= passo;
     this.barraPercorso.width = 400 * Math.min(1, this.percorso / SLITTA.PERCORSO);
@@ -343,6 +346,7 @@ class Slitta extends Phaser.Scene {
     if (this.regali >= SLITTA.REGALI_3_STELLE) stelle = 3;
 
     suonaCampanella(this);
+    Musica.suona(this, 'neve'); // calm again after the win
     this.add.rectangle(0, 0, LARGHEZZA, ALTEZZA, COLORE_NOTTE, 0.75).setOrigin(0, 0).setDepth(50);
     this.add.text(LARGHEZZA / 2, 220, TESTI.comuni.bravissimi, {
       fontFamily: FONT, fontSize: '80px', color: '#ffe9a8',
@@ -367,6 +371,7 @@ class Slitta extends Phaser.Scene {
   // Forgiving game: no game over, just a short message and an instant restart
   ricomincia(messaggio) {
     this.fase = 'fine';
+    Musica.tempoNormale();
     suonaTonfo(this);
     this.add.text(LARGHEZZA / 2, ALTEZZA / 2, messaggio, {
       fontFamily: FONT, fontSize: '60px', color: '#fdf3e1', stroke: '#2a3d66', strokeThickness: 8,

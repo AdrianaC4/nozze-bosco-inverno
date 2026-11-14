@@ -1,5 +1,27 @@
 // Shared effects that many scenes use: falling snow and a soft bell chime.
 
+// Loads an image only if it isn't loaded yet (images are shared by all scenes)
+function carica(scena, chiave, percorso) {
+  if (!scena.textures.exists(chiave)) scena.load.image(chiave, percorso);
+}
+
+// A soft round glow (bright in the middle, fading to nothing at the edge), drawn once and reused.
+// Use it with: scena.add.image(x, y, creaBagliore(scena)).setBlendMode(Phaser.BlendModes.ADD)
+function creaBagliore(scena) {
+  if (!scena.textures.exists('bagliore')) {
+    const tela = scena.textures.createCanvas('bagliore', 256, 256);
+    const ctx = tela.getContext();
+    const sfumatura = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+    sfumatura.addColorStop(0, 'rgba(255, 226, 150, 0.95)');
+    sfumatura.addColorStop(0.4, 'rgba(255, 196, 90, 0.45)');
+    sfumatura.addColorStop(1, 'rgba(255, 180, 60, 0)');
+    ctx.fillStyle = sfumatura;
+    ctx.fillRect(0, 0, 256, 256);
+    tela.refresh();
+  }
+  return 'bagliore';
+}
+
 // Gentle falling snow over the whole screen.
 // Call it at the end of a scene's create() so the snow is drawn on top.
 function aggiungiNeve(scena) {
@@ -67,6 +89,35 @@ function suonaTonfo(scena) {
 function suonaMiao(scena) {
   suonaTono(scena, 650, 900, 0.12, 'triangle', 0.12);
   setTimeout(() => suonaTono(scena, 900, 520, 0.3, 'triangle', 0.12), 110);
+}
+
+// A gust of wind: soft noise that swells and fades (placeholder until the sound pass)
+function suonaVento(scena) {
+  const contesto = contestoAudio(scena);
+  if (!contesto) return;
+  const durata = 1.8;
+  const campioni = Math.floor(contesto.sampleRate * durata);
+  const buffer = contesto.createBuffer(1, campioni, contesto.sampleRate);
+  const dati = buffer.getChannelData(0);
+  for (let i = 0; i < campioni; i++) dati[i] = Math.random() * 2 - 1;
+  const rumore = contesto.createBufferSource();
+  rumore.buffer = buffer;
+  const filtro = contesto.createBiquadFilter();
+  filtro.type = 'bandpass';
+  filtro.Q.value = 0.8;
+  const t = contesto.currentTime + 0.01;
+  filtro.frequency.setValueAtTime(300, t);
+  filtro.frequency.exponentialRampToValueAtTime(1200, t + 0.7);
+  filtro.frequency.exponentialRampToValueAtTime(400, t + durata);
+  const volume = contesto.createGain();
+  volume.gain.setValueAtTime(0.0001, t);
+  volume.gain.exponentialRampToValueAtTime(0.35, t + 0.5);
+  volume.gain.exponentialRampToValueAtTime(0.0001, t + durata);
+  rumore.connect(filtro);
+  filtro.connect(volume);
+  volume.connect(contesto.destination);
+  rumore.start(t);
+  rumore.stop(t + durata);
 }
 
 // Mario purring: a few soft low rumbles (placeholder until the sound pass)
