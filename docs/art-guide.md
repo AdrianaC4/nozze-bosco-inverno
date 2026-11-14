@@ -37,7 +37,7 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 - [ ] `intro_1.png`, `intro_2.png`, `intro_3.png` — story panels
 
 ### Character sheets
-- [ ] `silvia_sheet.png`
+- [ ] `silvia_sheet.jpg`
 - [ ] `francesco_sheet.png`
 - [ ] `mario_sheet.png` (reference: real photo of Mario)
 
@@ -87,6 +87,43 @@ Follow-ups (one change at a time, same chat):
 - Not warm enough: `Make the lantern and window light warmer and more glowing.`
 - Too busy: `Remove some cottages and trees so the clearing feels more open and calm.`
 
-### Prompt 2 — Silvia character sheet
+### Prompt 2 — Silvia character sheet (`silvia_sheet.jpg`)
 
-To be written next.
+Start a new Gemini chat called "Winter Wood – Silvia". Attach `assets/raw/style_anchor.jpg`, then paste:
+
+```
+The attached image is the style reference for a cozy Christmas storybook game. Match its painting style exactly: hand-painted watercolour and gouache, soft edges, no hard black outlines, gentle painterly texture. Do not copy the scene, only the style.
+
+Create a character sheet of one original cartoon character: Silvia, a young woman, the bride of the story.
+
+Look:
+- Cute, round, simple shapes: big head, small body (about 3 heads tall), like a character in a children's picture book.
+- Big curly brown hair, voluminous and soft, tied with one bright red ribbon bow.
+- Warm, kind face with big friendly eyes, rosy cheeks and a gentle smile.
+- A cozy knee-length winter coat in warm mustard yellow, with big round buttons.
+- Red mittens, dark brown winter boots, warm light brown tights.
+
+Pose: standing, full body, facing the viewer, arms relaxed and slightly out from the body, feet slightly apart, cheerful and calm.
+
+Lighting: soft, warm, cozy light, a little warmer and more inviting than the reference image.
+
+Background: plain pure white, no ground, no shadow on the floor, no snow, no scenery. Only one character, shown once, fully visible from head to toe with some empty space around her.
+
+No text, no letters, no labels, no logos, no watermark.
+```
+
+Check:
+- Same soft watercolour style as the style anchor, no black outlines.
+- Cute and round (big head, small body), not realistic or tall.
+- Curly brown hair with a red ribbon, mustard coat, red mittens.
+- Full body visible, plain white background, only one Silvia, no text.
+- She feels like Silvia to you — the real couple will recognise themselves only through small details (hair, ribbon), so trust your instinct here.
+
+Follow-ups (one change at a time, same chat):
+- Too realistic / too tall: `Make her cuter and rounder, with a bigger head and a smaller body, like a children's picture book character.`
+- Has outlines or looks like a digital cartoon: `Paint her in soft watercolour like the reference image, with no black outlines.`
+- Background not white: `Put her on a plain pure white background with nothing else.`
+- Several Silvias on the image: `Show only one Silvia, front view, full body.`
+- Hair not right: `Make her hair bigger, curlier and a warm medium brown, with the red ribbon clearly visible.`
+
+Save the best one as `silvia_sheet.jpg` and send it to Claude. This image becomes the reference for all her poses.

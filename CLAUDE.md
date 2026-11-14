@@ -66,7 +66,8 @@ index.html           (later)
 - [x] Art tools and workflow agreed (`docs/art-guide.md`)
 - [x] Prompt 1 (style anchor) written and given to Adri
 - [x] Style anchor saved: `assets/raw/style_anchor.jpg` (lanterns unlit — title / "before") and `assets/raw/style_anchor_lit.jpg` (lanterns lit — ceremony / ending reference)
-- [ ] **NEXT:** Prompt 2: Silvia character sheet (write it, attaching the style anchor; ask for slightly warmer, cozier light than the anchor)
+- [x] Prompt 2 (Silvia character sheet) written in `docs/art-guide.md` and given to Adri
+- [ ] **NEXT:** Adri sends the Silvia image → review it, save as `assets/raw/silvia_sheet.jpg`, commit and push
 - [ ] Prompt 3: Francesco character sheet
 - [ ] Prompt 4: Mario character sheet (uses the real photo of Mario as reference — ask Adri for it)
 - [ ] Remaining art (see the checklist in `docs/art-guide.md`)
