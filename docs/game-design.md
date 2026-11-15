@@ -183,6 +183,7 @@ Tech notes:
 - **Touch:** split the input by screen half: x < middle belongs to Silvia, x ≥ middle to Francesco. Enable multi-touch (at least 2 active pointers), because both play at the same time.
 - **iPhone:** start audio only after the first tap. Add Home Screen meta tags and an icon so it opens full screen. Test on the real iPhone after every step.
 - **Saving:** keep progress in localStorage, wrapped in try/catch.
+- **Portrait:** while the phone is upright the game and the music are paused (countdowns don't run behind the rotate screen). The sound is woken up again at the next touch after the phone was locked.
 
 Build plan (each step ends with a version that works on the phone):
 

@@ -37,3 +37,25 @@ const config = {
 };
 
 const gioco = new Phaser.Game(config);
+
+// iPhone can put the sound to sleep (phone locked, a call, switching app): wake it at the next touch
+document.addEventListener('touchend', () => {
+  const contesto = gioco.sound && gioco.sound.context;
+  if (contesto && contesto.state !== 'running' && !gioco.isPaused) contesto.resume();
+});
+
+// While the phone is held upright ("Ruota il telefono"), pause the game and the music,
+// so countdowns don't run behind the rotate screen
+const verticale = window.matchMedia('(orientation: portrait)');
+function aggiornaOrientamento() {
+  const contesto = gioco.sound && gioco.sound.context;
+  if (verticale.matches) {
+    gioco.pause();
+    if (contesto && contesto.state === 'running') contesto.suspend();
+  } else {
+    gioco.resume();
+    if (contesto && contesto.state === 'suspended' && Musica.brano) contesto.resume();
+  }
+}
+verticale.addEventListener('change', aggiornaOrientamento);
+gioco.events.once('ready', aggiornaOrientamento);

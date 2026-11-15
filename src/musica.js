@@ -163,6 +163,8 @@ const Musica = {
   // Each step is prepared with the CURRENT speed, so tempo changes are smooth.
   programma() {
     if (!this.brano || !this.contesto) return;
+    // After a pause (phone locked, page hidden) don't play all the missed notes at once: just carry on from now
+    if (this.prossimoTempo < this.contesto.currentTime - 0.3) this.prossimoTempo = this.contesto.currentTime + 0.05;
     while (this.prossimoTempo < this.contesto.currentTime + 0.12) {
       this.suonaPasso(this.passo, this.prossimoTempo);
       this.prossimoTempo += 60 / this.bpm / 2; // one step = one eighth note

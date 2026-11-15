@@ -246,10 +246,16 @@ class Dirigibile extends Phaser.Scene {
     const anello = this.add.container(voce.x, voce.y).setDepth(8).setScale(0);
     const alone = this.add.image(0, 0, creaBagliore(this)).setDisplaySize(120, voce.altezza + 60)
       .setBlendMode(Phaser.BlendModes.ADD).setAlpha(0.5);
-    const cerchio = this.add.ellipse(0, 0, 46, voce.altezza).setStrokeStyle(8, 0xffd34d);
+    const cerchio = this.add.ellipse(0, 0, 46, voce.altezza).setStrokeStyle(6, 0xffe08a);
+    const aura = this.add.ellipse(0, 0, 54, voce.altezza + 8).setStrokeStyle(16, 0xffc14d, 0.28);
+    const scintille = [-1, 1].map((lato) => {
+      const s = this.add.text(0, lato * voce.altezza / 2, '✦', { fontFamily: 'sans-serif', fontSize: '20px', color: '#fff4c2' }).setOrigin(0.5);
+      this.tweens.add({ targets: s, alpha: 0.2, scale: 0.6, duration: 500, yoyo: true, repeat: -1, delay: lato > 0 ? 250 : 0 });
+      return s;
+    });
     const lanterna = this.add.image(0, 0, 'lanterna');
     lanterna.setScale(44 / lanterna.height);
-    anello.add([alone, cerchio, lanterna]);
+    anello.add([alone, cerchio, aura, lanterna, ...scintille]); // (cerchio must stay second: it changes colour when taken or missed)
     anello.altezza = voce.altezza;
     anello.lanterna = lanterna;
     this.tweens.add({ targets: anello, scale: 1, duration: 300, ease: 'Back.Out' });
@@ -349,7 +355,7 @@ class Dirigibile extends Phaser.Scene {
     lanterna.setPosition(anello.x, anello.y).setDepth(20);
     this.add.existing(lanterna);
     this.tweens.add({
-      targets: lanterna, x: this.nave.x, y: this.nave.y + 50, scale: 0.4, alpha: 0, duration: 400,
+      targets: lanterna, x: this.nave.x, y: this.nave.y + 50, scale: lanterna.scale * 0.4, alpha: 0, duration: 400,
       onComplete: () => lanterna.destroy(),
     });
     this.togliAnello(anello);

@@ -115,6 +115,9 @@ class Titolo extends Phaser.Scene {
 
   inizia() {
     this.iniziato = true;
+    // Remove the glows of any finger still on the screen
+    for (const info of this.dita.values()) info.bagliore.destroy();
+    this.dita.clear();
     suonaCampanella(this);
     Musica.suona(this, 'neve'); // the dreamy waltz starts here (sound is allowed now, after the touch)
     // Coming back with saved progress: choose "Continua" or "Dall'inizio"

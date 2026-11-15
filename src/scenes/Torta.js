@@ -23,6 +23,7 @@ const TORTA = {
   VELOCITA: [230, 280, 330, 380, 430],    // sliding speed of each layer (each faster)
   VELOCITA_SCHIACCIANOCI: [460, 510],     // sliding speed of the two nutcrackers
   ALTEZZA_STRATO: 50,
+  LARGHEZZA_MINIMA: 80,         // a layer never gets narrower than this, so both nutcrackers always fit on top
   LARGHEZZA_SCHIACCIANOCI: 36,
   PERFETTO: 8,                  // a drop this close (pixels) to the centre counts as perfect
   VICINI: 12,                   // nutcrackers this close without touching = perfect
@@ -46,7 +47,7 @@ const TORTA = {
 
 const CENTRO_TORTA = LARGHEZZA / 2;
 const PIANO_TORTA = 540;        // y of the cake stand's surface
-const COLORI_STRATI = [0xfdf3e1, 0xf6c9d0, 0xfdf3e1, 0xf6c9d0, 0xfdf3e1];
+const COLORI_STRATI = [0xfbe9c8, 0xf6c9d0, 0xfbe9c8, 0xf6c9d0, 0xfbe9c8]; // sponge: vanilla and strawberry
 
 class Torta extends Phaser.Scene {
   constructor() {
@@ -79,6 +80,8 @@ class Torta extends Phaser.Scene {
     this.deriva = 0;              // the push the cake has on its own right now (changes every few seconds)
     this.storia = [];             // the landed layers, so the top one can fall off: { oggetto, cimaPrima }
     this.tempoAlLimite = 0;       // how long the bubble has been at the end of the bar
+    this.avvisoUnDito = false;    // true for a moment after showing "Un dito solo!"
+    this.mobile = null;           // the piece sliding above the cake
 
     this.creaCucina();
     this.creaInterfaccia();
@@ -111,9 +114,11 @@ class Torta extends Phaser.Scene {
 
     // The cake (stand + layers + nutcrackers) is a group that sways around the stand's base
     this.torta = this.add.container(CENTRO_TORTA, PIANO_TORTA).setDepth(5);
+    // A white porcelain cake stand with a gold rim
     this.torta.add([
-      this.add.rectangle(0, 18, 40, 28, 0xe8e0d0),
-      this.add.ellipse(0, 6, 420, 16, 0xffffff).setStrokeStyle(2, 0xd8d0c0),
+      this.add.rectangle(0, 16, 34, 22, 0xf3ecdf).setStrokeStyle(2, 0xd8c9a8),
+      this.add.ellipse(0, 26, 90, 12, 0xf3ecdf).setStrokeStyle(2, 0xd8c9a8),
+      this.add.ellipse(0, 6, 420, 18, 0xffffff).setStrokeStyle(3, 0xe2c275),
     ]);
 
     // Mario sits beside the table, breathing
@@ -226,8 +231,8 @@ class Torta extends Phaser.Scene {
     let mobile;
     if (this.pezzo < 5) {
       const larghezza = Math.min(TORTA.LARGHEZZE[this.pezzo], this.cima.larghezza);
-      mobile = this.add.rectangle(0, yMobile, larghezza, TORTA.ALTEZZA_STRATO, COLORI_STRATI[this.pezzo])
-        .setStrokeStyle(3, 0xe0b0b8);
+      mobile = creaStrato(this, larghezza, COLORI_STRATI[this.pezzo]);
+      mobile.y = yMobile;
       mobile.larghezzaPezzo = larghezza;
       mobile.altezzaPezzo = TORTA.ALTEZZA_STRATO;
       this.velocita = TORTA.VELOCITA[this.pezzo];
@@ -291,19 +296,22 @@ class Torta extends Phaser.Scene {
       this.perfetto(this.cima.y - TORTA.ALTEZZA_STRATO);
     } else {
       x = (sinistra + destra) / 2;
-      larghezza = sovrapposto;
+      // (never narrower than the minimum, so the nutcrackers always fit on top)
+      larghezza = Math.max(sovrapposto, Math.min(TORTA.LARGHEZZA_MINIMA, m.larghezzaPezzo));
       // The part hanging over the edge is cut off and falls
-      const larghezzaTaglio = m.larghezzaPezzo - sovrapposto;
-      const xTaglio = m.x < this.cima.x ? sinistra - larghezzaTaglio / 2 : destra + larghezzaTaglio / 2;
-      const taglio = this.add.rectangle(xTaglio, m.y, larghezzaTaglio, TORTA.ALTEZZA_STRATO, COLORI_STRATI[this.pezzo])
-        .setStrokeStyle(3, 0xe0b0b8).setDepth(9);
-      this.cadeVia(taglio, m.x < this.cima.x ? -1 : 1);
+      const larghezzaTaglio = m.larghezzaPezzo - larghezza;
+      if (larghezzaTaglio >= 6) {
+        const versoTaglio = m.x < this.cima.x ? -1 : 1;
+        const taglio = creaStrato(this, larghezzaTaglio, COLORI_STRATI[this.pezzo]);
+        taglio.setPosition(x + versoTaglio * (larghezza + larghezzaTaglio) / 2, m.y);
+        this.cadeVia(taglio, versoTaglio);
+      }
       suonaTono(this, 300, 120, 0.2, 'triangle', 0.15);
     }
 
     // The landed layer becomes part of the cake
-    const strato = this.add.rectangle(x - CENTRO_TORTA, this.cima.y - TORTA.ALTEZZA_STRATO / 2 - PIANO_TORTA,
-      larghezza, TORTA.ALTEZZA_STRATO, COLORI_STRATI[this.pezzo]).setStrokeStyle(3, 0xe0b0b8);
+    const strato = creaStrato(this, larghezza, COLORI_STRATI[this.pezzo]);
+    strato.setPosition(x - CENTRO_TORTA, this.cima.y - TORTA.ALTEZZA_STRATO / 2 - PIANO_TORTA);
     this.torta.add(strato);
     m.destroy();
     this.storia.push({ oggetto: strato, cimaPrima: this.cima });
@@ -598,5 +606,41 @@ function creaSchiaccianoci(scena, tipo) {
   const immagine = scena.add.image(0, 0, tipo === 0 ? 'schiaccianoci_1' : 'schiaccianoci_2').setOrigin(0.5, 1);
   immagine.setScale(100 / immagine.height);
   c.add(immagine);
+  return c;
+}
+
+// One cake layer, drawn in code (it can have any width, because layers get trimmed):
+// sponge in the given colour, white frosting on top with little drips, and golden sugar pearls at the bottom.
+// Its position is its centre; it is TORTA.ALTEZZA_STRATO tall.
+function creaStrato(scena, larghezza, colore) {
+  const h = TORTA.ALTEZZA_STRATO;
+  const w = larghezza;
+  const c = scena.add.container(0, 0);
+  const g = scena.add.graphics();
+  const raggio = Math.min(9, w / 2);
+  // sponge
+  g.fillStyle(colore, 1);
+  g.fillRoundedRect(-w / 2, -h / 2, w, h, raggio);
+  g.lineStyle(2, 0xc98f9a, 0.7);
+  g.strokeRoundedRect(-w / 2, -h / 2, w, h, raggio);
+  // soft shadow along the bottom
+  g.fillStyle(0x8b5a2b, 0.12);
+  g.fillRect(-w / 2 + 2, h / 2 - 9, w - 4, 7);
+  // frosting on top, with drips
+  g.fillStyle(0xffffff, 1);
+  g.fillRoundedRect(-w / 2, -h / 2, w, 15, Math.min(7, w / 2));
+  const gocce = Math.max(1, Math.floor(w / 26));
+  for (let i = 0; i < gocce; i++) {
+    const x = -w / 2 + (w / gocce) * (i + 0.5);
+    const lunga = i % 2 === 0 ? 9 : 5;
+    g.fillCircle(x, -h / 2 + 13 + lunga / 2, Math.min(7, w / 4));
+  }
+  // golden sugar pearls
+  g.fillStyle(0xe2b84a, 1);
+  const perle = Math.floor(w / 18);
+  for (let i = 0; i < perle; i++) {
+    g.fillCircle(-w / 2 + (w / perle) * (i + 0.5), h / 2 - 6, 3);
+  }
+  c.add(g);
   return c;
 }

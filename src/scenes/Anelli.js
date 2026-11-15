@@ -104,7 +104,7 @@ class Anelli extends Phaser.Scene {
       const cella = { tipo, x, y, stato: 'ghiaccio' }; // 'ghiaccio' -> 'rompendo' -> 'scoperta' -> 'trovata'
       cella.fondo = this.add.rectangle(x, y, LATO_CELLA, LATO_CELLA, 0xfdf3e1).setStrokeStyle(3, 0xc9b28a);
       cella.figura = this.creaFigura(tipo, x, y).setVisible(false);
-      cella.blocco = this.add.rectangle(x, y, LATO_CELLA, LATO_CELLA, COLORE_GHIACCIO).setStrokeStyle(3, 0x7fb6dc);
+      cella.blocco = this.add.image(x, y, creaGhiaccio(this));
       cella.luce = this.add.rectangle(x - 25, y - 25, 50, 8, 0xffffff, 0.6).setAngle(-35); // a shine on the ice
       cella.crepe = this.add.graphics().setDepth(2);
       cella.cornice = this.add.rectangle(x, y, LATO_CELLA + 10, LATO_CELLA + 10).setStrokeStyle(6, 0xffd34d).setVisible(false).setDepth(3);
@@ -452,4 +452,47 @@ class Anelli extends Phaser.Scene {
     }
     if (this.tempoRimasto <= 0) this.ricomincia(TESTI.anelli.tempoScaduto);
   }
+}
+
+// A block of ice painted in code (once, then reused): pale blue with a soft light from the top left,
+// a frosty white edge and a few sparkles. Returns the texture's name.
+function creaGhiaccio(scena) {
+  if (!scena.textures.exists('ghiaccio')) {
+    const L = LATO_CELLA;
+    const tela = scena.textures.createCanvas('ghiaccio', L, L);
+    const ctx = tela.getContext();
+    const arrotonda = (x, y, w, h, r) => {
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + w, y, x + w, y + h, r);
+      ctx.arcTo(x + w, y + h, x, y + h, r);
+      ctx.arcTo(x, y + h, x, y, r);
+      ctx.arcTo(x, y, x + w, y, r);
+      ctx.closePath();
+    };
+    const sfumatura = ctx.createLinearGradient(0, 0, L, L);
+    sfumatura.addColorStop(0, '#eaf8ff');
+    sfumatura.addColorStop(0.5, '#bfe3f7');
+    sfumatura.addColorStop(1, '#8fc4e6');
+    arrotonda(2, 2, L - 4, L - 4, 14);
+    ctx.fillStyle = sfumatura;
+    ctx.fill();
+    ctx.lineWidth = 4;
+    ctx.strokeStyle = '#6fa8d0';
+    ctx.stroke();
+    // frosty inner edge
+    arrotonda(8, 8, L - 16, L - 16, 10);
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.75)';
+    ctx.stroke();
+    // sparkles
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+    [[28, 84, 3], [92, 30, 2.5], [84, 92, 2], [40, 44, 2]].forEach(([x, y, r]) => {
+      ctx.beginPath();
+      ctx.arc(x, y, r, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    tela.refresh();
+  }
+  return 'ghiaccio';
 }

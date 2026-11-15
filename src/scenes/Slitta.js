@@ -28,7 +28,6 @@ const SLITTA = {
   VITE: 3,
 };
 
-const COLORE_NEVE = 0xe8f0fa;
 const COLORI_REGALI = [0xf08a80, 0x8fbfe8, 0xc9a3e0, 0x9fd8a8, 0xffffff]; // soft tints over the white gift (white = as painted)
 
 class Slitta extends Phaser.Scene {
@@ -101,17 +100,36 @@ class Slitta extends Phaser.Scene {
     this.tempoRimasto = SLITTA.TEMPO;
     this.traguardo = null;        // the finish line, created near the end (reset here because a retry reuses the scene)
 
-    // Snowy ground that scrolls, with little specks so you can feel the speed
+    // Snowy ground that scrolls: soft watercolour snow painted in code, with blue shadows,
+    // sparkles and a few sled-sized drifts so you can feel the speed. It repeats seamlessly.
     if (!this.textures.exists('suoloNeve')) {
-      const g = this.make.graphics({ x: 0, y: 0 }, false);
-      g.fillStyle(COLORE_NEVE, 1);
-      g.fillRect(0, 0, 128, 128);
-      g.fillStyle(0xc9d6e8, 1);
-      for (let i = 0; i < 14; i++) {
-        g.fillCircle(Phaser.Math.Between(0, 128), Phaser.Math.Between(0, 128), Phaser.Math.Between(1, 3));
+      const L = 512;
+      const tela = this.textures.createCanvas('suoloNeve', L, L);
+      const ctx = tela.getContext();
+      ctx.fillStyle = '#eef4fb';
+      ctx.fillRect(0, 0, L, L);
+      // Each blotch is drawn 9 times (shifted by one tile) so the edges match when it repeats
+      const macchia = (x, y, raggio, colore) => {
+        for (const dx of [-L, 0, L]) {
+          for (const dy of [-L, 0, L]) {
+            const sfumatura = ctx.createRadialGradient(x + dx, y + dy, 0, x + dx, y + dy, raggio);
+            sfumatura.addColorStop(0, colore);
+            sfumatura.addColorStop(1, 'rgba(255, 255, 255, 0)');
+            ctx.fillStyle = sfumatura;
+            ctx.fillRect(x + dx - raggio, y + dy - raggio, raggio * 2, raggio * 2);
+          }
+        }
+      };
+      for (let i = 0; i < 16; i++) {
+        macchia(Phaser.Math.Between(0, L), Phaser.Math.Between(0, L), Phaser.Math.Between(50, 110), 'rgba(176, 201, 232, 0.38)');
       }
-      g.generateTexture('suoloNeve', 128, 128);
-      g.destroy();
+      for (let i = 0; i < 12; i++) {
+        macchia(Phaser.Math.Between(0, L), Phaser.Math.Between(0, L), Phaser.Math.Between(40, 90), 'rgba(255, 255, 255, 0.85)');
+      }
+      for (let i = 0; i < 40; i++) {
+        macchia(Phaser.Math.Between(0, L), Phaser.Math.Between(0, L), Phaser.Math.Between(2, 5), 'rgba(140, 170, 210, 0.55)');
+      }
+      tela.refresh();
     }
     this.suolo = this.add.tileSprite(0, 0, LARGHEZZA, ALTEZZA, 'suoloNeve').setOrigin(0, 0);
 
