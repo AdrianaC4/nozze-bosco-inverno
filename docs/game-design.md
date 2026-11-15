@@ -51,7 +51,7 @@ Gesture families (one finger):
 | 1. La Slitta dei Regali | Drag: steer the sled | Tap (rapid): push the sled uphill |
 | 2. La Torta Nuziale | Tap (timed): drop each cake layer | Hold (◀ / ▶ strips at the screen edges): keep the cake balanced |
 | 3. Gli Anelli Perduti | Tap: choose blocks and confirm pairs | Drag: join the points to break the ice |
-| 4. Il Dirigibile delle Lanterne | Drag: steer through the rings of light | Circle: crank the propeller |
+| 4. Il Dirigibile delle Lanterne | Drag: fly left/right to the rings of light | Circle: crank the propeller (height) |
 | Finale: La Cerimonia | Hold | Hold |
 
 Check: Silvia uses Drag 2, Tap 2, Hold 1. Francesco uses Tap 1, Hold 2, Drag 1, Circle 1. Both stay within the limit.
@@ -92,11 +92,14 @@ There are four mini games, each bringing back one thing for the wedding, and the
 
 ### 4. Il Dirigibile delle Lanterne (the lantern airship)
 
-- **Goal:** bring the lantern lights back from the sky.
-- **Francesco:** draws circles to crank the propeller. Faster cranking means more lift.
-- **Silvia:** drags to steer left and right through rings of floating light.
-- **Win:** collect 10 lights. Missing a ring costs nothing except the light.
+- **Goal:** bring the lantern lights back from the night sky: reach rings of light, each with a lantern inside. Each ring **appears somewhere in the sky** (far from the previous one sideways) and **stays about 4.5 seconds**, then fades away.
+- **Francesco controls the height:** he draws circles on his half (a crank wheel in the corner turns with him). Faster circles = the propeller spins faster and the airship climbs; if he stops, it slowly sinks.
+- **Silvia controls left/right:** she drags on her half to fly the airship across the sky towards each ring.
+- To get a lantern they must reach the right height and the right place before the ring fades, so they talk all the time. **Neither can do it alone** (tests: only Francesco = 0 lanterns, only Silvia = 3, both = 12–14). (First version, replaced: rings flew in from the right, so Francesco could win alone.)
+- **Harder as it goes:** rings get smaller; gusts of wind ("Vento!") push the airship sideways; dark snow clouds drift across the sky from either side and make a lantern fall out if they fly into one.
+- **Win:** 16 rings, at least 10 lanterns. Stars: 10–12 = 1, 13–14 = 2, 15–16 = 3. Fewer than 10: "Poche lanterne… Riproviamo!".
 - **Mario:** rides on the airship's bow with his scarf blowing in the wind.
+- **Music:** "corsa", its speed follows the propeller.
 
 ### Finale: La Cerimonia (the ceremony)
 
@@ -159,7 +162,8 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Game 3 | Silvia: Scegli una tessera di ghiaccio, poi tocca le due uguali · Francesco: Rompi il ghiaccio unendo i punti senza staccare il dito! | Choose an ice tile, then tap the two matching ones · Break the ice joining the points without lifting your finger |
 | Game 3 | Silvia, scegli una tessera! · Non staccare il dito! · Massimo due tessere alla volta! · Uguali! Silvia, toccale! · Gli anelli! | Choose a tile! · Don't lift your finger! · Max two tiles at a time! · Same! Silvia, tap them! · The rings! |
 | Game 3 (Mario) | Ehm… forse ci ho giocato un po' io… | Um… I may have played with them a bit… |
-| Game 4 | Silvia: Trascina per guidare · Francesco: Disegna cerchi per far girare l'elica | Drag to steer · Draw circles to spin the propeller |
+| Game 4 | Silvia: Trascina per guidare il dirigibile · Francesco: Disegna cerchi per far girare l'elica | Drag to steer the airship · Draw circles to spin the propeller |
+| Game 4 | Vento! · Poche lanterne… Riproviamo! | Wind! · Too few lanterns… Let's try again! |
 | Game 4 (Mario) | Che vista da quassù! | What a view from up here! |
 | Finale | Tenete premuto insieme! | Hold together! |
 | Result | Bravissimi! · Avanti · Riprova | Well done! · Next · Try again |

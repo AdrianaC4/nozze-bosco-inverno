@@ -7,7 +7,7 @@ document.getElementById('ruota-testo').textContent = TESTI.ruotaTelefono;
 document.addEventListener('gesturestart', (evento) => evento.preventDefault());
 
 // All the scenes of the game. The first one in the list is the one that starts.
-const scene = [Titolo, Intro, Slitta, Torta, Anelli, Cerimonia, ProvaTocco];
+const scene = [Titolo, Intro, Slitta, Torta, Anelli, Dirigibile, Cerimonia, ProvaTocco];
 
 // Testing shortcut: add ?scena=Slitta to the address to start straight from that scene
 // (for example http://192.168.0.174:8000/?scena=Slitta). Without it, the game starts from the title.

@@ -76,6 +76,16 @@ const TESTI = {
     tempoScaduto: 'Tempo scaduto! Riproviamo!',
   },
 
+  // Mini game 4: Il Dirigibile delle Lanterne
+  dirigibile: {
+    nome: 'Il Dirigibile delle Lanterne',
+    istruzioneSilvia: 'Silvia: Trascina per guidare il dirigibile',
+    istruzioneFrancesco: "Francesco: Disegna cerchi per far girare l'elica",
+    mario: 'Che vista da quassù!',
+    vento: 'Vento!',
+    poche: 'Poche lanterne… Riproviamo!',
+  },
+
   // Finale: La Cerimonia
   cerimonia: {
     nome: 'La Cerimonia',

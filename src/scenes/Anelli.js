@@ -439,7 +439,7 @@ class Anelli extends Phaser.Scene {
       this.time.delayedCall(1000, () => {
         this.input.once('pointerup', () => {
           this.cameras.main.fadeOut(600, 15, 26, 46);
-          this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Cerimonia'));
+          this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Dirigibile'));
         });
       });
     });
