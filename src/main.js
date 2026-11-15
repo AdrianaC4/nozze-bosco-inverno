@@ -38,6 +38,27 @@ const config = {
 
 const gioco = new Phaser.Game(config);
 
+// Keep the game fitted to the screen. When opened from the Home Screen, iPhone sometimes reports the
+// wrong screen size for a moment (at launch, or while rotating) and sends no second message when the
+// real size arrives: the game then stayed too big, with its bottom cut off. So we measure the game's
+// box ourselves: after every resize or rotation, and twice a second, and refit when it has changed.
+const scatola = document.getElementById('gioco');
+let ultimaMisura = '';
+function adattaAlloSchermo() {
+  const r = scatola.getBoundingClientRect();
+  const misura = `${Math.round(r.width)}x${Math.round(r.height)}`;
+  if (misura !== ultimaMisura) {
+    ultimaMisura = misura;
+    gioco.scale.refresh();
+  }
+}
+['resize', 'orientationchange', 'pageshow'].forEach((evento) => {
+  window.addEventListener(evento, () => {
+    [0, 150, 500, 1000].forEach((attesa) => setTimeout(() => { ultimaMisura = ''; adattaAlloSchermo(); }, attesa));
+  });
+});
+setInterval(adattaAlloSchermo, 500);
+
 // iPhone can put the sound to sleep (phone locked, a call, switching app): wake it at the next touch
 document.addEventListener('touchend', () => {
   const contesto = gioco.sound && gioco.sound.context;
