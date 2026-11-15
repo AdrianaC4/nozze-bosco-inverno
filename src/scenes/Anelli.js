@@ -43,6 +43,7 @@ class Anelli extends Phaser.Scene {
 
   preload() {
     caricaMario(this);
+    carica(this, 'sfondo_anelli', 'assets/game/bg_anelli.jpg');
   }
 
   create() {
@@ -54,10 +55,9 @@ class Anelli extends Phaser.Scene {
     this.prossimoPunto = 0;   // index of the next point he must reach
     this.ditoPiccone = null;  // id of Francesco's finger while he draws
 
-    // Snowy clearing (left) and Francesco's ice area (right)
-    this.add.rectangle(0, 0, LARGHEZZA, ALTEZZA, 0xdde8f5).setOrigin(0, 0);
-    this.add.rectangle(META, 0, META, ALTEZZA, 0xc9d8ec).setOrigin(0, 0);
-    this.add.rectangle(META, 0, 3, ALTEZZA, 0xfdf3e1, 0.6).setOrigin(0.5, 0);
+    // The frozen clearing (Adri's Gemini background), with a faint line between the two halves
+    this.add.image(LARGHEZZA / 2, ALTEZZA / 2, 'sfondo_anelli');
+    this.add.rectangle(META, 0, 2, ALTEZZA, 0xffffff, 0.5).setOrigin(0.5, 0);
 
     this.creaGriglia();
     this.creaInterfaccia();
@@ -285,7 +285,6 @@ class Anelli extends Phaser.Scene {
     this.punti = [];
     this.prossimoPunto = 0;
     this.crepa.clear();
-    let precedente = null;
     for (let i = 0; i < ANELLI.PUNTI; i++) {
       let x;
       let y;
@@ -294,9 +293,10 @@ class Anelli extends Phaser.Scene {
         x = Phaser.Math.Between(720, 1200);
         y = Phaser.Math.Between(150, 560);
         tentativi += 1;
-      } while (tentativi < 50 && (
-        (precedente && Phaser.Math.Distance.Between(x, y, precedente.x, precedente.y) < ANELLI.DISTANZA_PUNTI)
-        || (x > 1080 && y > 480) // not on Mario
+      } while (tentativi < 80 && (
+        // far from ALL the earlier points (not only the previous one), and not on Mario
+        this.punti.some((p) => Phaser.Math.Distance.Between(x, y, p.x, p.y) < ANELLI.DISTANZA_PUNTI)
+        || (x > 1080 && y > 480)
       ));
       const cerchio = this.add.container(x, y).setDepth(18).setVisible(i === 0);
       cerchio.add([
@@ -305,7 +305,6 @@ class Anelli extends Phaser.Scene {
         this.add.text(0, 0, String(i + 1), { fontFamily: FONT, fontSize: '20px', color: '#ffffff' }).setOrigin(0.5),
       ]);
       this.tweens.add({ targets: cerchio, scale: 1.12, duration: 450, yoyo: true, repeat: -1 });
-      precedente = { x, y };
       this.punti.push({ x, y, cerchio });
     }
   }

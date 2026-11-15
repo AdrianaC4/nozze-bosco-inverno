@@ -53,10 +53,10 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 **Priority A — backgrounds (16:9)**
 - [x] `bg_torta.jpg` — cozy cottage kitchen at night (Prompt 6) — first try, in the game
 - [x] `bg_dirigibile.jpg` — wide night sky over a snowy forest (Prompt 7) — first try, in the game
-- [ ] `bg_anelli.jpg` — a frozen clearing in the snow, simple and calm
+- [x] `bg_anelli.jpg` — a frozen clearing in the snow, simple and calm (Prompt 8) — first try, in the game
 
 **Priority B — the "star" of each game**
-- [ ] `airship.png` — the little airship, side view (Mario is added on the bow in code)
+- [ ] `airship.png` — the little airship, side view (Mario is added on the bow in code) (Prompt 9)
 - [ ] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (from Adri's photo)
 - [ ] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (from Adri's photo)
 - [ ] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (no people)
@@ -340,3 +340,21 @@ No people, no animals, no footprints, no text, no letters, no logos, no watermar
 ```
 
 Check: pale and calm, the frozen pond on the left, open snow on the right, trees only at the edges, nothing in the middle of either half. If it's too busy: `Make it paler and simpler, with fewer trees, and keep both halves completely empty in the middle.`
+
+### Prompt 9 — The airship (`airship.png`)
+
+New Gemini chat called "Winter Wood – Objects" (use it for all objects). Attach `assets/raw/style_anchor.jpg` and `assets/raw/mario_sheet.jpg` (for the style only), then paste:
+
+```
+The attached images are the style reference for a cozy Christmas storybook game. Match their painting style exactly: hand-painted watercolour and gouache, soft edges, no hard black outlines, gentle painterly texture. Do not draw the scene or the cat, only use the style.
+
+Draw one object: a small, cute, round airship (a little dirigible) seen exactly from the side, facing right.
+- A soft cream-coloured balloon shaped like a plump egg, with one red stripe along the middle and a few patches and stitches, like it was hand-made.
+- Below it, hanging from thin ropes, a small wooden gondola like a little boat, with a tiny lantern at the front.
+- At the back (left side), a small wooden propeller.
+- Warm, friendly and simple, like a toy from a picture book.
+
+Only the airship, shown once, fully visible, on a plain pure white background. No people, no animals, no sky, no text, no letters, no logos, no watermark.
+```
+
+Check: side view facing right, propeller on the left, empty gondola (Mario is added in code), plain white background.
