@@ -48,6 +48,24 @@ const TESTI = {
     pochiRegali: 'Pochi regali… Riproviamo!',
   },
 
+  // Finale: La Cerimonia
+  cerimonia: {
+    nome: 'La Cerimonia',
+    // The start card: Mario wants three strokes, each with a new pose and line
+    carezza1: 'Accarezzami per continuare',
+    carezza2: "Un'altra carezza, già che ci siamo, dai!",
+    carezza3: "L'ultima coccola, lo prometto!",
+    tenete: 'Tenete premuto insieme!',
+  },
+
+  // Ending screen
+  fine: {
+    appenaSposati: 'Appena Sposati!',
+    nomi: 'Silvia & Francesco',
+    buonNatale: 'Buon Natale',
+    giocaAncora: 'Gioca ancora',
+  },
+
   // Step 1 test screen: checks that both players can touch at the same time
   provaTocco: {
     silvia: 'Silvia',

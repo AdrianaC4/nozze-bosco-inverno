@@ -15,3 +15,16 @@ const FONT = 'Georgia, "Times New Roman", serif';
 function latoDi(dito) {
   return dito.x < META ? 'silvia' : 'francesco';
 }
+
+// Stars won in each mini game during this play (the best result for each).
+// Kept in Phaser's "registry", shared by all scenes. (Saving on the phone comes in build step 8.)
+function salvaStelle(scena, nomeGioco, stelle) {
+  const tutte = scena.registry.get('stelle') || {};
+  tutte[nomeGioco] = Math.max(tutte[nomeGioco] || 0, stelle);
+  scena.registry.set('stelle', tutte);
+}
+
+function stelleTotali(scena) {
+  const tutte = scena.registry.get('stelle') || {};
+  return Object.values(tutte).reduce((somma, n) => somma + n, 0);
+}

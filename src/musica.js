@@ -7,11 +7,14 @@
 //   Musica.suona(scena, 'neve')    start a track (fades from the current one)
 //   Musica.tempo(130)              change the speed (beats per minute)
 //   Musica.tempoNormale()          back to the track's own speed
+//   Musica.volume(0.3)             make the track softer (0 to 1 of its normal volume), smoothly
 //   Musica.ferma()                 fade out and stop
 //
 // Tracks:
 //   'neve'  - slow, dreamy music-box waltz (title, story, start cards)
 //   'corsa' - bouncy and cheerful (mini games); its speed can follow the game
+//   'cerimonia' - tender and warm (the finale); its volume follows the players holding together
+//   'festa' - joyful wedding waltz with little bells (the wedding and the ending screen)
 
 const BRANI = {
   // A gentle waltz in F major, 3/4. Each bar has 6 steps (eighth notes).
@@ -48,6 +51,44 @@ const BRANI = {
     // Bouncy accompaniment: bass root and fifth, a little music-box arpeggio on every eighth
     accompagnamento: { basso: [0], quinta: [4], arpeggio: true },
   },
+
+  // Tender and warm in G major, 4/4, slow. Each bar has 8 steps (eighth notes).
+  cerimonia: {
+    bpm: 72,
+    passiPerBattuta: 8,
+    volume: 0.5,
+    battute: [
+      { basso: 43, accordo: [59, 62, 66], melodia: [[0, 83, 4], [4, 86, 2], [6, 88, 2]] },   // Gmaj7
+      { basso: 40, accordo: [55, 59, 62], melodia: [[0, 86, 6], [6, 83, 2]] },              // Em7
+      { basso: 48, accordo: [55, 59, 64], melodia: [[0, 84, 4], [4, 83, 2], [6, 81, 2]] },   // Cmaj7
+      { basso: 50, accordo: [54, 57, 62], melodia: [[0, 81, 8]] },                          // D
+      { basso: 47, accordo: [54, 57, 62], melodia: [[0, 78, 4], [4, 81, 2], [6, 86, 2]] },   // Bm7
+      { basso: 40, accordo: [55, 59, 62], melodia: [[0, 83, 6], [6, 79, 2]] },              // Em7
+      { basso: 45, accordo: [55, 60, 64], melodia: [[0, 81, 4], [4, 84, 2], [6, 83, 2]] },   // Am7
+      { basso: 50, accordo: [55, 57, 62], melodia: [[0, 79, 8]] },                          // Dsus4
+    ],
+    // Slow accompaniment: bass on beat 1, a soft music-box arpeggio every quarter note
+    accompagnamento: { basso: [0], arpeggioOgni: 2 },
+  },
+
+  // Joyful wedding waltz in D major, 3/4. Each bar has 6 steps (eighth notes).
+  festa: {
+    bpm: 92,
+    passiPerBattuta: 6,
+    volume: 0.55,
+    battute: [
+      { basso: 38, accordo: [57, 62, 66], melodia: [[0, 78, 2], [2, 81, 2], [4, 86, 2]] },   // D
+      { basso: 43, accordo: [59, 62, 67], melodia: [[0, 83, 3], [3, 81, 1], [4, 79, 2]] },   // G
+      { basso: 45, accordo: [57, 61, 64], melodia: [[0, 76, 2], [2, 81, 2], [4, 85, 2]] },   // A
+      { basso: 38, accordo: [57, 62, 66], melodia: [[0, 86, 6]] },                          // D
+      { basso: 47, accordo: [54, 59, 62], melodia: [[0, 83, 2], [2, 86, 2], [4, 90, 2]] },   // Bm
+      { basso: 43, accordo: [55, 59, 62], melodia: [[0, 88, 3], [3, 86, 1], [4, 83, 2]] },   // G
+      { basso: 40, accordo: [55, 59, 64], melodia: [[0, 79, 2], [2, 83, 2], [4, 88, 2]] },   // Em
+      { basso: 45, accordo: [55, 61, 64], melodia: [[0, 85, 3], [3, 88, 1], [4, 86, 2]] },   // A7
+    ],
+    // Waltz accompaniment, and the melody doubled an octave higher like little bells
+    accompagnamento: { basso: [0], pizzico: [2, 4], ottava: true },
+  },
 };
 
 const Musica = {
@@ -70,6 +111,7 @@ const Musica = {
     const brano = BRANI[nome];
     this.brano = nome;
     this.bpm = brano.bpm;
+    this.frazioneVolume = 1;
     this.passo = 0;
     this.giri = 0;
     this.uscita = contesto.createGain();
@@ -87,6 +129,16 @@ const Musica = {
 
   tempoNormale() {
     if (this.brano) this.bpm = BRANI[this.brano].bpm;
+  },
+
+  volume(frazione) {
+    if (!this.uscita || !this.contesto || this.frazioneVolume === frazione) return;
+    this.frazioneVolume = frazione;
+    const t = this.contesto.currentTime;
+    const obiettivo = Math.max(BRANI[this.brano].volume * frazione, 0.0001);
+    this.uscita.gain.cancelScheduledValues(t);
+    this.uscita.gain.setValueAtTime(Math.max(this.uscita.gain.value, 0.0001), t);
+    this.uscita.gain.exponentialRampToValueAtTime(obiettivo, t + 0.6);
   },
 
   ferma() {
@@ -142,11 +194,17 @@ const Musica = {
       const nota = battuta.accordo[nellaBattuta % battuta.accordo.length] + 12;
       strumentoCarillon(this.contesto, out, t, nota, durataPasso, 0.03);
     }
+    if (acc.arpeggioOgni && nellaBattuta % acc.arpeggioOgni === 0) {
+      const nota = battuta.accordo[(nellaBattuta / acc.arpeggioOgni) % battuta.accordo.length] + 12;
+      strumentoCarillon(this.contesto, out, t, nota, durataPasso * acc.arpeggioOgni, 0.035);
+    }
 
     // The melody. In 'corsa' every other loop is only accompaniment, so it doesn't get repetitive.
     if (this.brano === 'corsa' && this.giri % 2 === 1) return;
     battuta.melodia.forEach(([inizio, nota, lunghezza]) => {
-      if (inizio === nellaBattuta) strumentoCarillon(this.contesto, out, t, nota, durataPasso * lunghezza, 0.11);
+      if (inizio !== nellaBattuta) return;
+      strumentoCarillon(this.contesto, out, t, nota, durataPasso * lunghezza, 0.11);
+      if (acc.ottava) strumentoCarillon(this.contesto, out, t, nota + 12, durataPasso * lunghezza, 0.04);
     });
   },
 };

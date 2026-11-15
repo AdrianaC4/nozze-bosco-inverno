@@ -97,9 +97,10 @@ There are four mini games, each bringing back one thing for the wedding, and the
 
 ### Finale: La Cerimonia (the ceremony)
 
-- Both players press and hold their half at the same time. The great tree lights up from the bottom.
+- Starts with a special card: only the title and Mario, who wants three strokes. Each stroke changes his pose and line: normal ("Accarezzami per continuare"), proud ("Un'altra carezza, già che ci siamo, dai!"), guilty ("L'ultima coccola, lo prometto!").
+- Before: the village is dark, like night, with the characters in shadow. Both players press and hold their half at the same time. The lit, warm village appears from the bottom up behind a bright golden line with rising sparkles (about 8 seconds of holding together) until the great tree is fully lit. The tender "cerimonia" music plays loudly only while both are holding.
 - If either player lets go, the lights flicker and slip down a little. You can't lose, it just takes longer.
-- When the tree is fully lit: snow falls, bells ring, Mario brings the rings, Silvia and Francesco face each other, and a heart rises.
+- When the tree is fully lit: a golden flash, a burst of sparkles and a shining star on top of the tree; snow falls, bells ring, Mario brings the rings, Silvia and Francesco face each other, and a heart rises.
 - The final screen reads "Appena Sposati! Silvia & Francesco" and "Buon Natale", with all three characters together in an animated scene (no real photo).
 
 ## Game flow and rules
@@ -127,7 +128,7 @@ The look is soft, warm and hand-made: Ghibli-inspired in mood, with no Ghibli ch
 - **Palette:** cold blue and white snow against warm orange and gold lantern light, with red accents (Silvia's ribbon, Mario's scarf, ornaments).
 - **Shapes:** round, simple characters with soft edges and no hard black outlines. Big heads and small bodies keep them cute even when the drawing is basic.
 - **Effects:** gentle falling snow on every screen, sparkles on success, and a light screen shake on mistakes (iPhone web games can't vibrate).
-- **Music:** original music composed in code (`src/musica.js`): music box, soft warm pads and a gentle bass, in the spirit of hand-made animated films (no copyrighted melodies). Tracks by mood: "neve" (slow dreamy waltz: title, story, start cards, after a win) and "corsa" (bouncy: mini games). In La Slitta the music's speed follows the sled (100–160 bpm), without changing pitch. The finale will get its own tender track.
+- **Music:** original music composed in code (`src/musica.js`): music box, soft warm pads and a gentle bass, in the spirit of hand-made animated films (no copyrighted melodies). Tracks by mood: "neve" (slow dreamy waltz: title, story, start cards, after a win), "corsa" (bouncy: mini games; in La Slitta its speed follows the sled, 100–160 bpm, without changing pitch), "cerimonia" (tender: finale card and tree lighting, full volume only while both hold) and "festa" (joyful wedding waltz with little bells: wedding and ending).
 - **Bell chime:** only at three moments: the two-player start on the title, leaving the story intro, and winning a mini game.
 - **Sounds:** chimes for success, a soft thud for mistakes, a sleigh bell on the title screen, and a meow from Mario.
 - **Prototype first:** build each mini game with plain shapes, and add the real art only once it's fun.

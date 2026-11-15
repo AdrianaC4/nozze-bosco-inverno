@@ -66,6 +66,9 @@ class Titolo extends Phaser.Scene {
     this.input.on('pointerup', (dito) => this.ditoSu(dito));
     this.input.on('pointerupoutside', (dito) => this.ditoSu(dito));
 
+    // Coming back after the ending ("Gioca ancora"): back to the dreamy waltz
+    if (Musica.brano) Musica.suona(this, 'neve');
+
     // Gentle fade in
     this.cameras.main.fadeIn(600, 15, 26, 46);
   }

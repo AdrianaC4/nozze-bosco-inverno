@@ -19,7 +19,6 @@ class Intro extends Phaser.Scene {
     carica(this, 'francesco', 'assets/game/francesco_sheet.png');
     carica(this, 'francesco_oops', 'assets/game/francesco_oops.png');
     caricaMario(this);
-    carica(this, 'mario_colpevole', 'assets/game/mario_guilty.png');
   }
 
   create() {

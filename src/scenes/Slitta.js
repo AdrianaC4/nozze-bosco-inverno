@@ -344,6 +344,7 @@ class Slitta extends Phaser.Scene {
     let stelle = 1;
     if (this.regali >= SLITTA.REGALI_2_STELLE) stelle = 2;
     if (this.regali >= SLITTA.REGALI_3_STELLE) stelle = 3;
+    salvaStelle(this, 'slitta', stelle);
 
     suonaCampanella(this);
     Musica.suona(this, 'neve'); // calm again after the win
@@ -363,7 +364,8 @@ class Slitta extends Phaser.Scene {
     this.time.delayedCall(1000, () => {
       this.input.once('pointerup', () => {
         this.cameras.main.fadeOut(600, 15, 26, 46);
-        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Titolo'));
+        // For now mini game 1 leads straight to the finale (mini games 2-4 will come in between)
+        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Cerimonia'));
       });
     });
   }
