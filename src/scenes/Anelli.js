@@ -118,9 +118,11 @@ class Anelli extends Phaser.Scene {
       const y = Y_GRIGLIA + riga * (LATO_CELLA + SPAZIO_CELLA) + LATO_CELLA / 2;
       const cella = { tipo, x, y, stato: 'ghiaccio' }; // 'ghiaccio' -> 'rompendo' -> 'scoperta' -> 'trovata'
       cella.fondo = this.add.rectangle(x, y, LATO_CELLA, LATO_CELLA, 0xfdf3e1).setStrokeStyle(3, 0xc9b28a);
-      cella.figura = this.creaFigura(tipo, x, y).setVisible(false);
-      cella.blocco = this.add.image(x, y, creaGhiaccio(this));
-      cella.luce = this.add.rectangle(x - 25, y - 25, 50, 8, 0xffffff, 0.6).setAngle(-35); // a shine on the ice
+      // Fixed drawing order (tile, picture, ice, shine): when Mario swaps two pictures, a picture must
+      // still be drawn above its new tile
+      cella.figura = this.creaFigura(tipo, x, y).setVisible(false).setDepth(1);
+      cella.blocco = this.add.image(x, y, creaGhiaccio(this)).setDepth(1.2);
+      cella.luce = this.add.rectangle(x - 25, y - 25, 50, 8, 0xffffff, 0.6).setAngle(-35).setDepth(1.3); // a shine on the ice
       cella.crepe = this.add.graphics().setDepth(2);
       cella.cornice = this.add.rectangle(x, y, LATO_CELLA + 10, LATO_CELLA + 10).setStrokeStyle(6, 0xffd34d).setVisible(false).setDepth(3);
       return cella;

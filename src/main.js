@@ -31,7 +31,7 @@ const config = {
     height: ALTEZZA,
   },
   input: {
-    activePointers: 4,                 // allow several fingers at once (both players)
+    activePointers: 6,                 // allow several fingers at once (both players, with some to spare)
   },
   scene: scene,
 };
@@ -73,6 +73,30 @@ function adattaAlloSchermo() {
   });
 });
 setInterval(adattaAlloSchermo, 500);
+
+// "Lost" fingers. iPhone sometimes never tells the page that a touch has ended (for example when a
+// system alert, like the microphone permission, appears while a finger is on the screen). Phaser then
+// believes that finger is still down forever; after a few of these it has no free slot left and ignores
+// every new touch. So at every touch event we compare Phaser's fingers with the fingers iPhone says are
+// really on the screen, and release the ones that are gone (telling the scenes too).
+function liberaDitaPerse(evento) {
+  const veri = new Set([...evento.touches].map((tocco) => tocco.identifier));
+  // touches ending right now are handled normally by Phaser
+  [...evento.changedTouches].forEach((tocco) => veri.add(tocco.identifier));
+  gioco.input.pointers.forEach((dito, i) => {
+    if (i === 0 || !dito.active || veri.has(dito.identifier)) return; // 0 is the mouse
+    dito.active = false;
+    dito.isDown = false;
+    dito.primaryDown = false;
+    dito.buttons = 0;
+    dito.wasCanceled = true;
+    gioco.scene.getScenes(true).forEach((scena) => scena.input.emit('pointerupoutside', dito));
+  });
+}
+// (capture: true = this runs before Phaser looks for a free slot for the new finger)
+['touchstart', 'touchend', 'touchcancel'].forEach((tipo) => {
+  window.addEventListener(tipo, liberaDitaPerse, { capture: true, passive: true });
+});
 
 // iPhone can put the sound to sleep (phone locked, a call, switching app): wake it at the next touch
 document.addEventListener('touchend', () => {
