@@ -49,6 +49,8 @@ class Dirigibile extends Phaser.Scene {
   preload() {
     caricaMario(this);
     carica(this, 'sfondo_dirigibile', 'assets/game/bg_dirigibile.jpg');
+    carica(this, 'nave_corpo', 'assets/game/airship_corpo.png');
+    carica(this, 'nave_elica', 'assets/game/airship_elica.png');
   }
 
   create() {
@@ -94,25 +96,23 @@ class Dirigibile extends Phaser.Scene {
   }
 
   creaDirigibile() {
+    // Adri's Gemini airship, split in two: the body, and the propeller that spins in code.
+    // Both pictures are the same size (677 x 587); the group's centre is the middle of the balloon.
+    const LARGO = 677;
+    const ALTO_IMG = 587;
+    const CENTRO_PALLONE = { x: 357, y: 197 };   // middle of the balloon, in the picture
+    const CENTRO_ELICA = { x: 28.5, y: 219 };     // middle of the propeller, in the picture
+    const scala = 240 / LARGO;                    // the airship is 240 pixels wide on screen
+    this.scalaNave = scala;
     this.nave = this.add.container(400, 360).setDepth(10);
-    this.elica = this.add.rectangle(-100, 0, 8, 50, 0x8b5a2b);
-    this.nave.add([
-      this.add.ellipse(0, -10, 190, 80, 0xe8d2b0).setStrokeStyle(4, 0x8b5a2b),          // balloon
-      this.add.rectangle(0, -10, 190, 6, 0xc0392b),                                     // red stripe
-      this.add.line(0, 0, -30, 25, -20, 45, 0x8b5a2b).setLineWidth(2),
-      this.add.line(0, 0, 30, 25, 20, 45, 0x8b5a2b).setLineWidth(2),
-      this.add.rectangle(0, 52, 80, 26, 0x8b5a2b),                                      // gondola
-      this.add.circle(-95, 0, 6, 0x5c3a1a),
-      this.elica,
-    ]);
-    // Mario on the bow
-    const mario = this.add.image(58, 66, 'mario').setOrigin(0.5, 1);
-    mario.setScale(52 / mario.height);
-    this.nave.add(mario);
-    // His scarf blowing in the wind
-    this.sciarpa = this.add.rectangle(48, 38, 22, 6, 0xc0392b).setOrigin(1, 0.5);
-    this.nave.add(this.sciarpa);
-    this.tweens.add({ targets: this.sciarpa, angle: { from: -10, to: 15 }, duration: 250, yoyo: true, repeat: -1 });
+    const corpo = this.add.image(0, 0, 'nave_corpo')
+      .setOrigin(CENTRO_PALLONE.x / LARGO, CENTRO_PALLONE.y / ALTO_IMG).setScale(scala);
+    this.elica = this.add.image((CENTRO_ELICA.x - CENTRO_PALLONE.x) * scala, (CENTRO_ELICA.y - CENTRO_PALLONE.y) * scala, 'nave_elica')
+      .setOrigin(CENTRO_ELICA.x / LARGO, CENTRO_ELICA.y / ALTO_IMG).setScale(scala);
+    // Mario sits at the front of the gondola
+    const mario = this.add.image((445 - CENTRO_PALLONE.x) * scala, (492 - CENTRO_PALLONE.y) * scala, 'mario').setOrigin(0.5, 1);
+    mario.setScale(56 / mario.height);
+    this.nave.add([this.elica, corpo, mario]);
   }
 
   creaInterfaccia() {
@@ -287,7 +287,8 @@ class Dirigibile extends Phaser.Scene {
     this.angoloManovella += this.giri * secondi;
     this.manovella.rotation = this.angoloManovella;
     this.manovella.setAlpha(this.giri > 1 ? 0.8 : 0.35);
-    this.elica.scaleY = Math.cos(this.angoloManovella * 3);
+    // The propeller spins (seen from the side: it gets thin and wide again)
+    this.elica.scaleY = this.scalaNave * Math.cos(this.angoloManovella * 3);
 
     // Height: sinks on its own, climbs with the cranking
     const obiettivo = DIRIGIBILE.CADUTA - this.giri * DIRIGIBILE.SPINTA_ELICA;

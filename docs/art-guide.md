@@ -56,9 +56,9 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 - [x] `bg_anelli.jpg` — a frozen clearing in the snow, simple and calm (Prompt 8) — first try, in the game
 
 **Priority B — the "star" of each game**
-- [ ] `airship.png` — the little airship, side view (Mario is added on the bow in code) (Prompt 9)
-- [ ] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (from Adri's photo)
-- [ ] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (from Adri's photo)
+- [x] `airship.png` — the little airship, side view (Prompt 9) — in the game; split by Claude into `airship_corpo.png` + `airship_elica.png` so the propeller spins in code; Mario added in the gondola
+- [ ] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (from Adri's photo) (Prompt 10)
+- [ ] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (from Adri's photo) (Prompt 11)
 - [ ] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (no people)
 - [ ] `icone_anelli.png` — ONE image with the 6 hidden pictures in a row (bell, star, red ornament, candy cane, mitten, two gold rings); Claude cuts it into 6
 
@@ -358,3 +358,19 @@ Only the airship, shown once, fully visible, on a plain pure white background. N
 ```
 
 Check: side view facing right, propeller on the left, empty gondola (Mario is added in code), plain white background.
+
+### Prompt 10 and 11 — The two nutcrackers (`schiaccianoci_1.jpg`, `schiaccianoci_2.jpg`)
+
+Same "Winter Wood – Objects" chat. **One nutcracker per image.** Attach Adri's photo of the two ornaments (the photo stays out of the repo) and `assets/raw/mario_sheet.jpg` (for the style only), then paste — first for nutcracker 1:
+
+```
+The first attached photo shows two real wooden nutcracker Christmas ornaments. The second image is the style reference for a cozy Christmas storybook game: match its painting style exactly (hand-painted watercolour and gouache, soft edges, no hard black outlines, gentle painterly texture). Do not draw the cat.
+
+Draw ONE cute nutcracker figure, based on the LEFT ornament in the photo: navy blue coat with gold buttons and gold shoulder pieces, red trousers, black boots, a gold crown with a red top and a small gold ball, a white beard and white hair, a black moustache, a round gold base, holding a gold sceptre. Make it a little rounder and cuter, like a picture-book toy, standing straight, facing the viewer.
+
+Only the nutcracker, shown once, fully visible, on a plain pure white background. No text, no labels, no logos, no watermark.
+```
+
+Then, for nutcracker 2, the same prompt but replace the description with: `based on the RIGHT ornament in the photo: white coat with a pink front and light blue shoulder pieces and cuffs, white trousers, pink shoes, a tall gold hat with a white snowflake and a light blue band, a white beard and white hair, a black moustache, a round light blue base, holding a red-and-white swirl lollipop.`
+
+Check: same size and style for both, standing straight, plain white background, the colours match the photo.
