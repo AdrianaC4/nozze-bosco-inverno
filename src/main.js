@@ -6,6 +6,9 @@ document.getElementById('ruota-testo').textContent = TESTI.ruotaTelefono;
 // Stop iPhone Safari's pinch-zoom gesture from zooming the page while playing
 document.addEventListener('gesturestart', (evento) => evento.preventDefault());
 
+// ?reset=1 in the address clears all saved progress (e.g. before giving the gift)
+if (new URLSearchParams(window.location.search).get('reset') === '1') Salvataggio.azzera();
+
 // All the scenes of the game. The first one in the list is the one that starts.
 const scene = [Titolo, Intro, Slitta, Torta, Anelli, Dirigibile, Cerimonia, ProvaTocco];
 

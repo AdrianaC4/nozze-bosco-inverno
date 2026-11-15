@@ -306,7 +306,8 @@ class Cerimonia extends Phaser.Scene {
     });
 
     // Total stars, bottom left
-    const stelle = this.add.text(40, ALTEZZA - 40, `★ ${stelleTotali(this)}`, {
+    Salvataggio.segnaFinito();
+    const stelle = this.add.text(40, ALTEZZA - 40, `★ ${stelleTotali()} / ${(ORDINE_GIOCHI.length - 1) * 3}`, {
       fontFamily: FONT, fontSize: '40px', color: '#ffd34d', stroke: '#2a3d66', strokeThickness: 6,
     }).setOrigin(0, 1).setDepth(60).setAlpha(0);
 

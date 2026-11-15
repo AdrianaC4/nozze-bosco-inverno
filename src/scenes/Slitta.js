@@ -344,30 +344,7 @@ class Slitta extends Phaser.Scene {
     let stelle = 1;
     if (this.regali >= SLITTA.REGALI_2_STELLE) stelle = 2;
     if (this.regali >= SLITTA.REGALI_3_STELLE) stelle = 3;
-    salvaStelle(this, 'slitta', stelle);
-
-    suonaCampanella(this);
-    Musica.suona(this, 'neve'); // calm again after the win
-    this.add.rectangle(0, 0, LARGHEZZA, ALTEZZA, COLORE_NOTTE, 0.75).setOrigin(0, 0).setDepth(50);
-    this.add.text(LARGHEZZA / 2, 220, TESTI.comuni.bravissimi, {
-      fontFamily: FONT, fontSize: '80px', color: '#ffe9a8',
-    }).setOrigin(0.5).setDepth(51);
-    this.add.text(LARGHEZZA / 2, 350, '★'.repeat(stelle) + '☆'.repeat(3 - stelle), {
-      fontFamily: 'sans-serif', fontSize: '90px', color: '#ffd34d',
-    }).setOrigin(0.5).setDepth(51);
-    const continua = this.add.text(LARGHEZZA / 2, 520, TESTI.comuni.toccaPerContinuare, {
-      fontFamily: FONT, fontSize: '36px', color: '#fdf3e1',
-    }).setOrigin(0.5).setDepth(51);
-    this.tweens.add({ targets: continua, alpha: 0.4, duration: 800, yoyo: true, repeat: -1 });
-
-    // Wait a moment so a tap in progress doesn't skip the result
-    this.time.delayedCall(1000, () => {
-      this.input.once('pointerup', () => {
-        this.cameras.main.fadeOut(600, 15, 26, 46);
-        // Next: mini game 2 (mini games 3-4 will come later)
-        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Torta'));
-      });
-    });
+    mostraRisultato(this, { gioco: 'slitta', stelle, prossima: 'Torta', frase: TESTI.slitta.marioVittoria });
   }
 
   // Forgiving game: no game over, just a short message and an instant restart

@@ -117,7 +117,7 @@ The game is forgiving: it's a gift, so the couple should always reach the ending
 2. Title screen: the title over the snowy village (no characters: they appear in the intro), and "Tocca per iniziare". Each finger makes a soft glow in that player's colour. The game only starts when **both** players touch their half at the same time (the text doesn't say so on purpose: a first small co-op discovery). It starts when they lift their fingers, which also unlocks sound on iPhone.
 3. Intro: 4 short story scenes with the texts below, written letter by letter (tap to show the whole sentence, tap again to continue): the lit village with Silvia and Francesco; a sudden gust blowing the lanterns out and the wedding things away; Mario appearing as a glowing spirit with his guilty face; Mario cheering up and offering to help. These taps are menu taps and don't count in the gesture rule.
 4. Mini games 1–4, each starting with a **start card**: the mini game's name, each player's instruction on their own half, and Mario in the middle with his tip. The game begins when someone **pets Mario** (a little swipe across him). Petting Mario is a start button, so it does **not** count in the gesture rule.
-5. Result card after each mini game: 1–3 stars, then "Avanti" or "Riprova".
+5. Result card after each mini game (`src/risultato.js`): "Bravissimi!", the stars popping in one by one, Mario (proud) with a line for that game, the couple's record if they did better before, then "Riprova" (play it again for more stars, straight in) or "Avanti". Losing never shows a result card: just a short message and an instant retry.
 6. Finale and the "Appena Sposati!" ending.
 7. Ending screen: total stars and a "Gioca ancora" button.
 
@@ -125,7 +125,7 @@ Rules:
 
 - **Shared lives:** 3 snowflakes per mini game for the team. Losing all 3 restarts that mini game instantly, with no game over.
 - **Stars:** 1 star for finishing, 2–3 for doing it well. Stars only add replay value, they never block progress.
-- **Progress:** saved on the phone, so closing Safari doesn't lose the mini games already finished.
+- **Progress:** saved on the phone (`src/salvataggio.js`, localStorage with try/catch): the furthest mini game reached and the best stars of each. Coming back, after the two-finger start the title shows "Bentornati!" with the stars and two buttons: "Dall'inizio" (story and everything again, best stars kept) or "Continua" (straight to the mini game they'd reached). `?reset=1` in the address clears everything (do this before giving the gift). A map of the mini games may come later.
 
 ## Art and audio direction
 
@@ -166,7 +166,9 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Game 4 | Vento! · Poche lanterne… Riproviamo! | Wind! · Too few lanterns… Let's try again! |
 | Game 4 (Mario) | Che vista da quassù! | What a view from up here! |
 | Finale | Tenete premuto insieme! | Hold together! |
-| Result | Bravissimi! · Avanti · Riprova | Well done! · Next · Try again |
+| Result | Bravissimi! · Avanti · Riprova · Il vostro record: | Well done! · Next · Try again · Your record: |
+| Result (Mario) | Che corsa! I regali sono tutti salvi! · Che torta meravigliosa… ora posso assaggiarla? · Visto? Li avete trovati! Non era poi colpa mia… · Le lanterne sono tornate! Che luce! | (one line per mini game, to review) |
+| Title (coming back) | Bentornati! · Continua · Dall'inizio | Welcome back! · Continue · From the start |
 | Ending | Appena Sposati! Silvia & Francesco · Buon Natale | Just married! · Merry Christmas |
 | Ending | Gioca ancora | Play again |
 

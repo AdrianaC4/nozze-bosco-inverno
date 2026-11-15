@@ -420,27 +420,7 @@ class Dirigibile extends Phaser.Scene {
     let stelle = 1;
     if (this.lanterne >= DIRIGIBILE.STELLE_2) stelle = 2;
     if (this.lanterne >= DIRIGIBILE.STELLE_3) stelle = 3;
-    salvaStelle(this, 'dirigibile', stelle);
-
-    suonaCampanella(this);
-    Musica.suona(this, 'neve');
-    this.add.rectangle(0, 0, LARGHEZZA, ALTEZZA, COLORE_NOTTE, 0.75).setOrigin(0, 0).setDepth(50);
-    this.add.text(LARGHEZZA / 2, 220, TESTI.comuni.bravissimi, {
-      fontFamily: FONT, fontSize: '80px', color: '#ffe9a8',
-    }).setOrigin(0.5).setDepth(51);
-    this.add.text(LARGHEZZA / 2, 350, '★'.repeat(stelle) + '☆'.repeat(3 - stelle), {
-      fontFamily: 'sans-serif', fontSize: '90px', color: '#ffd34d',
-    }).setOrigin(0.5).setDepth(51);
-    const continua = this.add.text(LARGHEZZA / 2, 520, TESTI.comuni.toccaPerContinuare, {
-      fontFamily: FONT, fontSize: '36px', color: '#fdf3e1',
-    }).setOrigin(0.5).setDepth(51);
-    this.tweens.add({ targets: continua, alpha: 0.4, duration: 800, yoyo: true, repeat: -1 });
-    this.time.delayedCall(1000, () => {
-      this.input.once('pointerup', () => {
-        this.cameras.main.fadeOut(600, 15, 26, 46);
-        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Cerimonia'));
-      });
-    });
+    mostraRisultato(this, { gioco: 'dirigibile', stelle, prossima: 'Cerimonia', frase: TESTI.dirigibile.marioVittoria });
   }
 
   // ---------------------------------------------------------------- every frame

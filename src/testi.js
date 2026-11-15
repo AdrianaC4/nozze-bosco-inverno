@@ -29,6 +29,20 @@ const TESTI = {
     pannello4: 'Miao! Seguitemi, vi aiuto io!',
   },
 
+  // Result card after winning a mini game
+  risultato: {
+    riprova: 'Riprova',
+    avanti: 'Avanti',
+    record: 'Il vostro record:',
+  },
+
+  // Title screen, coming back with saved progress
+  scelta: {
+    bentornati: 'Bentornati!',
+    continua: 'Continua',
+    dallInizio: "Dall'inizio",
+  },
+
   // Start card shown before every mini game
   carta: {
     accarezza: 'Accarezza Mario per iniziare',
@@ -46,6 +60,7 @@ const TESTI = {
     ohNo: 'Oh no! Riproviamo!',
     tempoScaduto: 'Tempo scaduto! Riproviamo!',
     pochiRegali: 'Pochi regali… Riproviamo!',
+    marioVittoria: 'Che corsa! I regali sono tutti salvi!',
   },
 
   // Mini game 2: La Torta Nuziale
@@ -58,6 +73,7 @@ const TESTI = {
     slurp: 'Slurp!',
     caduto: 'Oh no, è caduto!',
     crollo: 'Attenzione! La torta pende troppo!',
+    marioVittoria: 'Che torta meravigliosa… ora posso assaggiarla?',
     unDito: 'Un dito solo!',
     ohNo: 'Oh no! Riproviamo!',
   },
@@ -73,6 +89,7 @@ const TESTI = {
     massimoDue: 'Massimo due tessere alla volta!',
     uguali: 'Uguali! Silvia, toccale!',
     anelli: 'Gli anelli!',
+    marioVittoria: 'Visto? Li avete trovati! Non era poi colpa mia…',
     tempoScaduto: 'Tempo scaduto! Riproviamo!',
   },
 
@@ -84,6 +101,7 @@ const TESTI = {
     mario: 'Che vista da quassù!',
     vento: 'Vento!',
     poche: 'Poche lanterne… Riproviamo!',
+    marioVittoria: 'Le lanterne sono tornate! Che luce!',
   },
 
   // Finale: La Cerimonia

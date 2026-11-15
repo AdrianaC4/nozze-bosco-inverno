@@ -262,6 +262,7 @@ class Intro extends Phaser.Scene {
     this.pannello = 0;
     // The adventure begins: bell chime (it plays only here, at the title start, and when a mini game is won)
     suonaCampanella(this);
+    Salvataggio.segnaRaggiunto('Slitta');
     this.cameras.main.fadeOut(700, 15, 26, 46);
     this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Slitta'));
   }
