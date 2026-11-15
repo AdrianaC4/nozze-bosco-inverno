@@ -36,10 +36,10 @@ class Intro extends Phaser.Scene {
 
     // Text band at the bottom
     this.add.rectangle(LARGHEZZA / 2, 655, LARGHEZZA - 80, 112, COLORE_NOTTE, 0.72).setDepth(40);
-    this.testo = this.add.text(LARGHEZZA / 2, 655, '', {
-      fontFamily: FONT, fontSize: '32px', color: '#fdf3e1', align: 'center', wordWrap: { width: LARGHEZZA - 160 },
+    this.testo = this.add.text(LARGHEZZA / 2, 643, '', { // a little above the middle of the band, leaving room for the hint
+      fontFamily: FONT, fontSize: '29px', color: '#fdf3e1', align: 'center', wordWrap: { width: LARGHEZZA - 110 },
     }).setOrigin(0.5).setDepth(41);
-    this.continua = this.add.text(LARGHEZZA - 60, 700, TESTI.comuni.toccaPerContinuare + ' ›', {
+    this.continua = this.add.text(LARGHEZZA - 56, 709, TESTI.comuni.toccaPerContinuare + ' ›', {
       fontFamily: FONT, fontSize: '20px', color: '#ffe9a8',
     }).setOrigin(1, 1).setDepth(41).setAlpha(0);
     this.tweens.add({ targets: this.continua, scale: 1.05, duration: 700, yoyo: true, repeat: -1 });

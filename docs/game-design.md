@@ -1,4 +1,6 @@
-# Nozze nel Bosco d'Inverno — Game Design One-Pager
+# Nozze a Natale — Game Design One-Pager
+
+(Formerly "Nozze nel Bosco d'Inverno". **The Italian texts in the table below are first drafts: the current, reviewed texts are in `src/testi.js`.**)
 
 ## Overview
 
@@ -145,7 +147,7 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 
 | Where | Italian | Meaning |
 | --- | --- | --- |
-| Title | Nozze nel Bosco d'Inverno | A Wedding in Winter Wood |
+| Title | Nozze a Natale | A Wedding at Christmas |
 | Title | Tocca per iniziare | Tap to begin |
 | Portrait warning | Ruota il telefono in orizzontale | Turn your phone sideways |
 | Intro 1 | È un bellissimo giorno d'inverno. Tra non molto Silvia e Francesco si sposano sotto il grande albero del paese. | It's a beautiful winter day. Soon Silvia and Francesco will marry under the village's great tree. |
@@ -171,7 +173,7 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Result | Bravissimi! · Avanti · Riprova · Il vostro record: | Well done! · Next · Try again · Your record: |
 | Result (Mario) | Che corsa! I regali sono tutti salvi! · Che torta meravigliosa… ora posso assaggiarla? · Visto? Li avete trovati! Non era poi colpa mia… · Le lanterne sono tornate! Che luce! | (one line per mini game, to review) |
 | Title (coming back) | Bentornati! · Continua · Dall'inizio | Welcome back! · Continue · From the start |
-| Ending | Appena Sposati! Silvia & Francesco · Buon Natale | Just married! · Merry Christmas |
+| Ending | AUGURI · Silvia & Francesco · Buon Natale | Best wishes · Merry Christmas |
 | Ending | Gioca ancora | Play again |
 
 ## Tech notes and build plan

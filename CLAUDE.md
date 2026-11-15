@@ -1,4 +1,6 @@
-# CLAUDE.md — Nozze nel Bosco d'Inverno
+# CLAUDE.md — Nozze a Natale
+
+(The game's title was "Nozze nel Bosco d'Inverno" until Adri renamed it; the folder, the GitHub repo and the save key keep the old name.)
 
 This file is the project memory for Claude Code. Read it fully at the start of every session.
 Full details live in `docs/game-design.md` (game design) and `docs/art-guide.md` (art workflow and prompts).
@@ -17,7 +19,7 @@ Full details live in `docs/game-design.md` (game design) and `docs/art-guide.md`
 3. **Gesture rule:** each player may use any one gesture family **at most twice** across the whole game (finale included). Families: Tap (single or rapid tapping count as the same family), Hold, Drag, Swipe, Circle. See the matrix in `docs/game-design.md`.
 4. **Abilities:** Silvia = precision and organisation (timing, aiming, matching). Francesco = strength (power, holding, pushing, cranking).
 5. **Forgiving game:** no game over. Failing restarts the mini game instantly. Stars are only for replay value.
-6. **The ending** is an animated scene with all three characters (Silvia, Francesco, Mario) under the lit tree — **no real photo**. Final text: "Appena Sposati! Silvia & Francesco" and "Buon Natale". No wedding date shown.
+6. **The ending** is an animated scene with all three characters (Silvia, Francesco, Mario) under the lit tree — **no real photo**. Final text: "AUGURI", "Silvia & Francesco" and "Buon Natale" (Adri's choice; it was "Appena Sposati!" before). No wedding date shown.
 
 ## Tech stack
 
@@ -58,7 +60,7 @@ index.html           (later)
 - [ ] Set `MODALITA_PROVA = false` in `src/costanti.js` (removes the "Salta ›" test button from the mini games).
 - [ ] Publish on GitHub Pages (real https: no certificate warning, the icon and the microphone work).
 - [ ] Open the published link once with `?reset=1` on the gift phone if it was used for testing.
-- [ ] Italian texts proofread by a native speaker (including Mario's lines).
+- [x] Italian texts reviewed by Adri (all 74, including Mario's lines), 2026-11. A last read by a native speaker is still a good idea.
 
 ## How Adri likes to work
 
@@ -93,6 +95,7 @@ index.html           (later)
 - [x] Code step 2: title screen (`src/scenes/Titolo.js`): style anchor background, falling snow and code-made chime (`src/effetti.js`), starts only when both halves are touched, then on lift. Tested on the iPhone.
 - [x] Step 2b: cut-out tool `tools/ritaglia.py` (rembg, model birefnet-general, in `.venv/`, not committed) → 10 transparent character PNGs in `assets/game/` (max 600px tall). Characters on the title screen: breathing, hop + coloured glow when their player touches. Tested on the iPhone.
 - [x] Code step 3: mini game 1 (La Slitta, `src/scenes/Slitta.js`) with plain shapes. After Adri's playtests: uphill removed, 35 s countdown, finish line, reusable start card where petting Mario (swipe) starts every mini game (`src/cartaInizio.js`). Tested on the iPhone.
+- Claude's test helper: `tools/prova.py` (drives the game in hidden Chrome with iPhone-style touches; `.venv/bin/python tools/prova.py schermate <folder>` takes screenshots of title, story and ending). Keep test scripts here, not in the scratchpad: it is wiped on restart. The two test servers stop when a session ends: restart both (8000 and 8443 `--https`) at the start of a session.
 - Testing: `?scena=Slitta` in the address starts straight from that scene; `?reset=1` clears the saved progress (do it before gifting). Claude can also play-test in headless Chrome (Chrome DevTools + synthetic iPhone-style TouchEvents with pageX/pageY set).
 - [x] Step 3b: story intro (`src/scenes/Intro.js`), 4 scenes with Adri's texts (lit village; gust of wind, oops poses; Mario guilty; Mario cheers up). Title screen without characters (finger glows). Bell chime only at: title start, end of intro, mini game win. Background music in code (`src/musica.js`: 'neve' waltz, 'corsa' bouncy; La Slitta's tempo follows the sled). No-cache test server `tools/server.py`. Tested on the iPhone.
 - [x] Code step 4: finale (`src/scenes/Cerimonia.js`): triple-stroke Mario card (`mostraCartaCarezze` in `src/cartaInizio.js`), dark night before / warm gold after, both hold → lit village rises bottom-up behind a golden light line with sparkles, flash + star on the tree, wedding animation (Mario with rings, cheer poses, heart), ending screen with total stars and "Gioca ancora". Music: 'cerimonia' (card + lighting, full only while both hold) then 'festa' wedding waltz. La Slitta leads straight to the finale for now. Tested on the iPhone.

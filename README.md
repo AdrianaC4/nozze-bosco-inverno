@@ -1,4 +1,4 @@
-# Nozze nel Bosco d'Inverno
+# Nozze a Natale
 
 A small cooperative Christmas game for two players on one iPhone — a wedding gift for Silvia & Francesco (with Mario the cat).
 

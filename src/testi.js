@@ -7,7 +7,7 @@ const TESTI = {
 
   // Title screen
   titolo: {
-    nome: "Nozze nel Bosco d'Inverno",
+    nome: 'Nozze a Natale',
     // Both players must touch together to start, but the text doesn't say so: they find out together
     toccaPerIniziare: 'Tocca per iniziare',
     insieme: 'Insieme!',
@@ -24,10 +24,10 @@ const TESTI = {
 
   // Story intro (4 scenes)
   intro: {
-    pannello1: "È un bellissimo giorno d'inverno. Tra non molto Silvia e Francesco si sposano sotto il grande albero del paese.",
-    pannello2: "Ma un ventaccio improvviso ha portato via tutto: i regali, la torta, gli anelli e le luci!",
-    pannello3: 'Miao! Prometto che non è colpa mia…',
-    pannello4: 'Miao! Seguitemi, vi aiuto io!',
+    pannello1: "È un bellissimo giorno d'inverno.\nSilvia e Francesco si stanno preparando per la cerimonia sotto il grande albero del Paese.",
+    pannello2: 'Ma un ventaccio improvviso ha portato via tutto: i regali, la torta, gli anelli e le luci. OH\u00a0NO!!!', // (\u00a0 = a space that never breaks the line: OH NO stays together)
+    pannello3: 'Miao! Prometto che non è stata colpa mia…',
+    pannello4: 'Miao! Vi aiuterò io a recuperare tutto, siete in buone zampe!',
   },
 
   // Result card after winning a mini game
@@ -54,7 +54,7 @@ const TESTI = {
     nome: 'La Slitta dei Regali',
     istruzioneSilvia: 'Silvia: Trascina per guidare',
     istruzioneFrancesco: 'Francesco: Tocca veloce per spingere!',
-    mario: 'Attenti agli alberi!',
+    mario: 'Attenti agli alberi… e a me!',
     via: 'Via!',
     traguardo: 'Traguardo',
     miao: 'Miao!',
@@ -77,7 +77,7 @@ const TESTI = {
     scaccia: 'Toccate Mario per mandarlo via!',
     caduto: 'Oh no, è caduto!',
     crollo: 'Attenzione! La torta pende troppo!',
-    marioVittoria: 'Che torta meravigliosa… ora posso assaggiarla?',
+    marioVittoria: 'Che torta meravigliosa… adesso si mangia?',
     unDito: 'Un dito solo!',
     ohNo: 'Oh no! Riproviamo!',
   },
@@ -87,7 +87,7 @@ const TESTI = {
     nome: 'Gli Anelli Perduti',
     istruzioneSilvia: 'Silvia: Scegli una tessera di ghiaccio, poi tocca le due uguali',
     istruzioneFrancesco: 'Francesco: Rompi il ghiaccio unendo i punti senza staccare il dito!',
-    mario: "Ehm… forse ci ho giocato un po' io…",
+    mario: 'Voglio gioc… ehm… aiutarvi anche io',
     scegli: 'Silvia, scegli una tessera!',
     nonStaccare: 'Non staccare il dito!',
     massimoDue: 'Massimo due tessere alla volta!',
@@ -95,7 +95,7 @@ const TESTI = {
     scambio: 'Mario ha scambiato due tessere!',
     attentoMario: 'Attento a Mario! Ricomincia dal punto 1',
     anelli: 'Gli anelli!',
-    marioVittoria: 'Visto? Li avete trovati! Non era poi colpa mia…',
+    marioVittoria: 'Visto? Li abbiamo trovati insieme!',
     tempoScaduto: 'Tempo scaduto! Riproviamo!',
   },
 
@@ -103,14 +103,14 @@ const TESTI = {
   dirigibile: {
     nome: 'Il Dirigibile delle Lanterne',
     istruzioneSilvia: 'Silvia: Trascina per guidare il dirigibile',
-    istruzioneFrancesco: "Francesco: Soffia nel microfono per far girare l'elica!",
+    istruzioneFrancesco: "Francesco: Soffia per far girare l'elica!",
     consenti: 'Consentite il microfono…',
     senzaMicrofono: 'Niente microfono: Francesco, disegna cerchi!',
-    mario: 'Che vista da quassù!',
+    mario: 'Che vista da quassù, vero Silvia?',
     vento: 'Vento!',
     marioFermo: 'Mario, stai fermo!',
     poche: 'Poche lanterne… Riproviamo!',
-    marioVittoria: 'Le lanterne sono tornate! Che luce!',
+    marioVittoria: 'Le lanterne sono tornate! Che LUCE!',
   },
 
   // Finale: La Cerimonia
@@ -118,14 +118,14 @@ const TESTI = {
     nome: 'La Cerimonia',
     // The start card: Mario wants three strokes, each with a new pose and line
     carezza1: 'Accarezzami per continuare',
-    carezza2: "Un'altra carezza, già che ci siamo, dai!",
-    carezza3: "L'ultima coccola, lo prometto!",
+    carezza2: "Un'altra carezza, dai!",
+    carezza3: "L'ultima, promesso!",
     tenete: 'Tenete premuto insieme!',
   },
 
   // Ending screen
   fine: {
-    appenaSposati: 'Appena Sposati!',
+    appenaSposati: 'AUGURI', // (was 'Appena Sposati!'; the name of this entry is kept so the code doesn't change)
     nomi: 'Silvia & Francesco',
     buonNatale: 'Buon Natale',
     giocaAncora: 'Gioca ancora',
