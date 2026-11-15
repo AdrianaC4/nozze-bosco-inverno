@@ -7,7 +7,8 @@
 //      blows, the faster the propeller spins and the higher the airship climbs; if he stops, it sinks.
 //      Fallback: if the microphone isn't available or allowed, he draws circles on his half instead
 //      (circles always work too, so the game can never get stuck).
-//    - Silvia controls LEFT/RIGHT: dragging on her half moves the airship across the sky.
+//    - Silvia controls LEFT/RIGHT: dragging moves the airship across the sky. While Francesco blows she can
+//      drag anywhere on the screen; in the circles fallback only on her left half.
 //    - Reaching a ring in time collects its lantern; otherwise the ring fades and the lantern is lost.
 //      Neither player can reach the rings alone.
 //    - Rings get smaller; gusts of wind push the airship; dark snow clouds drift across the sky
@@ -207,7 +208,10 @@ class Dirigibile extends Phaser.Scene {
   // ---------------------------------------------------------------- touch
 
   ditoGiu(dito) {
-    if (latoDi(dito) === 'silvia') {
+    // When Francesco blows into the microphone he doesn't need the screen, so Silvia can steer from
+    // ANYWHERE on it (she naturally follows the airship with her finger, also onto the right half).
+    // In the circles fallback, the right half is Francesco's.
+    if (this.usaMicrofono || latoDi(dito) === 'silvia') {
       this.ditaSilvia.set(dito.id, dito.x);
     } else if (!this.ditoFrancesco) {
       this.ditoFrancesco = { id: dito.id, punti: [{ x: dito.x, y: dito.y }], angolo: null };
