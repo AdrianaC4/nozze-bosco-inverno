@@ -3,8 +3,10 @@
 // 1. Start card: instructions, Mario in the middle; pet Mario to begin.
 // 2. Night sky, seen from the side. Rings of light with a lantern inside appear all over the sky,
 //    one after another, each far from the previous one sideways; each stays about 4 seconds.
-//    - Francesco controls the HEIGHT: drawing circles on his half turns the crank and the propeller.
-//      The faster he circles, the higher the airship climbs; if he stops, it slowly sinks.
+//    - Francesco controls the HEIGHT by BLOWING into the microphone (src/microfono.js): the harder he
+//      blows, the faster the propeller spins and the higher the airship climbs; if he stops, it sinks.
+//      Fallback: if the microphone isn't available or allowed, he draws circles on his half instead
+//      (circles always work too, so the game can never get stuck).
 //    - Silvia controls LEFT/RIGHT: dragging on her half moves the airship across the sky.
 //    - Reaching a ring in time collects its lantern; otherwise the ring fades and the lantern is lost.
 //      Neither player can reach the rings alone.
@@ -29,6 +31,8 @@ const DIRIGIBILE = {
   SALTO_MASSIMO: 260,        // max height difference between one ring and the next
   CADUTA: 90,                // how fast the airship sinks when Francesco doesn't crank (pixels per second)
   SPINTA_ELICA: 18,          // climbing speed for each unit of cranking speed
+  ATTESA_MICROFONO: 12,      // seconds to wait for the microphone's answer before starting with circles
+  GIRI_SOFFIO: 14,           // propeller speed when Francesco blows as hard as possible (hovering needs 5)
   STERZO: 1.3,               // how far the airship moves for each pixel Silvia's finger moves
   NUVOLE: 8,
   RAFFICA: 130,              // how hard a gust pushes the airship sideways (pixels per second)
@@ -69,6 +73,7 @@ class Dirigibile extends Phaser.Scene {
     this.invulnerabile = false;
     this.ditaSilvia = new Map();   // finger id -> previous x
     this.ditoFrancesco = null;     // { id, punti: [recent positions], angolo }
+    this.usaMicrofono = false;     // true when Francesco blows into the microphone
     this.carica = 0;               // how much Francesco has turned since the last frame
 
     this.creaCielo();
@@ -135,6 +140,17 @@ class Dirigibile extends Phaser.Scene {
       this.add.rectangle(0, 0, 5, 120, 0xfdf3e1, 0.7),
       this.add.circle(0, -60, 11, COLORE_FRANCESCO),
     ]);
+    this.manovella.setVisible(false);
+
+    // Francesco's wind gauge (when he blows into the microphone): a tube that fills with his breath
+    this.indicatoreSoffio = this.add.container(1200, 520).setDepth(30).setVisible(false);
+    this.barraSoffio = this.add.rectangle(0, 98, 26, 196, 0x9fd8f5).setOrigin(0.5, 1).setScale(1, 0);
+    this.indicatoreSoffio.add([
+      this.add.rectangle(0, 0, 34, 204, COLORE_NOTTE, 0.55).setStrokeStyle(3, 0xfdf3e1, 0.8),
+      this.barraSoffio,
+      this.add.text(0, -128, '💨', { fontSize: '34px' }).setOrigin(0.5),
+    ]);
+
     this.testoVento = this.add.text(LARGHEZZA / 2, 100, '', {
       fontFamily: FONT, fontSize: '34px', color: '#fdf3e1',
     }).setOrigin(0.5).setDepth(40);
@@ -220,11 +236,36 @@ class Dirigibile extends Phaser.Scene {
 
   // ---------------------------------------------------------------- the flight
 
+  // Before the flight: turn the microphone on (iPhone asks for permission). The flight starts when
+  // we know the answer; without a microphone, Francesco draws circles instead.
   inizia() {
-    this.fase = 'volo';
     this.carica = 0; // how much Francesco has turned since the last frame
-    Musica.suona(this, 'corsa');
-    this.programmaRaffica();
+    const attesa = this.add.text(LARGHEZZA / 2, ALTEZZA / 2, TESTI.dirigibile.consenti, {
+      fontFamily: FONT, fontSize: '40px', color: '#fdf3e1', stroke: '#2a3d66', strokeThickness: 7,
+    }).setOrigin(0.5).setDepth(60);
+    let partito = false;
+    // Starts the flight (once), with the microphone or with circles
+    const parti = (acceso) => {
+      if (!this.scene.isActive()) return;
+      this.usaMicrofono = acceso;
+      this.manovella.setVisible(!acceso);
+      this.indicatoreSoffio.setVisible(acceso);
+      if (partito) return; // the answer arrived late: the flight is already going, just switch to blowing
+      partito = true;
+      attesa.destroy();
+      if (!acceso) {
+        const avviso = this.add.text(LARGHEZZA / 2, 160, TESTI.dirigibile.senzaMicrofono, {
+          fontFamily: FONT, fontSize: '32px', color: '#2a3d66', backgroundColor: '#fdf3e1', padding: { x: 14, y: 8 },
+        }).setOrigin(0.5).setDepth(60);
+        this.tweens.add({ targets: avviso, alpha: 0, delay: 3500, duration: 500, onComplete: () => avviso.destroy() });
+      }
+      this.fase = 'volo';
+      Musica.suona(this, 'corsa');
+      this.programmaRaffica();
+    };
+    Microfono.accendi(this).then((acceso) => { if (acceso || !partito) parti(acceso); });
+    // Safety net: if no answer arrives, don't wait forever
+    this.time.delayedCall(DIRIGIBILE.ATTESA_MICROFONO * 1000, () => { if (!partito) parti(false); });
   }
 
   programmaRaffica() {
@@ -293,7 +334,10 @@ class Dirigibile extends Phaser.Scene {
     }
 
     // Francesco's cranking: turning speed, smoothed, and it fades when he stops
-    const istantaneo = this.carica / Math.max(secondi, 0.001);
+    // (blowing into the microphone, or drawing circles: whichever is stronger)
+    const soffio = this.usaMicrofono ? Microfono.soffio() : 0;
+    this.barraSoffio.scaleY = Phaser.Math.Linear(this.barraSoffio.scaleY, soffio, 0.3);
+    const istantaneo = Math.max(this.carica / Math.max(secondi, 0.001), soffio * DIRIGIBILE.GIRI_SOFFIO);
     this.carica = 0;
     this.giri = Phaser.Math.Linear(this.giri, istantaneo, 1 - Math.exp(-secondi * 6));
     this.angoloManovella += this.giri * secondi;
@@ -421,6 +465,7 @@ class Dirigibile extends Phaser.Scene {
     let stelle = 1;
     if (this.lanterne >= DIRIGIBILE.STELLE_2) stelle = 2;
     if (this.lanterne >= DIRIGIBILE.STELLE_3) stelle = 3;
+    Microfono.spegni(); // the flight is over: the microphone goes off
     mostraRisultato(this, { gioco: 'dirigibile', stelle, prossima: 'Cerimonia', frase: TESTI.dirigibile.marioVittoria });
   }
 

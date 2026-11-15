@@ -7,3 +7,6 @@ node_modules/
 # Python tools environment (background removal), never committed
 .venv/
 __pycache__/
+
+# Local https certificate for testing the microphone on the iPhone, never committed
+.cert/

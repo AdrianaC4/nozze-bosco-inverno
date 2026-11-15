@@ -97,7 +97,9 @@ const TESTI = {
   dirigibile: {
     nome: 'Il Dirigibile delle Lanterne',
     istruzioneSilvia: 'Silvia: Trascina per guidare il dirigibile',
-    istruzioneFrancesco: "Francesco: Disegna cerchi per far girare l'elica",
+    istruzioneFrancesco: "Francesco: Soffia nel microfono per far girare l'elica!",
+    consenti: 'Consentite il microfono…',
+    senzaMicrofono: 'Niente microfono: Francesco, disegna cerchi!',
     mario: 'Che vista da quassù!',
     vento: 'Vento!',
     poche: 'Poche lanterne… Riproviamo!',
