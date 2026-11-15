@@ -48,6 +48,20 @@ const TESTI = {
     pochiRegali: 'Pochi regali… Riproviamo!',
   },
 
+  // Mini game 2: La Torta Nuziale
+  torta: {
+    nome: 'La Torta Nuziale',
+    istruzioneSilvia: 'Silvia: Tocca al momento giusto',
+    istruzioneFrancesco: 'Francesco: Tieni la torta dritta con un dito solo, premendo ◀ o ▶ ai bordi',
+    mario: 'Mmm… posso assaggiare?',
+    perfetto: 'Perfetto!',
+    slurp: 'Slurp!',
+    caduto: 'Oh no, è caduto!',
+    crollo: 'Attenzione! La torta pende troppo!',
+    unDito: 'Un dito solo!',
+    ohNo: 'Oh no! Riproviamo!',
+  },
+
   // Finale: La Cerimonia
   cerimonia: {
     nome: 'La Cerimonia',

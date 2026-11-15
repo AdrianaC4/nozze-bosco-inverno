@@ -49,7 +49,7 @@ Gesture families (one finger):
 | Mini game | Silvia (left) | Francesco (right) |
 | --- | --- | --- |
 | 1. La Slitta dei Regali | Drag: steer the sled | Tap (rapid): push the sled uphill |
-| 2. La Torta Nuziale | Tap (timed): drop each cake layer | Hold: keep the table steady |
+| 2. La Torta Nuziale | Tap (timed): drop each cake layer | Hold (◀ / ▶ strips at the screen edges): keep the cake balanced |
 | 3. Gli Anelli Perduti | Tap: pick matching pairs | Swipe: dig through the snow |
 | 4. Il Dirigibile delle Lanterne | Drag: steer through the rings of light | Circle: crank the propeller |
 | Finale: La Cerimonia | Hold | Hold |
@@ -72,11 +72,13 @@ There are four mini games, each bringing back one thing for the wedding, and the
 
 ### 2. La Torta Nuziale (the wedding cake)
 
-- **Goal:** build a 5-layer cake.
-- **Silvia:** a layer slides back and forth, and she taps to drop it exactly on the one below. Any overhang is trimmed off, so a bad drop makes the next layer smaller.
-- **Francesco:** holds his side to keep the wobbly table steady. If he lets go, the table shakes and the sliding layer speeds up.
-- **Win:** 5 layers plus the topper. Neater stacking means more stars.
-- **Mario:** sits next to the table and tries to lick the frosting (a funny animation).
+- **Goal:** build a 5-layer cake and put the two nutcrackers on top.
+- **Silvia:** a piece slides back and forth above the cake, and she taps to drop it. Any overhang is cut off, so a bad drop makes the cake narrower. Each layer is smaller and slides faster than the one before.
+- **The nutcrackers:** the last two pieces, like Adri's two ornaments (navy coat, red trousers, gold crown and sceptre; white and pink coat with light blue details, tall gold hat, lollipop). They go side by side on the top layer: if the second touches the first, the first falls off and both must be placed again. Very close without touching = "Perfetto!" with a little heart.
+- **Francesco:** keeps the cake **balanced**, with his two controls on the **two edges of the screen**: a ◀ strip on the far left and a ▶ strip on the far right (awkward on purpose; an agreed exception to the left-half/right-half rule). A balance bar with a bubble and a green zone sits at the bottom in the middle. The cake keeps drifting to one side on its own (more as it grows); every drop pushes it towards the side where the piece landed (harder when off-centre and as the cake grows), and Mario's licks push it too. **One finger only:** holding ◀ pushes the bubble left, ▶ right; holding both does nothing (the strips turn grey and "Un dito solo!" appears), so he has to move his finger back and forth between the two edges. Outside the green zone the cake leans, pieces slide faster, and a dropped piece slides with the tilt. **If the bubble stays at the end of the bar for a moment** (it flashes red as a warning, about 0.7 seconds), **the top piece falls off** (a nutcracker if there is one) and a life is lost, so the cake can't be finished without Francesco. Nothing can fall while the cake is still empty, and Silvia's next piece slides in straight away. (Earlier ideas, two-finger hold and ◀/▶ zones on his own half, were too easy.)
+- **No timer.** 3 lives: a missed piece costs one.
+- **Win:** the cake with both nutcrackers. Stars by "Perfetto!" drops (out of 6): 0–1 = 1 star, 2–3 = 2 stars, 4+ = 3 stars.
+- **Mario:** sits next to the table and every so often stretches to lick the frosting ("Slurp!"), which wobbles the cake a little.
 
 ### 3. Gli Anelli Perduti (the lost rings)
 
@@ -150,7 +152,8 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Game 1 | Silvia: Trascina per guidare · Francesco: Tocca veloce per spingere! | Drag to steer · Tap fast to push |
 | Game 1 | Tempo scaduto! Riproviamo! · Oh no! Riproviamo! · Pochi regali… Riproviamo! | Time's up! · Oh no! · Too few gifts… Let's try again! |
 | Game 1 (Mario) | Attenti agli alberi! | Watch out for the trees! |
-| Game 2 | Silvia: Tocca al momento giusto · Francesco: Tieni premuto per tenere fermo il tavolo | Tap at the right moment · Hold to keep the table still |
+| Game 2 | Silvia: Tocca al momento giusto · Francesco: Tieni la torta dritta con un dito solo, premendo ◀ o ▶ ai bordi | Tap at the right moment · Keep the cake straight with one finger, pressing ◀ or ▶ at the edges |
+| Game 2 | Perfetto! · Slurp! · Oh no, è caduto! · Attenzione! La torta pende troppo! · Un dito solo! | Perfect! · Slurp! · Oh no, it fell! · Careful! The cake leans too much! |
 | Game 2 (Mario) | Mmm… posso assaggiare? | Mmm… can I have a taste? |
 | Game 3 | Silvia: Tocca due tessere uguali · Francesco: Scorri per scavare | Tap two matching tiles · Swipe to dig |
 | Game 3 (Mario) | Ehm… forse ci ho giocato un po' io… | Um… I may have played with them a bit… |

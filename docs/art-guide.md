@@ -56,7 +56,8 @@ Made with Prompt 5 (pose template). Do the **emotion poses first**: they don't d
 
 ### Objects
 - [ ] `sled.png`, `gift_1.png`, `gift_2.png`, `gift_3.png`, `tree_obstacle.png`
-- [ ] `cake_layer.png`, `cake_topper.png`, `table.png`
+- [ ] `cake_layer.png`, `table.png`, `bg_torta.png`
+- [ ] `schiaccianoci_1.png` (navy coat, red trousers, gold crown, sceptre) and `schiaccianoci_2.png` (white/pink coat, light blue details, tall gold hat, lollipop) — the cake toppers, based on Adri's photo of two nutcracker ornaments
 - [ ] `snow_block.png`, tile icons: `tile_bell.png`, `tile_star.png`, `tile_ornament.png`, `tile_candycane.png`, `tile_mitten.png`, `tile_rings.png`
 - [ ] `airship.png`, `light_ring.png`, `lantern_light.png`
 - [ ] UI: `snowflake_life.png`, `star_rating.png`

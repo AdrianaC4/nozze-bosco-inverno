@@ -364,8 +364,8 @@ class Slitta extends Phaser.Scene {
     this.time.delayedCall(1000, () => {
       this.input.once('pointerup', () => {
         this.cameras.main.fadeOut(600, 15, 26, 46);
-        // For now mini game 1 leads straight to the finale (mini games 2-4 will come in between)
-        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Cerimonia'));
+        // Next: mini game 2 (mini games 3-4 will come later)
+        this.cameras.main.once('camerafadeoutcomplete', () => this.scene.start('Torta'));
       });
     });
   }
