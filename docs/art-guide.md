@@ -52,7 +52,7 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 
 **Priority A — backgrounds (16:9)**
 - [x] `bg_torta.jpg` — cozy cottage kitchen at night (Prompt 6) — first try, in the game
-- [ ] `bg_dirigibile.jpg` — wide night sky over a snowy forest
+- [x] `bg_dirigibile.jpg` — wide night sky over a snowy forest (Prompt 7) — first try, in the game
 - [ ] `bg_anelli.jpg` — a frozen clearing in the snow, simple and calm
 
 **Priority B — the "star" of each game**
@@ -306,3 +306,37 @@ Follow-ups (one change at a time, same chat):
 - A table appeared: `Remove the table and any furniture from the middle; the floor in the middle must be empty.`
 
 Save the best one as `bg_torta.jpg` and send it to Claude.
+
+### Prompt 7 — Night sky background (`bg_dirigibile.jpg`) — done
+
+Same "Winter Wood – Backgrounds" chat, attach `style_anchor.jpg`, paste:
+
+```
+Using the same painting style as before (the attached style reference), create a wide landscape background illustration in 16:9 format: a calm, magical night sky above a snowy forest on Christmas Eve.
+
+- A deep blue night sky with soft painted clouds and many small twinkling stars.
+- A soft glowing moon in the top right corner.
+- At the very bottom, a band of snowy pine treetops seen from above, dark blue-green with white snow on the branches, and far away a few tiny warm cottage windows glowing orange between the trees.
+- IMPORTANT: keep the whole middle and the upper-middle of the sky open and calm, with no big clouds, no moon and no objects there, because a little airship and rings of light will fly there later.
+- Soft, simple, dreamy, not busy.
+
+No people, no animals, no airship, no text, no letters, no logos, no watermark.
+```
+
+### Prompt 8 — Frozen clearing background (`bg_anelli.jpg`)
+
+Same "Winter Wood – Backgrounds" chat, attach `style_anchor.jpg`, paste:
+
+```
+Using the same painting style as before (the attached style reference), create a wide landscape background illustration in 16:9 format: a quiet snowy clearing in the forest at blue hour on Christmas Eve, with a large frozen pond.
+
+- The ground is soft white snow with gentle blue shadows.
+- A large, smooth frozen pond with pale blue ice covers most of the left half of the picture.
+- The right half is open, smooth, untouched snow.
+- A few snowy pine trees only along the very top edge and in the far corners, small and soft, plus a few gently falling snowflakes.
+- IMPORTANT: the whole picture must be very calm, pale and low in detail, with no objects in the middle of the left half or the right half, because game pieces (a grid of ice tiles on the left, glowing points on the right) will be placed on top and must stay easy to see.
+
+No people, no animals, no footprints, no text, no letters, no logos, no watermark.
+```
+
+Check: pale and calm, the frozen pond on the left, open snow on the right, trees only at the edges, nothing in the middle of either half. If it's too busy: `Make it paler and simpler, with fewer trees, and keep both halves completely empty in the middle.`

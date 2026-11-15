@@ -48,6 +48,7 @@ class Dirigibile extends Phaser.Scene {
 
   preload() {
     caricaMario(this);
+    carica(this, 'sfondo_dirigibile', 'assets/game/bg_dirigibile.jpg');
   }
 
   create() {
@@ -87,21 +88,8 @@ class Dirigibile extends Phaser.Scene {
   // ---------------------------------------------------------------- the scene
 
   creaCielo() {
-    this.add.rectangle(0, 0, LARGHEZZA, ALTEZZA, 0x1b2a4a).setOrigin(0, 0);
-    this.add.rectangle(0, 400, LARGHEZZA, 320, 0x24365c, 0.6).setOrigin(0, 0);
-    for (let i = 0; i < 60; i++) {
-      const stella = this.add.circle(Phaser.Math.Between(0, LARGHEZZA), Phaser.Math.Between(0, 450), Phaser.Math.FloatBetween(1, 2.5), 0xfdf3e1);
-      this.tweens.add({ targets: stella, alpha: 0.2, duration: Phaser.Math.Between(800, 2000), yoyo: true, repeat: -1 });
-    }
-    // Forest treetops that scroll slowly
-    if (!this.textures.exists('foresta')) {
-      const g = this.make.graphics({ x: 0, y: 0 }, false);
-      g.fillStyle(0x16302b, 1);
-      for (let x = -20; x < 256; x += 40) g.fillTriangle(x, 120, x + 30, 10 + (x % 80 === 0 ? 0 : 25), x + 60, 120);
-      g.generateTexture('foresta', 256, 120);
-      g.destroy();
-    }
-    this.foresta = this.add.tileSprite(0, ALTEZZA - 120, LARGHEZZA, 120, 'foresta').setOrigin(0, 0).setDepth(2);
+    // The night sky over the snowy forest (Adri's Gemini background), with falling snow on top
+    this.add.image(LARGHEZZA / 2, ALTEZZA / 2, 'sfondo_dirigibile');
     aggiungiNeve(this);
   }
 
@@ -314,7 +302,6 @@ class Dirigibile extends Phaser.Scene {
     Musica.tempo(100 + Phaser.Math.Clamp(this.giri / 12, 0, 1) * 60);
 
     // The airship reaches a ring: inside its oval (the middle of the airship)
-    this.foresta.tilePositionX += 90 * secondi;
     for (const anello of this.anelli) {
       if (!anello.preso && !anello.finito
         && Math.abs(this.nave.x - anello.x) < DIRIGIBILE.TOLLERANZA && Math.abs(this.nave.y - anello.y) <= anello.altezza / 2 - 10) {
