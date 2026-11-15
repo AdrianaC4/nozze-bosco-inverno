@@ -29,9 +29,7 @@ const SLITTA = {
 };
 
 const COLORE_NEVE = 0xe8f0fa;
-const COLORE_SLITTA = 0x8b5a2b;
-const COLORE_ALBERO = 0x2e6b4f;
-const COLORI_REGALI = [0xc0392b, 0x2e86c1, 0x8e44ad, 0x27ae60, 0xe67e22];
+const COLORI_REGALI = [0xf08a80, 0x8fbfe8, 0xc9a3e0, 0x9fd8a8, 0xffffff]; // soft tints over the white gift (white = as painted)
 
 class Slitta extends Phaser.Scene {
   constructor() {
@@ -46,6 +44,8 @@ class Slitta extends Phaser.Scene {
   preload() {
     caricaMario(this);
     carica(this, 'slitta', 'assets/game/sled.png');
+    carica(this, 'regalo', 'assets/game/gift.png');
+    carica(this, 'albero', 'assets/game/tree_obstacle.png');
   }
 
   create() {
@@ -140,7 +140,8 @@ class Slitta extends Phaser.Scene {
       }).setDepth(40));
     }
     // Gifts caught, top right
-    this.add.rectangle(LARGHEZZA - 120, 52, 34, 34, COLORI_REGALI[0]).setStrokeStyle(4, 0xffe9a8).setDepth(40);
+    const iconaRegalo = this.add.image(LARGHEZZA - 120, 52, 'regalo').setTint(COLORI_REGALI[0]).setDepth(40);
+    iconaRegalo.setScale(44 / iconaRegalo.height);
     this.testoRegali = this.add.text(LARGHEZZA - 90, 52, '0', {
       fontFamily: FONT, fontSize: '40px', color: '#2a3d66',
     }).setOrigin(0, 0.5).setDepth(40);
@@ -271,18 +272,16 @@ class Slitta extends Phaser.Scene {
     const x = Phaser.Math.Between(90, LARGHEZZA - 90);
     const oggetto = this.add.container(x, -80);
     if (Math.random() < SLITTA.PROBABILITA_ALBERO) {
-      oggetto.add([
-        this.add.rectangle(0, 50, 14, 20, 0x5c3a1a),
-        this.add.triangle(0, 0, 0, 85, 35, 0, 70, 85, COLORE_ALBERO), // centred on the tree's position
-      ]);
+      // A snowy pine tree (Adri's Gemini picture), about 100 pixels tall
+      const albero = this.add.image(0, 0, 'albero');
+      albero.setScale(100 / albero.height);
+      oggetto.add(albero);
       oggetto.tipo = 'albero';
     } else {
-      const colore = Phaser.Utils.Array.GetRandom(COLORI_REGALI);
-      oggetto.add([
-        this.add.rectangle(0, 0, 44, 44, colore),
-        this.add.rectangle(0, 0, 8, 44, 0xffe9a8),
-        this.add.rectangle(0, 0, 44, 8, 0xffe9a8),
-      ]);
+      // A gift (Adri's white gift, tinted in a random colour)
+      const regalo = this.add.image(0, 0, 'regalo').setTint(Phaser.Utils.Array.GetRandom(COLORI_REGALI));
+      regalo.setScale(52 / regalo.height);
+      oggetto.add(regalo);
       oggetto.tipo = 'regalo';
       this.tweens.add({ targets: oggetto, angle: { from: -8, to: 8 }, duration: 500, yoyo: true, repeat: -1 });
     }

@@ -63,12 +63,12 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 - [x] `icone_anelli.png` — ONE image with the 6 hidden pictures (Prompt 13) — cut into `tile_campana/stella/pallina/bastoncino/guanto/anelli.png` with `tools/dividi_icone.py`, in Gli Anelli
 
 **Priority C — small objects**
-- [ ] `gift.png` — one wrapped gift (recoloured in code)
-- [ ] `tree_obstacle.png` — small snowy pine tree
-- [ ] `lantern.png` — glowing paper lantern
-- [ ] `dark_cloud.png` — grumpy dark snow cloud
-- [ ] `table.png` — wooden kitchen table, front view
-- [ ] `icon.png` — Home Screen app icon: Mario's face with his scarf on a round warm background
+- [x] `gift.png` — one wrapped gift, tinted in code (Prompt 14 sheet `oggetti.jpg`) — in La Slitta
+- [x] `tree_obstacle.png` — small snowy pine tree (Prompt 14 sheet) — in La Slitta
+- [x] `lantern.png` — glowing paper lantern (Prompt 14 sheet) — in Il Dirigibile
+- [x] `dark_cloud.png` — grumpy dark snow cloud (Prompt 14 sheet) — in Il Dirigibile
+- [ ] `table.png` — wooden kitchen table, front view (Prompt 15)
+- [ ] `icon.png` — Home Screen app icon: Mario's face with his scarf on a round warm background (Prompt 16)
 
 **Priority D — optional**
 - [ ] Francesco with the ice pickaxe (for Gli Anelli)
@@ -405,3 +405,28 @@ Plain pure white background. No text, no numbers, no labels, no logos, no waterm
 ```
 
 Check: exactly 6 objects, one row, well separated (Claude cuts them apart automatically), plain white background.
+
+### Prompt 14 — Four small objects in one image (`oggetti.jpg`) — done
+
+Cut with `tools/dividi_icone.py oggetti gift tree_obstacle lantern dark_cloud`.
+
+### Prompt 15 — The kitchen table (`table.jpg`)
+
+Same "Winter Wood – Objects" chat, attach `assets/raw/bg_torta.jpg` (so it matches the kitchen), paste:
+
+```
+Using the same painting style and the same warm wood colours as the attached kitchen (hand-painted watercolour and gouache, soft edges, no hard black outlines), draw one object: a simple, sturdy wooden kitchen table seen exactly from the front, at eye level, so we see only the front edge of the table top and its four legs. A wide, long table, about three times wider than it is tall, warm honey-coloured wood with soft grain. Nothing on the table.
+Only the table, shown once, fully visible, on a plain pure white background. No tablecloth, no objects, no people, no animals, no text, no logos, no watermark.
+```
+
+Check: front view, nothing on it, wide and low, plain white background.
+
+### Prompt 16 — App icon (`icon.jpg`)
+
+Same chat, attach `assets/raw/mario_sheet.jpg`, paste:
+
+```
+Using exactly the same cat and painting style as the attached character sheet (same grey and white markings, pink nose, pale green eyes, red knitted scarf, soft watercolour, no hard black outlines), draw a square app icon: Mario's head and shoulders, smiling, looking at the viewer, filling most of the square, on a round soft background in warm golden lantern light with a few tiny snowflakes. Square format, the circle touching the edges. No text, no letters, no logos, no watermark.
+```
+
+Check: square, Mario recognisable, readable when very small. It is NOT cut out: Claude resizes it to the icon sizes iPhone needs.

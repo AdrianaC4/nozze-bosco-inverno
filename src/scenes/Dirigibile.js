@@ -51,6 +51,8 @@ class Dirigibile extends Phaser.Scene {
     carica(this, 'sfondo_dirigibile', 'assets/game/bg_dirigibile.jpg');
     carica(this, 'nave_corpo', 'assets/game/airship_corpo.png');
     carica(this, 'nave_elica', 'assets/game/airship_elica.png');
+    carica(this, 'lanterna', 'assets/game/lantern.png');
+    carica(this, 'nuvola', 'assets/game/dark_cloud.png');
   }
 
   create() {
@@ -116,7 +118,9 @@ class Dirigibile extends Phaser.Scene {
   }
 
   creaInterfaccia() {
-    this.testoLanterne = this.add.text(40, 40, '', {
+    const icona = this.add.image(46, 40, 'lanterna').setDepth(40);
+    icona.setScale(48 / icona.height);
+    this.testoLanterne = this.add.text(78, 40, '', {
       fontFamily: FONT, fontSize: '36px', color: '#ffe9a8',
     }).setOrigin(0, 0.5).setDepth(40);
     this.aggiornaLanterne();
@@ -137,7 +141,7 @@ class Dirigibile extends Phaser.Scene {
   }
 
   aggiornaLanterne() {
-    this.testoLanterne.setText(`🏮 ${this.lanterne} / ${DIRIGIBILE.LANTERNE_PER_VINCERE}`);
+    this.testoLanterne.setText(`${this.lanterne} / ${DIRIGIBILE.LANTERNE_PER_VINCERE}`);
     this.testoLanterne.setColor(this.lanterne >= DIRIGIBILE.LANTERNE_PER_VINCERE ? '#9be39b' : '#ffe9a8');
   }
 
@@ -243,7 +247,8 @@ class Dirigibile extends Phaser.Scene {
     const alone = this.add.image(0, 0, creaBagliore(this)).setDisplaySize(120, voce.altezza + 60)
       .setBlendMode(Phaser.BlendModes.ADD).setAlpha(0.5);
     const cerchio = this.add.ellipse(0, 0, 46, voce.altezza).setStrokeStyle(8, 0xffd34d);
-    const lanterna = this.add.text(0, 0, '🏮', { fontSize: '30px' }).setOrigin(0.5);
+    const lanterna = this.add.image(0, 0, 'lanterna');
+    lanterna.setScale(44 / lanterna.height);
     anello.add([alone, cerchio, lanterna]);
     anello.altezza = voce.altezza;
     anello.lanterna = lanterna;
@@ -260,11 +265,12 @@ class Dirigibile extends Phaser.Scene {
   }
 
   creaNuvola(voce) {
+    // The grumpy dark snow cloud (Adri's Gemini picture), about 150 pixels tall
     const nuvola = this.add.container(voce.verso > 0 ? -120 : LARGHEZZA + 120, voce.y).setDepth(9);
-    [[-45, 8, 50], [0, -10, 60], [45, 6, 48], [10, 20, 55]].forEach(([x, y, r]) => {
-      nuvola.add(this.add.circle(x, y, r, 0x4a5570, 0.95));
-    });
-    nuvola.add(this.add.text(0, 0, '❄', { fontFamily: 'sans-serif', fontSize: '28px', color: '#aab6cc' }).setOrigin(0.5));
+    const immagine = this.add.image(0, 0, 'nuvola');
+    immagine.setScale(150 / immagine.height);
+    nuvola.add(immagine);
+    this.tweens.add({ targets: immagine, y: 6, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
     nuvola.verso = voce.verso;
     this.nuvole.push(nuvola);
   }
@@ -380,7 +386,8 @@ class Dirigibile extends Phaser.Scene {
     if (this.lanterne > 0) {
       this.lanterne -= 1;
       this.aggiornaLanterne();
-      const caduta = this.add.text(this.nave.x, this.nave.y + 50, '🏮', { fontSize: '28px' }).setOrigin(0.5).setDepth(20);
+      const caduta = this.add.image(this.nave.x, this.nave.y + 50, 'lanterna').setDepth(20);
+      caduta.setScale(36 / caduta.height);
       this.tweens.add({ targets: caduta, y: ALTEZZA + 50, angle: 180, duration: 1000, ease: 'Quad.In', onComplete: () => caduta.destroy() });
     }
     this.tweens.add({
