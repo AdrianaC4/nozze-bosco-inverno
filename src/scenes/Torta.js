@@ -15,6 +15,8 @@
 //    If the bubble stays at the end of the bar for a moment (the bar flashes red as a warning),
 //    the top piece falls off the cake and a life is lost. Nothing can fall while the cake is empty.
 // 4. Mario sometimes tries to lick the frosting ("Slurp!"), which wobbles the cake a little.
+//    Sometimes he jumps on the table and bats at the sliding piece, which suddenly changes direction,
+//    until someone taps him to shoo him off (a tap on Mario doesn't count in the gesture rule).
 // 5. 3 shared snowflake lives (a missed piece costs one). No timer. Stars by "Perfetto!" drops.
 
 // --- Tuning numbers (change these to make the game easier or harder) ---
@@ -80,6 +82,7 @@ class Torta extends Phaser.Scene {
     this.deriva = 0;              // the push the cake has on its own right now (changes every few seconds)
     this.storia = [];             // the landed layers, so the top one can fall off: { oggetto, cimaPrima }
     this.tempoAlLimite = 0;       // how long the bubble has been at the end of the bar
+    this.marioSulTavolo = false;  // true while Mario is on the table batting at the piece
     this.avvisoUnDito = false;    // true for a moment after showing "Un dito solo!"
     this.mobile = null;           // the piece sliding above the cake
 
@@ -177,6 +180,13 @@ class Torta extends Phaser.Scene {
   }
 
   ditoGiu(dito) {
+    // A tap on Mario while he's on the table shoos him off (and is not a drop for Silvia)
+    if (this.marioSulTavolo && Phaser.Math.Distance.Between(dito.x, dito.y, this.mario.x, this.mario.y - 75) < 90) {
+      this.dita.set(dito.id, null);
+      suonaMiao(this);
+      this.marioScende();
+      return;
+    }
     const zona = this.zonaDi(dito.x, dito.y);
     this.dita.set(dito.id, zona);
     if (zona === 'silvia' && this.fase === 'gioco') this.lasciaCadere();
@@ -478,12 +488,54 @@ class Torta extends Phaser.Scene {
     this.oscillazione = { ampiezza: Math.max(ampiezza, this.oscillazione.ampiezza * 0.5), tempo: 0 };
   }
 
+  // Every 7-11 seconds Mario does something: licks the frosting, or jumps on the table
   programmaLeccata() {
     this.time.delayedCall(Phaser.Math.Between(7000, 11000), () => {
       if (this.fase === 'fine') return;
-      this.leccata();
+      if (!this.marioSulTavolo) {
+        if (Math.random() < 0.5) this.leccata();
+        else this.marioSalta();
+      }
       this.programmaLeccata();
     });
+  }
+
+  // Mario jumps on the table and bats at the sliding piece until someone taps him (or he gets bored)
+  marioSalta() {
+    this.marioSulTavolo = true;
+    this.tweens.add({ targets: this.mario, x: 400, y: 552, duration: 350, ease: 'Quad.Out' });
+    this.time.delayedCall(350, () => {
+      if (!this.marioSulTavolo) return;
+      this.slurp.setText(TESTI.torta.marioGioca).setPosition(400, 395).setVisible(true);
+      suonaMiao(this);
+      if (!this.avvisoScaccia) {
+        this.avvisoScaccia = true;
+        this.mostraMessaggio(TESTI.torta.scaccia);
+      }
+    });
+    this.zampate = this.time.addEvent({
+      delay: 1100,
+      repeat: 4,
+      callback: () => {
+        if (this.fase === 'fine') return;
+        // A swipe of the paw: the sliding piece changes direction
+        this.tweens.add({ targets: this.mario, angle: 18, duration: 110, yoyo: true });
+        if (this.fase === 'gioco') {
+          this.direzione = -this.direzione;
+          suonaTono(this, 700, 500, 0.08, 'triangle', 0.1);
+        }
+        if (this.zampate.getRepeatCount() === 0) this.marioScende(); // bored: he hops down by himself
+      },
+    });
+  }
+
+  // Back to the floor (shooed away, or bored)
+  marioScende() {
+    if (!this.marioSulTavolo) return;
+    this.marioSulTavolo = false;
+    if (this.zampate) this.zampate.remove();
+    this.slurp.setVisible(false).setText(TESTI.torta.slurp);
+    this.tweens.add({ targets: this.mario, x: 250, y: 700, angle: 0, duration: 350, ease: 'Quad.In' });
   }
 
   // Mario stretches towards the cake and licks the frosting

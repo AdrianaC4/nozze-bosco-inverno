@@ -13,7 +13,8 @@
 //    - Rings get smaller; gusts of wind push the airship; dark snow clouds drift across the sky
 //      and make a lantern fall out.
 // 3. 16 rings. At least 10 lanterns to win (stars: 10-12 = 1, 13-14 = 2, 15-16 = 3).
-// 4. Mario rides on the bow with his scarf blowing.
+// 4. Mario rides in the gondola, but he can't sit still: every 9-13 seconds he leans out to bat at a
+//    snowflake and his weight makes the airship dip ("Mario, stai fermo!").
 
 // --- Tuning numbers (change these to make the game easier or harder) ---
 const DIRIGIBILE = {
@@ -35,6 +36,7 @@ const DIRIGIBILE = {
   GIRI_SOFFIO: 14,           // propeller speed when Francesco blows as hard as possible (hovering needs 5)
   STERZO: 1.3,               // how far the airship moves for each pixel Silvia's finger moves
   NUVOLE: 8,
+  TUFFO_MARIO: 420,          // how fast the airship drops for a moment when Mario leans out (pixels per second)
   RAFFICA: 130,              // how hard a gust pushes the airship sideways (pixels per second)
 };
 
@@ -124,6 +126,7 @@ class Dirigibile extends Phaser.Scene {
     const coppia = this.add.image((318 - CENTRO_PALLONE.x) * scala, (512 - CENTRO_PALLONE.y) * scala, 'coppia').setOrigin(0.5, 1);
     coppia.setScale(46 / coppia.height);
     this.tweens.add({ targets: coppia, angle: { from: -3, to: 3 }, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+    this.marioNave = mario;
     this.nave.add([this.elica, coppia, corpo, mario]);
   }
 
@@ -267,10 +270,27 @@ class Dirigibile extends Phaser.Scene {
       this.fase = 'volo';
       Musica.suona(this, 'corsa');
       this.programmaRaffica();
+      this.programmaMario();
     };
     Microfono.accendi(this).then((acceso) => { if (acceso || !partito) parti(acceso); });
     // Safety net: if no answer arrives, don't wait forever
     this.time.delayedCall(DIRIGIBILE.ATTESA_MICROFONO * 1000, () => { if (!partito) parti(false); });
+  }
+
+  // Mario leans out of the gondola to bat at a snowflake: the airship dips
+  programmaMario() {
+    this.time.delayedCall(Phaser.Math.Between(9000, 13000), () => {
+      if (this.fase !== 'volo') return;
+      const m = this.marioNave;
+      this.tweens.add({ targets: m, x: m.x + 16, angle: 28, duration: 250, yoyo: true, hold: 450, ease: 'Sine.Out' });
+      suonaMiao(this);
+      this.velocitaVerticale = DIRIGIBILE.TUFFO_MARIO;
+      const fumetto = this.add.text(this.nave.x, this.nave.y - 110, TESTI.dirigibile.marioFermo, {
+        fontFamily: FONT, fontSize: '26px', color: '#2a3d66', backgroundColor: '#fdf3e1', padding: { x: 10, y: 5 },
+      }).setOrigin(0.5).setDepth(30);
+      this.tweens.add({ targets: fumetto, alpha: 0, delay: 1100, duration: 300, onComplete: () => fumetto.destroy() });
+      this.programmaMario();
+    });
   }
 
   programmaRaffica() {

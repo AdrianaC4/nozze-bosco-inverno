@@ -67,7 +67,7 @@ There are four mini games, each bringing back one thing for the wedding, and the
 - **Silvia:** drags to steer down the slope (the sled follows how her finger moves, so she can steer across the whole screen from her half), dodging trees and catching gifts.
 - **Countdown:** 35 seconds to reach the village, otherwise try again. A chequered finish line ("Traguardo") scrolls in near the end.
 - **Win:** reach the village in time with at least 5 gifts. Stars: 5–9 gifts = 1 star, 10–14 = 2 stars, 15+ = 3 stars.
-- **Mario:** runs alongside the sled and meows before a tree comes up.
+- **Mario:** runs beside the sled. Every 8–10 seconds he dashes off and comes zigzagging down the slope from the top, chasing a snowflake ("Miao!"). Hitting him counts like hitting a tree (a life lost, the sled slows), but it's comic: he tumbles into a snowball and shakes the snow off ("Miaaao!!"). He no longer meows to warn about trees: his meow now means "Mario is coming".
 - (The uphill push at the start was removed after the first iPhone playtest.)
 
 ### 2. La Torta Nuziale (the wedding cake)
@@ -78,7 +78,7 @@ There are four mini games, each bringing back one thing for the wedding, and the
 - **Francesco:** keeps the cake **balanced**, with his two controls on the **two edges of the screen**: a ◀ strip on the far left and a ▶ strip on the far right (awkward on purpose; an agreed exception to the left-half/right-half rule). A balance bar with a bubble and a green zone sits at the bottom in the middle. The cake keeps drifting to one side on its own (more as it grows); every drop pushes it towards the side where the piece landed (harder when off-centre and as the cake grows), and Mario's licks push it too. **One finger only:** holding ◀ pushes the bubble left, ▶ right; holding both does nothing (the strips turn grey and "Un dito solo!" appears), so he has to move his finger back and forth between the two edges. Outside the green zone the cake leans, pieces slide faster, and a dropped piece slides with the tilt. **If the bubble stays at the end of the bar for a moment** (it flashes red as a warning, about 0.7 seconds), **the top piece falls off** (a nutcracker if there is one) and a life is lost, so the cake can't be finished without Francesco. Nothing can fall while the cake is still empty, and Silvia's next piece slides in straight away. (Earlier ideas, two-finger hold and ◀/▶ zones on his own half, were too easy.)
 - **No timer.** 3 lives: a missed piece costs one.
 - **Win:** the cake with both nutcrackers. Stars by "Perfetto!" drops (out of 6): 0–1 = 1 star, 2–3 = 2 stars, 4+ = 3 stars.
-- **Mario:** sits next to the table and every so often stretches to lick the frosting ("Slurp!"), which wobbles the cake a little.
+- **Mario:** sits next to the table. Every 7–11 seconds he either stretches to lick the frosting ("Slurp!", a small wobble) or jumps on the table ("Gioco anch'io!") and bats at the sliding piece about once a second, making it change direction, until someone taps him to shoo him off (or he gets bored after 5 swipes). A tap on Mario doesn't count in the gesture rule and doesn't drop a piece.
 
 ### 3. Gli Anelli Perduti (the lost rings)
 
@@ -87,7 +87,7 @@ There are four mini games, each bringing back one thing for the wedding, and the
 - **Silvia:** taps an ice block to choose it. **At most 2 pictures can be uncovered at a time.** When two match they glow ("Uguali! Silvia, toccale!") and she taps both to turn them green (found). When they don't match they freeze over again after 2 seconds, so they must remember them.
 - **Francesco (ice pickaxe):** as soon as a block is chosen, 3 numbered points appear on his half, one after another, in random places (different every time). He touches the first and **drags his finger through the others without lifting it**; a crack follows his finger. Lifting the finger early: "Non staccare il dito!" and new points. At the third point the ice shatters and the picture appears. (A finger already down that slides onto point 1 also counts.)
 - **Countdown:** 60 seconds (a fair test robot needs about 31–42 s; the first idea, 40 s, would be too tight for people). No lives. **Stars** by time left: 15+ s = 3 stars, 7+ s = 2 stars.
-- **Mario:** looks guilty on the start card and during the game, proud at the end.
+- **Mario:** looks guilty on the start card and during the game, proud at the end. Every 9–13 seconds he gets up to mischief, alternating: (1) he walks onto the ice and swaps two frozen blocks with his paw ("Mario ha scambiato due tessere!"; the two blocks slide across each other, so the players can follow it); (2) he wanders around Francesco's side: if Francesco's finger runs into him while joining the points, Francesco starts again from point 1 (same points).
 - (First version, replaced: Francesco swiped to dig snow layers.)
 
 ### 4. Il Dirigibile delle Lanterne (the lantern airship)
@@ -98,7 +98,7 @@ There are four mini games, each bringing back one thing for the wedding, and the
 - To get a lantern they must reach the right height and the right place before the ring fades, so they talk all the time. **Neither can do it alone** (tests: only Francesco = 0 lanterns, only Silvia = 3, both = 12–14). (First version, replaced: rings flew in from the right, so Francesco could win alone.)
 - **Harder as it goes:** rings get smaller; gusts of wind ("Vento!") push the airship sideways; dark snow clouds drift across the sky from either side and make a lantern fall out if they fly into one.
 - **Win:** 16 rings, at least 10 lanterns. Stars: 10–12 = 1, 13–14 = 2, 15–16 = 3. Fewer than 10: "Poche lanterne… Riproviamo!".
-- **Mario:** rides on the airship's bow with his scarf blowing in the wind.
+- **Mario:** rides in the gondola with Silvia and Francesco, but can't sit still: every 9–13 seconds he leans out to bat at a snowflake and his weight makes the airship dip suddenly ("Mario, stai fermo!"), so Francesco has to blow harder.
 - **Music:** "corsa", its speed follows the propeller.
 
 ### Finale: La Cerimonia (the ceremony)
@@ -156,6 +156,7 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Game 1 | Silvia: Trascina per guidare · Francesco: Tocca veloce per spingere! | Drag to steer · Tap fast to push |
 | Game 1 | Tempo scaduto! Riproviamo! · Oh no! Riproviamo! · Pochi regali… Riproviamo! | Time's up! · Oh no! · Too few gifts… Let's try again! |
 | Game 1 (Mario) | Attenti agli alberi! | Watch out for the trees! |
+| Mario's mischief | Miaaao!! · Gioco anch'io! · Toccate Mario per mandarlo via! · Mario ha scambiato due tessere! · Attento a Mario! Ricomincia dal punto 1 · Mario, stai fermo! | (offended meow) · I'm playing too! · Tap Mario to shoo him away! · Mario swapped two tiles! · Watch out for Mario! Start again from point 1 · Mario, sit still! |
 | Game 2 | Silvia: Tocca al momento giusto · Francesco: Tieni la torta dritta con un dito solo, premendo ◀ o ▶ ai bordi | Tap at the right moment · Keep the cake straight with one finger, pressing ◀ or ▶ at the edges |
 | Game 2 | Perfetto! · Slurp! · Oh no, è caduto! · Attenzione! La torta pende troppo! · Un dito solo! | Perfect! · Slurp! · Oh no, it fell! · Careful! The cake leans too much! |
 | Game 2 (Mario) | Mmm… posso assaggiare? | Mmm… can I have a taste? |

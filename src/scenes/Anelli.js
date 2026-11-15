@@ -10,7 +10,10 @@
 //    - Two uncovered pictures: if they match they glow, and Silvia taps both to make them green (found).
 //      If they don't match, they freeze over again after 2 seconds.
 // 3. Countdown. Find all 6 pairs to win. Stars by time left.
-// 4. Mario looks guilty until the end, then proud.
+// 4. Mario looks guilty until the end, then proud. Every 9-13 seconds he gets up to mischief:
+//    - he walks onto the ice and swaps two frozen blocks with his paw (so their memory is scrambled), or
+//    - he wanders around Francesco's side: if Francesco's finger runs into him while joining the points,
+//      Francesco has to start again from point 1.
 
 // --- Tuning numbers (change these to make the game easier or harder) ---
 const ANELLI = {
@@ -56,6 +59,10 @@ class Anelli extends Phaser.Scene {
     this.punti = [];          // Francesco's points for the current block
     this.prossimoPunto = 0;   // index of the next point he must reach
     this.ditoPiccone = null;  // id of Francesco's finger while he draws
+    this.marioOccupato = false; // true while Mario is up to mischief
+    this.marioInGiro = false;   // true while he wanders on Francesco's side
+    this.marioImmune = false;   // true for a moment after Francesco ran into him
+    this.prossimaMarachella = null;
 
     // The frozen clearing (Adri's Gemini background), with a faint line between the two halves
     this.add.image(LARGHEZZA / 2, ALTEZZA / 2, 'sfondo_anelli');
@@ -182,6 +189,12 @@ class Anelli extends Phaser.Scene {
       return;
     }
     if (dito.id !== this.ditoPiccone) return;
+    // Ran into Mario while joining the points: start again from point 1
+    if (this.marioInGiro && !this.marioImmune
+      && Phaser.Math.Distance.Between(dito.x, dito.y, this.mario.x, this.mario.y - 60) < 65) {
+      this.marioUrtato();
+      return;
+    }
     this.piccone.setPosition(dito.x, dito.y);
     this.disegnaCrepa(dito.x, dito.y);
     const punto = this.punti[this.prossimoPunto];
@@ -282,7 +295,9 @@ class Anelli extends Phaser.Scene {
   // ---------------------------------------------------------------- Francesco
 
   // New random points on Francesco's half; only the first one is visible
-  creaPunti() {
+  // (with "stessi" = true the points stay where they were: used when Francesco must start again from point 1)
+  creaPunti(stessi) {
+    const vecchi = stessi ? this.punti.map((p) => ({ x: p.x, y: p.y })) : null;
     this.punti.forEach((p) => p.cerchio.destroy());
     this.punti = [];
     this.prossimoPunto = 0;
@@ -291,7 +306,8 @@ class Anelli extends Phaser.Scene {
       let x;
       let y;
       let tentativi = 0;
-      do {
+      if (vecchi) ({ x, y } = vecchi[i]);
+      else do {
         x = Phaser.Math.Between(720, 1200);
         y = Phaser.Math.Between(150, 560);
         tentativi += 1;
@@ -405,6 +421,104 @@ class Anelli extends Phaser.Scene {
     this.fase = 'gioco';
     Musica.suona(this, 'corsa');
     this.mostraSuggerimento(TESTI.anelli.scegli);
+    this.programmaMario();
+  }
+
+  // ---------------------------------------------------------------- Mario's mischief
+
+  programmaMario() {
+    this.time.delayedCall(Phaser.Math.Between(9000, 13000), () => {
+      if (this.fase !== 'gioco') return;
+      if (!this.marioOccupato) {
+        // Alternate: one swap, one walk on Francesco's side
+        this.prossimaMarachella = this.prossimaMarachella === 'scambio' ? 'giro' : 'scambio';
+        if (this.prossimaMarachella === 'scambio') this.marioScambia();
+        else this.marioGira();
+      }
+      this.programmaMario();
+    });
+  }
+
+  // Mario walks (with little hops) to a place, then does something
+  marioVa(x, y, durata, poi) {
+    this.mario.setFlipX(x < this.mario.x);
+    this.tweens.add({ targets: this.mario, x, duration: durata, ease: 'Sine.InOut' });
+    this.tweens.add({
+      targets: this.mario, y, duration: durata, ease: 'Sine.InOut',
+      onComplete: () => { if (this.fase === 'gioco') poi(); },
+    });
+  }
+
+  marioACasa() {
+    this.marioVa(1180, 710, 900, () => {
+      this.mario.setFlipX(false);
+      this.marioOccupato = false;
+    });
+  }
+
+  // He walks onto the ice and swaps two frozen blocks with his paw
+  marioScambia() {
+    const ghiacciate = Phaser.Utils.Array.Shuffle(this.celle.filter((c) => c.stato === 'ghiaccio'));
+    if (ghiacciate.length < 2) return;
+    const [a, b] = ghiacciate;
+    this.marioOccupato = true;
+    this.marioVa((a.x + b.x) / 2, Math.max(a.y, b.y) + 95, 1100, () => {
+      // Only if both are still frozen when he gets there
+      if (a.stato !== 'ghiaccio' || b.stato !== 'ghiaccio') {
+        this.marioACasa();
+        return;
+      }
+      suonaMiao(this);
+      this.mostraSuggerimento(TESTI.anelli.scambio);
+      this.tweens.add({ targets: this.mario, angle: -15, duration: 120, yoyo: true, repeat: 1 });
+      // What is hidden under the two blocks changes place...
+      [a.tipo, b.tipo] = [b.tipo, a.tipo];
+      [a.figura, b.figura] = [b.figura, a.figura];
+      a.figura.setPosition(a.x, a.y);
+      b.figura.setPosition(b.x, b.y);
+      // ...and we see the two blocks slide across each other
+      [[a, b], [b, a]].forEach(([da, verso]) => {
+        da.cornice.setVisible(true);
+        this.tweens.add({
+          targets: da.blocco, x: verso.x, y: verso.y, duration: 600, ease: 'Sine.InOut',
+          onComplete: () => {
+            da.blocco.setPosition(da.x, da.y);
+            if (da !== this.inRottura) da.cornice.setVisible(false);
+          },
+        });
+      });
+      this.time.delayedCall(900, () => this.marioACasa());
+    });
+  }
+
+  // He wanders around Francesco's side for a while
+  marioGira() {
+    this.marioOccupato = true;
+    this.marioInGiro = true;
+    const tappe = [0, 1, 2].map(() => ({ x: Phaser.Math.Between(780, 1120), y: Phaser.Math.Between(300, 570) }));
+    const prossima = () => {
+      const tappa = tappe.shift();
+      if (!tappa) {
+        this.marioInGiro = false;
+        this.marioACasa();
+        return;
+      }
+      this.marioVa(tappa.x, tappa.y, 1300, () => this.time.delayedCall(500, () => { if (this.fase === 'gioco') prossima(); }));
+    };
+    prossima();
+  }
+
+  // Francesco's finger ran into Mario: the same points again, from point 1
+  marioUrtato() {
+    this.marioImmune = true;
+    this.time.delayedCall(1200, () => { this.marioImmune = false; });
+    suonaMiao(this);
+    this.mostraSuggerimento(TESTI.anelli.attentoMario);
+    this.tweens.add({ targets: this.mario, angle: 20, duration: 90, yoyo: true, repeat: 2 });
+    this.ditoPiccone = null;
+    this.piccone.setAlpha(0.5);
+    if (this.inRottura) this.inRottura.crepe.clear();
+    this.creaPunti(true);
   }
 
   vittoria() {
@@ -414,7 +528,9 @@ class Anelli extends Phaser.Scene {
     if (this.tempoRimasto >= ANELLI.STELLE_3) stelle = 3;
     Musica.tempoNormale();
 
-    // Mario is proud now
+    // Mario is proud now (back at his place, whatever he was up to)
+    this.tweens.killTweensOf(this.mario);
+    this.mario.setPosition(1180, 710).setAngle(0).setFlipX(false);
     this.mario.setTexture('mario_felice');
     this.mario.setScale(130 / this.mario.height);
     for (let i = 0; i < 6; i++) {

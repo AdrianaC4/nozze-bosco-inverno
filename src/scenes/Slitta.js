@@ -5,7 +5,8 @@
 //    - Silvia drags on her half to steer left and right (the sled follows how her finger MOVES).
 //    - Francesco taps on his half to push: the sled slowly loses speed on its own.
 //      Faster = reach the village sooner, but harder to dodge.
-//    - Mario runs beside the sled and says "Miao!" just before a tree in the sled's path.
+//    - Mario runs beside the sled. Every 8-10 seconds he dashes off, then comes zigzagging down the
+//      slope from the top chasing a snowflake ("Miao!"): hitting him counts like hitting a tree.
 // 3. 40-second countdown: reach the village in time, or try again.
 // 4. 3 shared snowflake lives: hitting a tree costs one. Losing all 3 restarts instantly.
 // 5. Reach the village with at least 5 gifts to win (1-3 stars by gifts).
@@ -26,6 +27,8 @@ const SLITTA = {
   REGALI_2_STELLE: 10,         // 10-14 gifts = 2 stars
   REGALI_3_STELLE: 15,         // 15 or more = 3 stars
   VITE: 3,
+  MARIO_OGNI: [8, 10],         // seconds between Mario's dashes
+  MARIO_ZIGZAG: 230,           // how fast he zigzags sideways (pixels per second)
 };
 
 const COLORI_REGALI = [0xf08a80, 0x8fbfe8, 0xc9a3e0, 0x9fd8a8, 0xffffff]; // soft tints over the white gift (white = as painted)
@@ -99,6 +102,8 @@ class Slitta extends Phaser.Scene {
     this.invulnerabile = false;
     this.tempoRimasto = SLITTA.TEMPO;
     this.traguardo = null;        // the finish line, created near the end (reset here because a retry reuses the scene)
+    this.marioStato = 'accanto';  // see aggiornaMario
+    this.marioAttesa = 5;         // seconds until Mario's first dash
 
     // Snowy ground that scrolls: soft watercolour snow painted in code, with blue shadows,
     // sparkles and a few sled-sized drifts so you can feel the speed. It repeats seamlessly.
@@ -239,15 +244,6 @@ class Slitta extends Phaser.Scene {
         else this.colpisciAlbero(oggetto);
         if (this.fase !== 'discesa') return; // the last life was lost: stop here
       }
-      // Mario warns about a tree coming towards the sled
-      if (oggetto.tipo === 'albero' && !oggetto.avvisato && !oggetto.preso) {
-        const distanza = this.slitta.y - oggetto.y;
-        if (distanza > 150 && distanza < this.velocita * 1.1 && dx < 90) {
-          oggetto.avvisato = true;
-          this.direMario(TESTI.slitta.miao, 700);
-          suonaMiao(this);
-        }
-      }
     }
     // Remove what has gone off the bottom of the screen
     this.oggetti = this.oggetti.filter((oggetto) => {
@@ -258,10 +254,7 @@ class Slitta extends Phaser.Scene {
       return true;
     });
 
-    // Mario follows the sled, on whichever side has room
-    const latoMario = this.slitta.x > LARGHEZZA - 180 ? -100 : 100;
-    this.mario.x = Phaser.Math.Linear(this.mario.x, this.slitta.x + latoMario, 0.12);
-    this.mario.y = 530 - Math.abs(Math.sin(this.time.now / 90)) * 10; // little running hops
+    this.aggiornaMario(secondi, passo);
     this.miao.setPosition(this.mario.x, this.mario.y - 75);
 
     if (this.percorso >= SLITTA.PERCORSO) this.arrivo();
@@ -315,14 +308,104 @@ class Slitta extends Phaser.Scene {
     this.tweens.add({ targets: regalo, scale: 0, alpha: 0, duration: 200 });
   }
 
+  // ---------------------------------------------------------------- Mario
+
+  // Mario's states: 'accanto' (running beside the sled) -> 'via' (dashing off the top)
+  // -> 'zigzag' (coming down the slope from the top, zigzagging) -> 'accanto' again
+  aggiornaMario(secondi, passo) {
+    const salto = Math.abs(Math.sin(this.time.now / 90)) * 10; // little running hops
+    if (this.marioStato === 'accanto') {
+      // He follows the sled, on whichever side has room
+      const lato = this.slitta.x > LARGHEZZA - 180 ? -100 : 100;
+      this.mario.x = Phaser.Math.Linear(this.mario.x, this.slitta.x + lato, 0.12);
+      this.mario.y = Phaser.Math.Linear(this.mario.y, 530, 0.12) - salto * 0.3;
+      this.marioAttesa -= secondi;
+      // Time for a dash (not in the last stretch before the finish line)
+      if (this.marioAttesa <= 0 && this.percorso < SLITTA.PERCORSO - 2500) {
+        this.marioStato = 'via';
+        this.tweens.add({
+          targets: this.mario, y: -120, duration: 600, ease: 'Quad.In',
+          onComplete: () => this.time.delayedCall(500, () => this.marioScende()),
+        });
+      }
+    } else if (this.marioStato === 'zigzag') {
+      // Down the slope with the snow, a little faster, changing direction now and then
+      this.mario.y += passo + 60 * secondi;
+      this.mario.x += this.marioVerso * SLITTA.MARIO_ZIGZAG * secondi;
+      this.marioCambio -= secondi;
+      if (this.marioCambio <= 0 || this.mario.x < 90 || this.mario.x > LARGHEZZA - 90) {
+        this.marioVerso = this.mario.x < 90 ? 1 : (this.mario.x > LARGHEZZA - 90 ? -1 : -this.marioVerso);
+        this.marioCambio = Phaser.Math.FloatBetween(0.35, 0.8);
+      }
+      this.mario.setFlipX(this.marioVerso < 0);
+      // Did the sled run into him? (his picture's position is his feet)
+      const dx = Math.abs(this.mario.x - this.slitta.x);
+      const dy = Math.abs(this.mario.y - 35 - this.slitta.y);
+      if (dx < 55 && dy < 70 && !this.invulnerabile) {
+        this.colpisciMario();
+      } else if (this.mario.y > this.slitta.y + 150) {
+        this.marioTorna(); // he ran past: back beside the sled
+      }
+    }
+  }
+
+  // Mario appears at the top of the slope and comes down zigzagging
+  marioScende() {
+    if (this.fase !== 'discesa') return;
+    this.marioStato = 'zigzag';
+    this.mario.setPosition(Phaser.Math.Between(200, LARGHEZZA - 200), -60);
+    this.marioVerso = Math.random() < 0.5 ? -1 : 1;
+    this.marioCambio = Phaser.Math.FloatBetween(0.35, 0.8);
+    this.direMario(TESTI.slitta.miao, 900);
+    suonaMiao(this);
+  }
+
+  marioTorna() {
+    this.marioStato = 'accanto';
+    this.mario.setFlipX(false);
+    this.marioAttesa = Phaser.Math.FloatBetween(SLITTA.MARIO_OGNI[0], SLITTA.MARIO_OGNI[1]);
+  }
+
+  // The sled ran into Mario: like a tree, but he tumbles into a snowball and shakes it off
+  colpisciMario() {
+    this.marioStato = 'capriola';
+    this.direMario(TESTI.slitta.miaoOffeso, 1200);
+    suonaMiao(this);
+    const scala = this.mario.scale;
+    this.tweens.add({
+      targets: this.mario, angle: 720, x: this.mario.x + this.marioVerso * 120, duration: 700, ease: 'Quad.Out',
+      onComplete: () => {
+        this.mario.setAngle(0);
+        // shaking the snow off
+        this.tweens.add({
+          targets: this.mario, scaleX: scala * 1.15, duration: 70, yoyo: true, repeat: 4,
+          onComplete: () => { this.mario.setScale(scala); this.marioTorna(); },
+        });
+      },
+    });
+    for (let i = 0; i < 10; i++) {
+      const neve = this.add.circle(this.mario.x, this.mario.y - 30, Phaser.Math.Between(5, 11), 0xffffff).setDepth(11);
+      this.tweens.add({
+        targets: neve, x: neve.x + Phaser.Math.Between(-90, 90), y: neve.y + Phaser.Math.Between(-90, 40), alpha: 0,
+        duration: 600, onComplete: () => neve.destroy(),
+      });
+    }
+    this.urto();
+  }
+
   colpisciAlbero(albero) {
     if (this.invulnerabile) return;
+    this.tweens.add({ targets: albero, angle: 15, duration: 100, yoyo: true, repeat: 2 });
+    this.urto();
+  }
+
+  // A crash (tree or Mario): lose a snowflake, slow down, a moment of safety
+  urto() {
     this.vite -= 1;
     this.fiocchiVita[this.vite].setAlpha(0.2);
     suonaTonfo(this);
     this.cameras.main.shake(250, 0.012);
     this.velocita = SLITTA.VELOCITA_MINIMA;
-    this.tweens.add({ targets: albero, angle: 15, duration: 100, yoyo: true, repeat: 2 });
 
     if (this.vite <= 0) {
       this.ricomincia(TESTI.slitta.ohNo);
