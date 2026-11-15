@@ -30,7 +30,7 @@ The two players have opposite strengths, so every mini game needs both of them.
 | --- | --- | --- | --- |
 | Silvia (left player) | Curly brown hair with a red ribbon, warm winter coat | Precision and organisation | Timing, aiming, matching, placing things exactly |
 | Francesco (right player) | Very short black hair, visible muscles, Christmas sweater with the sleeves pushed up even in the snow | Strength | Power: tapping fast, holding, pushing, cranking |
-| Mario (guide, not playable) | Grey-and-white cat: grey head and back, white face blaze, chest and paws, pink nose, pale green eyes (the real Mario is a darker charcoal grey with yellow-green eyes; the drawn version is softer and lighter, chosen by Adri). As a spirit he glows softly and wears a tiny red scarf | Forest spirit cat | Appears at the start of each mini game with a short tip, reacts to wins and fails, carries the rings in the finale |
+| Mario (guide, not playable) | Grey-and-white cat: grey head and back, white face blaze, chest and paws, pink nose, pale green eyes, **a very short stub tail** (only a few centimetres: it was cut when he was little) (the real Mario is a darker charcoal grey with yellow-green eyes; the drawn version is softer and lighter, chosen by Adri). As a spirit he glows softly and wears a tiny red scarf | Forest spirit cat | Appears at the start of each mini game with a short tip, reacts to wins and fails, carries the rings in the finale |
 
 Use the real photo of Mario as the art reference for his colours and markings.
 

@@ -6,7 +6,7 @@ Full details live in `docs/game-design.md` (game design) and `docs/art-guide.md`
 ## What this project is
 
 - A very simple **cooperative 2-player mini-game collection** for **one iPhone**, played in landscape.
-- It is a **wedding gift** for a couple, **Silvia** and **Francesco**, who will play it together. Their cat **Mario** appears as a forest spirit guide.
+- It is a **wedding gift** for a couple, **Silvia** and **Francesco**, who will play it together. Their cat **Mario** appears as a forest spirit guide. Mario has **a very short stub tail** (cut when he was little): every picture of him must show it.
 - Theme: **Christmas + Ghibli-inspired look** (soft watercolour, cozy forest spirits) — but **original characters only**, no Studio Ghibli characters or assets, and never write "Studio Ghibli" in image prompts.
 - Built by Adri, who has **never built a game before** and builds with AI help. There is **no deadline**.
 

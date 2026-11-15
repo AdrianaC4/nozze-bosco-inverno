@@ -246,7 +246,7 @@ Full body, fully visible with some empty space around, plain pure white backgrou
 Character blocks:
 - Silvia: `same face, same big curly brown hair with the red ribbon bow, same mustard yellow coat with round buttons, same red mittens, light brown tights and dark brown boots`
 - Francesco: `same face, same very short black hair, same red Christmas sweater with cream snowflakes and a green band, sleeves pushed up showing strong forearms, same dark blue trousers and brown boots`
-- Mario: `same grey and white markings (grey head and back, white blaze, white chest and white paws), same pink nose, same pale green eyes, same tiny red knitted scarf, same round chubby cartoon cat shape`
+- Mario: `same grey and white markings (grey head and back, white blaze, white chest and white paws), same pink nose, same pale green eyes, same tiny red knitted scarf, same very short fluffy stub tail, same round chubby cartoon cat shape`
 
 Pose lines — emotion poses (do these first):
 
@@ -430,3 +430,17 @@ Using exactly the same cat and painting style as the attached character sheet (s
 ```
 
 Check: square, Mario recognisable, readable when very small. It is NOT cut out: Claude resizes it to the icon sizes iPhone needs.
+
+### Mario's tail fix (done)
+
+The real Mario has **a very short stub tail** (a few centimetres; it was cut when he was little). The first Mario pictures had a long tail, so all four (`mario_sheet`, `mario_proud`, `mario_guilty`, `mario_rings`) were edited in Gemini (chat "Winter Wood – Mario tail"), attaching each picture plus Adri's photo of Mario walking:
+
+```
+The first attached image is a finished illustration of Mario, a cartoon cat. The second image is a photo of the real Mario: look at his tail, it is a very short stub, only a few centimetres long, because it was cut when he was little.
+
+Edit the first image: keep EVERYTHING exactly the same (the pose, the face, the expression, the scarf, the colours, the size, the watercolour style, the plain white background), and change ONLY the tail. Replace the long tail with a very short, fluffy grey stub tail, just a little round tuft, like in the photo. Remove the long tail completely and paint the white background or his body where it used to be.
+
+No text, no logos, no watermark.
+```
+
+**Every new picture of Mario must have the short stub tail.** (The app icon shows only his head and shoulders.)
