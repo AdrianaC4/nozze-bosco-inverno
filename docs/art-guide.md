@@ -51,7 +51,7 @@ Made with Prompt 5 (pose template).
 Not drawn in Gemini, restyled in code instead (they change shape while playing): cake layers, ice blocks, rings of light, snow, cracks, stars, lives, buttons. La Slitta's scrolling snowy ground also stays in code (seen from above and endless: very hard to draw seamlessly).
 
 **Priority A — backgrounds (16:9)**
-- [ ] `bg_torta.jpg` — cozy cottage kitchen at night (Prompt 6)
+- [x] `bg_torta.jpg` — cozy cottage kitchen at night (Prompt 6) — first try, in the game
 - [ ] `bg_dirigibile.jpg` — wide night sky over a snowy forest
 - [ ] `bg_anelli.jpg` — a frozen clearing in the snow, simple and calm
 

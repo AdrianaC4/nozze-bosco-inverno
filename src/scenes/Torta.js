@@ -59,6 +59,7 @@ class Torta extends Phaser.Scene {
 
   preload() {
     caricaMario(this);
+    carica(this, 'sfondo_torta', 'assets/game/bg_torta.jpg');
   }
 
   create() {
@@ -95,10 +96,8 @@ class Torta extends Phaser.Scene {
   // ---------------------------------------------------------------- the kitchen
 
   creaCucina() {
-    this.add.rectangle(0, 0, LARGHEZZA, ALTEZZA, 0xf1dcc0).setOrigin(0, 0);            // warm wall
-    this.add.rectangle(0, 610, LARGHEZZA, 110, 0x9c6b4a).setOrigin(0, 0);              // wooden floor
-    this.add.rectangle(1040, 90, 260, 200, 0x2a3d66).setOrigin(0, 0).setStrokeStyle(10, 0x8b5a2b); // window
-    this.add.rectangle(1170, 90, 8, 200, 0x8b5a2b).setOrigin(0.5, 0);
+    // The cozy kitchen at night (Adri's Gemini background)
+    this.add.image(LARGHEZZA / 2, ALTEZZA / 2, 'sfondo_torta');
 
     // The table (it jitters when Francesco isn't holding it)
     this.tavolo = this.add.container(CENTRO_TORTA, 0);
@@ -133,7 +132,7 @@ class Torta extends Phaser.Scene {
       }).setDepth(40));
     }
     this.testoPezzi = this.add.text(LARGHEZZA - 40, 52, '', {
-      fontFamily: FONT, fontSize: '36px', color: '#2a3d66',
+      fontFamily: FONT, fontSize: '36px', color: '#fdf3e1', stroke: '#2a3d66', strokeThickness: 6,
     }).setOrigin(1, 0.5).setDepth(40);
 
     // Francesco's balance bar: a tube with a green middle zone and a bubble
