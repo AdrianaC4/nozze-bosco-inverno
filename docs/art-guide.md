@@ -32,9 +32,9 @@
 Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` after clean-up). Gemini downloads are `.jpg`: keep raw files as `.jpg` exactly as downloaded; the cut-out versions in `assets/game/` become `.png`.
 
 ### Style and screens
-- [x] `style_anchor.jpg` — snowy forest village at dusk, lanterns unlit (also the title background)
-- [x] `style_anchor_lit.jpg` — same scene with the lanterns lit (reference for ceremony / ending)
-- [ ] `intro_1.png`, `intro_2.png`, `intro_3.png` — story panels
+- [x] `style_anchor.jpg` — snowy forest village at dusk, lanterns unlit (title, intro, ceremony "before")
+- [x] `style_anchor_lit.jpg` — same scene with the lanterns lit (intro scene 1, ceremony "after")
+- [ ] (optional) `intro_1–3.jpg` — painted story panels; the current intro already works with the art we have
 
 ### Character sheets
 - [x] `silvia_sheet.jpg`
@@ -42,25 +42,40 @@ Adjust as we go. File names are for `assets/raw/` (same name in `assets/game/` a
 - [x] `mario_sheet.jpg` (reference: real photo of Mario — not stored in the repo)
 
 ### Poses
-Made with Prompt 5 (pose template). Do the **emotion poses first**: they don't depend on gameplay. The **action poses** (steer, push, hold, dig, crank, run, lick) may change once the mini games are prototyped with plain shapes, so they can wait.
-- Emotion: [x] `silvia_cheer.jpg`, [x] `silvia_oops.jpg`, [x] `francesco_cheer.jpg`, [x] `francesco_oops.jpg`, [x] `mario_proud.jpg`, [x] `mario_guilty.jpg`, [x] `mario_rings.jpg`
-- Action: [ ] `silvia_steer.jpg`, [ ] `francesco_push.jpg`, [ ] `francesco_hold.jpg`, [ ] `francesco_dig.jpg`, [ ] `francesco_crank.jpg`, [ ] `mario_run.jpg`, [ ] `mario_lick.jpg`
+Made with Prompt 5 (pose template).
+- Emotion (all done): [x] `silvia_cheer.jpg`, [x] `silvia_oops.jpg`, [x] `francesco_cheer.jpg`, [x] `francesco_oops.jpg`, [x] `mario_proud.jpg`, [x] `mario_guilty.jpg`, [x] `mario_rings.jpg`
+- The planned action poses (steer, push, hold, dig, crank, run, lick) are **no longer needed**: after playtesting, Silvia and Francesco don't appear inside the mini games (they are the hands playing). Optional extras are in Priority D below.
 
-### Backgrounds (16:9)
-- [ ] `bg_slitta.png` — snowy hill slope with pine trees
-- [ ] `bg_torta.png` — cozy cottage kitchen at night
-- [ ] `bg_anelli.png` — snowy clearing (grid area in the middle)
-- [ ] `bg_dirigibile.png` — night sky above the forest
-- [ ] `bg_cerimonia.png` — the great tree clearing, ceremony set-up
-- [ ] `ending_scene.png` — Silvia, Francesco and Mario together under the lit tree
+### Art pass (step 9) — prioritised list agreed with Adri
 
-### Objects
-- [ ] `sled.png`, `gift_1.png`, `gift_2.png`, `gift_3.png`, `tree_obstacle.png`
-- [ ] `cake_layer.png`, `table.png`, `bg_torta.png`
-- [ ] `schiaccianoci_1.png` (navy coat, red trousers, gold crown, sceptre) and `schiaccianoci_2.png` (white/pink coat, light blue details, tall gold hat, lollipop) — the cake toppers, based on Adri's photo of two nutcracker ornaments
-- [ ] `snow_block.png`, tile icons: `tile_bell.png`, `tile_star.png`, `tile_ornament.png`, `tile_candycane.png`, `tile_mitten.png`, `tile_rings.png`
-- [ ] `airship.png`, `light_ring.png`, `lantern_light.png`
-- [ ] UI: `snowflake_life.png`, `star_rating.png`
+Not drawn in Gemini, restyled in code instead (they change shape while playing): cake layers, ice blocks, rings of light, snow, cracks, stars, lives, buttons. La Slitta's scrolling snowy ground also stays in code (seen from above and endless: very hard to draw seamlessly).
+
+**Priority A — backgrounds (16:9)**
+- [ ] `bg_torta.jpg` — cozy cottage kitchen at night (Prompt 6)
+- [ ] `bg_dirigibile.jpg` — wide night sky over a snowy forest
+- [ ] `bg_anelli.jpg` — a frozen clearing in the snow, simple and calm
+
+**Priority B — the "star" of each game**
+- [ ] `airship.png` — the little airship, side view (Mario is added on the bow in code)
+- [ ] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (from Adri's photo)
+- [ ] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (from Adri's photo)
+- [ ] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (no people)
+- [ ] `icone_anelli.png` — ONE image with the 6 hidden pictures in a row (bell, star, red ornament, candy cane, mitten, two gold rings); Claude cuts it into 6
+
+**Priority C — small objects**
+- [ ] `gift.png` — one wrapped gift (recoloured in code)
+- [ ] `tree_obstacle.png` — small snowy pine tree
+- [ ] `lantern.png` — glowing paper lantern
+- [ ] `dark_cloud.png` — grumpy dark snow cloud
+- [ ] `table.png` — wooden kitchen table, front view
+- [ ] `icon.png` — Home Screen app icon: Mario's face with his scarf on a round warm background
+
+**Priority D — optional**
+- [ ] Francesco with the ice pickaxe (for Gli Anelli)
+- [ ] Silvia and Francesco waving from the airship's gondola
+- [ ] `ending_scene.jpg` — all three under the lit tree
+
+Suggested order: day 1 = the 3 backgrounds + airship + 2 nutcrackers; day 2 = sled, icon sheet and the small objects; day 3 = optional.
 
 ## Prompts
 
@@ -258,3 +273,36 @@ Pose lines — action poses (wait until the mini game is prototyped; adjust if t
 | `mario_lick.jpg` | `standing on his hind legs, front paws up, tongue out, trying to lick something above him, eyes half closed with delight` |
 
 Check every pose: same face, hair, clothes and colours as the sheet (compare side by side); same size proportions; plain white background; only the objects mentioned; no text. If the character drifts, send: `Keep the character exactly like the attached character sheet: same face, same clothes, same colours, same proportions.`
+
+### Prompt 6 — Kitchen background (`bg_torta.jpg`)
+
+Start a new Gemini chat called "Winter Wood – Backgrounds" (use the same chat for all backgrounds). Attach `assets/raw/style_anchor.jpg`, then paste:
+
+```
+The attached image is the style reference for a cozy Christmas storybook game. Match its painting style exactly: hand-painted watercolour and gouache, soft edges, no hard black outlines, gentle painterly texture, the same warm and cold colours. Do not copy the scene, only the style.
+
+Create a wide landscape background illustration in 16:9 format: the inside of a small cozy wooden cottage kitchen at night on Christmas Eve, seen straight from the front.
+
+- Warm golden light from a hanging oil lamp and a few candles, soft shadows.
+- On the right side of the back wall, a small window with wooden frames showing the dark blue night and gently falling snow outside.
+- On the left side, a simple wooden shelf with a few jars, cups and a small Christmas garland. Maybe a few pine branches and red ribbons on the walls.
+- A wooden floor in the bottom part of the picture.
+- IMPORTANT: keep the whole middle of the picture calm and empty, with a plain softly lit wall and an empty floor, because a table and a wedding cake will be placed there later. No table, no furniture, no objects in the middle.
+- Keep the details soft and simple, not busy, so that the game pieces stay easy to see on top.
+
+No people, no animals, no text, no letters, no logos, no watermark.
+```
+
+Check:
+- Same soft watercolour style as the style anchor, warm and cozy.
+- The middle (wall and floor) is calm and empty: no table, no furniture there.
+- The window with snow is on the right, the details are at the sides.
+- No people, animals, text or watermark.
+
+Follow-ups (one change at a time, same chat):
+- Middle too busy: `Make the middle of the wall and the floor completely plain and empty, and move all objects to the far left and far right edges.`
+- Too dark: `Make the kitchen a bit brighter and warmer, with more golden lamp light, but keep it night outside the window.`
+- Too detailed: `Make it simpler and softer, more like a watercolour children's book illustration, with fewer details.`
+- A table appeared: `Remove the table and any furniture from the middle; the floor in the middle must be empty.`
+
+Save the best one as `bg_torta.jpg` and send it to Claude.
