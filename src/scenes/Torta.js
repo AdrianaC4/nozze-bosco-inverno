@@ -60,6 +60,8 @@ class Torta extends Phaser.Scene {
   preload() {
     caricaMario(this);
     carica(this, 'sfondo_torta', 'assets/game/bg_torta.jpg');
+    carica(this, 'schiaccianoci_1', 'assets/game/schiaccianoci_1.png');
+    carica(this, 'schiaccianoci_2', 'assets/game/schiaccianoci_2.png');
   }
 
   create() {
@@ -587,49 +589,14 @@ class Torta extends Phaser.Scene {
   }
 }
 
-// A nutcracker made of simple shapes, like Adri's two ornaments.
+// A nutcracker: Adri's Gemini pictures, based on her photo of two real ornaments.
 // tipo 0: navy coat, red trousers, gold crown, gold sceptre.
 // tipo 1: white coat with pink front, light blue details, tall gold hat, red-and-white lollipop.
-// Its position is at its feet (the bottom of the base).
+// Its position is at its feet (the bottom of the base), and it is 100 pixels tall.
 function creaSchiaccianoci(scena, tipo) {
   const c = scena.add.container(0, 0);
-  const pelle = 0xf3d6b0;
-  if (tipo === 0) {
-    c.add([
-      scena.add.ellipse(0, -4, 40, 10, 0xd4a537),                 // gold base
-      scena.add.rectangle(-6, -20, 9, 24, 0xc0392b),              // red legs
-      scena.add.rectangle(6, -20, 9, 24, 0xc0392b),
-      scena.add.rectangle(-6, -12, 10, 10, 0x2b1d14),             // black boots
-      scena.add.rectangle(6, -12, 10, 10, 0x2b1d14),
-      scena.add.rectangle(0, -46, 28, 32, 0x1f2f5c),              // navy coat
-      scena.add.circle(0, -52, 2, 0xd4a537), scena.add.circle(0, -44, 2, 0xd4a537),
-      scena.add.rectangle(0, -70, 20, 18, pelle),                 // face
-      scena.add.rectangle(0, -62, 18, 6, 0xffffff),               // white beard
-      scena.add.rectangle(0, -86, 24, 14, 0xd4a537),              // gold crown
-      scena.add.circle(0, -96, 5, 0xc0392b),                      // red top
-      scena.add.circle(0, -102, 3, 0xd4a537),                     // gold ball
-      scena.add.rectangle(-19, -54, 3, 50, 0xd4a537),             // sceptre
-      scena.add.circle(-19, -80, 4, 0xd4a537),
-    ]);
-  } else {
-    c.add([
-      scena.add.ellipse(0, -4, 40, 10, 0xaedcec),                 // light blue base
-      scena.add.rectangle(-6, -20, 9, 24, 0xffffff),              // white legs
-      scena.add.rectangle(6, -20, 9, 24, 0xffffff),
-      scena.add.rectangle(-6, -11, 10, 7, 0xf2a7b6),              // pink feet
-      scena.add.rectangle(6, -11, 10, 7, 0xf2a7b6),
-      scena.add.rectangle(0, -46, 28, 32, 0xffffff),              // white coat
-      scena.add.rectangle(0, -46, 10, 32, 0xf2a7b6),              // pink front
-      scena.add.rectangle(-15, -58, 8, 8, 0xaedcec),              // light blue epaulettes
-      scena.add.rectangle(15, -58, 8, 8, 0xaedcec),
-      scena.add.rectangle(0, -70, 20, 18, pelle),                 // face
-      scena.add.rectangle(0, -62, 18, 6, 0xffffff),               // white beard
-      scena.add.rectangle(0, -80, 24, 5, 0xaedcec),               // light blue band
-      scena.add.rectangle(0, -94, 22, 24, 0xd9b45a),              // tall gold hat
-      scena.add.text(0, -94, '❄', { fontFamily: 'sans-serif', fontSize: '14px', color: '#ffffff' }).setOrigin(0.5),
-      scena.add.rectangle(19, -50, 3, 44, 0xffffff),              // lollipop stick
-      scena.add.circle(19, -76, 9, 0xffffff).setStrokeStyle(3, 0xc0392b),
-    ]);
-  }
+  const immagine = scena.add.image(0, 0, tipo === 0 ? 'schiaccianoci_1' : 'schiaccianoci_2').setOrigin(0.5, 1);
+  immagine.setScale(100 / immagine.height);
+  c.add(immagine);
   return c;
 }

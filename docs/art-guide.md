@@ -57,10 +57,10 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 
 **Priority B — the "star" of each game**
 - [x] `airship.png` — the little airship, side view (Prompt 9) — in the game; split by Claude into `airship_corpo.png` + `airship_elica.png` so the propeller spins in code; Mario added in the gondola
-- [ ] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (from Adri's photo) (Prompt 10)
-- [ ] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (from Adri's photo) (Prompt 11)
-- [ ] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (no people)
-- [ ] `icone_anelli.png` — ONE image with the 6 hidden pictures in a row (bell, star, red ornament, candy cane, mitten, two gold rings); Claude cuts it into 6
+- [x] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (Prompt 10) — in the game
+- [x] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (Prompt 11) — in the game
+- [ ] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (no people) (Prompt 12)
+- [ ] `icone_anelli.png` — ONE image with the 6 hidden pictures in a row (bell, star, red ornament, candy cane, mitten, two gold rings); Claude cuts it into 6 (Prompt 13)
 
 **Priority C — small objects**
 - [ ] `gift.png` — one wrapped gift (recoloured in code)
@@ -374,3 +374,34 @@ Only the nutcracker, shown once, fully visible, on a plain pure white background
 Then, for nutcracker 2, the same prompt but replace the description with: `based on the RIGHT ornament in the photo: white coat with a pink front and light blue shoulder pieces and cuffs, white trousers, pink shoes, a tall gold hat with a white snowflake and a light blue band, a white beard and white hair, a black moustache, a round light blue base, holding a red-and-white swirl lollipop.`
 
 Check: same size and style for both, standing straight, plain white background, the colours match the photo.
+
+### Prompt 12 — The sled (`sled.jpg`)
+
+Same "Winter Wood – Objects" chat. Attach `assets/raw/mario_sheet.jpg` (style only), paste:
+
+```
+Using the same painting style as the attached reference (hand-painted watercolour and gouache, soft edges, no hard black outlines, gentle painterly texture; do not draw the cat), draw one object: a small wooden Christmas sled seen from above and slightly from behind, as if we were flying just above it, pointing straight up (away from the viewer).
+- Two curved wooden runners on the sides, a warm wooden seat.
+- Piled on the sled, a small heap of wrapped wedding gifts in red, gold, cream and soft blue paper with ribbons and bows, tied down with a rope.
+- A small red blanket hanging over the back.
+Only the sled, shown once, fully visible, on a plain pure white background. No people, no animals, no snow, no text, no letters, no logos, no watermark.
+```
+
+Check: seen from above, pointing up (the sled travels up the screen in the game), gifts on it, plain white background.
+
+### Prompt 13 — The 6 hidden pictures in one image (`icone_anelli.jpg`)
+
+Same chat, attach `assets/raw/mario_sheet.jpg` (style only), paste:
+
+```
+Using the same painting style as the attached reference (hand-painted watercolour and gouache, soft edges, no hard black outlines; do not draw the cat), draw six separate small Christmas objects in one single row from left to right, all the same size, evenly spaced with plenty of empty white space between them, none touching:
+1. a golden bell with a small red bow,
+2. a golden five-pointed star,
+3. a round red Christmas ornament ball with a gold cap,
+4. a red-and-white striped candy cane,
+5. a red knitted mitten with a white cuff,
+6. two gold wedding rings interlocked, sparkling.
+Plain pure white background. No text, no numbers, no labels, no logos, no watermark.
+```
+
+Check: exactly 6 objects, one row, well separated (Claude cuts them apart automatically), plain white background.
