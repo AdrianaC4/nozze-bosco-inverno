@@ -29,7 +29,11 @@ const Microfono = {
   },
 
   async accendi(scena) {
-    if (this.flusso) return true; // already on
+    // Already on? Only if iPhone hasn't stopped it in the meantime (phone locked, a call, the page hidden)
+    if (this.flusso) {
+      if (this.vivo()) return true;
+      this.spegni();
+    }
     const contesto = contestoAudio(scena);
     if (!this.disponibile() || !contesto) return false;
     try {
@@ -37,6 +41,8 @@ const Microfono = {
         // We want the raw sound: the phone's "improvements" would remove exactly the noise of blowing
         audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
       });
+      // If iPhone ends the stream later, forget it, so the next flight asks again
+      this.flusso.getAudioTracks().forEach((traccia) => { traccia.onended = () => this.spegni(); });
       this.sorgente = contesto.createMediaStreamSource(this.flusso);
       this.analizzatore = contesto.createAnalyser();
       this.analizzatore.fftSize = 2048;
@@ -51,6 +57,13 @@ const Microfono = {
       this.spegni();
       return false;
     }
+  },
+
+  // Is the microphone still really listening?
+  vivo() {
+    if (!this.flusso) return false;
+    const traccia = this.flusso.getAudioTracks()[0];
+    return Boolean(traccia) && traccia.readyState === 'live' && traccia.enabled;
   },
 
   // How hard someone is blowing right now: 0 to 1

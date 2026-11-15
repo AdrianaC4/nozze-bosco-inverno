@@ -38,6 +38,21 @@ const config = {
 
 const gioco = new Phaser.Game(config);
 
+// The Home Screen icon. iPhone fetches the icon file on its own, and on the test address (with its
+// self-made certificate) that separate fetch is refused, so no icon appeared. Here the page loads the
+// icon itself and hands it to iPhone ready-made. (On the real published address this isn't needed.)
+fetch('assets/icone/apple-touch-icon.png')
+  .then((risposta) => risposta.blob())
+  .then((immagine) => {
+    const lettore = new FileReader();
+    lettore.onload = () => {
+      const link = document.querySelector('link[rel="apple-touch-icon"]');
+      if (link) link.href = lettore.result;
+    };
+    lettore.readAsDataURL(immagine);
+  })
+  .catch(() => {});
+
 // Keep the game fitted to the screen. When opened from the Home Screen, iPhone sometimes reports the
 // wrong screen size for a moment (at launch, or while rotating) and sends no second message when the
 // real size arrives: the game then stayed too big, with its bottom cut off. So we measure the game's

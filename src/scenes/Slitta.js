@@ -62,6 +62,7 @@ class Slitta extends Phaser.Scene {
     this.input.on('pointerupoutside', (dito) => this.dita.delete(dito.id));
 
     this.preparaDiscesa();
+    aggiungiSalta(this, 'Torta');
     this.cameras.main.fadeIn(400, 15, 26, 46);
 
     if (this.ritenta) {
@@ -81,6 +82,8 @@ class Slitta extends Phaser.Scene {
   }
 
   ditoMuove(dito) {
+    // A finger that was already on the screen when the run (re)started: count it from now (without a push)
+    if (dito.isDown && !this.dita.has(dito.id)) this.dita.set(dito.id, { lato: latoDi(dito), xPrecedente: dito.x });
     const info = this.dita.get(dito.id);
     if (!info) return;
     const spostamento = dito.x - info.xPrecedente;

@@ -98,6 +98,7 @@ class Anelli extends Phaser.Scene {
     this.input.on('pointerup', (dito) => this.ditoSu(dito));
     this.input.on('pointerupoutside', (dito) => this.ditoSu(dito));
 
+    aggiungiSalta(this, 'Dirigibile');
     this.cameras.main.fadeIn(400, 15, 26, 46);
     if (this.ritenta) {
       this.inizia();

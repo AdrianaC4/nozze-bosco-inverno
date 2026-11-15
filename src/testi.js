@@ -19,6 +19,7 @@ const TESTI = {
   comuni: {
     bravissimi: 'Bravissimi!',
     toccaPerContinuare: 'Tocca per continuare',
+    salta: 'Salta ›',
   },
 
   // Story intro (4 scenes)

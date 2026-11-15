@@ -82,3 +82,27 @@ function vaiA(scena, nomeScena) {
   scena.cameras.main.fadeOut(600, 15, 26, 46);
   scena.cameras.main.once('camerafadeoutcomplete', () => scena.scene.start(nomeScena));
 }
+
+// Test mode only (MODALITA_PROVA in src/costanti.js): a small "Salta ›" button at the top of a mini game
+// that jumps straight to the next scene, without stars.
+function aggiungiSalta(scena, prossima) {
+  if (!MODALITA_PROVA) return;
+  const x = 330;
+  const y = 40;
+  const bottone = scena.add.container(x, y).setDepth(300);
+  const fondo = scena.add.graphics();
+  fondo.fillStyle(0x000000, 0.45);
+  fondo.fillRoundedRect(-55, -20, 110, 40, 20);
+  bottone.add([fondo, scena.add.text(0, 0, TESTI.comuni.salta, { fontFamily: FONT, fontSize: '24px', color: '#ffffff' }).setOrigin(0.5)]);
+  let saltato = false;
+  scena.input.on('pointerup', (dito) => {
+    if (saltato || Math.abs(dito.x - x) > 60 || Math.abs(dito.y - y) > 28) return;
+    saltato = true;
+    Microfono.spegni();
+    Musica.tempoNormale();
+    Salvataggio.segnaRaggiunto(prossima);
+    scena.time.removeAllEvents(); // nothing else should happen in this scene (no retry, no result card)
+    scena.fase = 'fine';
+    vaiA(scena, prossima);
+  });
+}

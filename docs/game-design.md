@@ -92,7 +92,7 @@ There are four mini games, each bringing back one thing for the wedding, and the
 
 ### 4. Il Dirigibile delle Lanterne (the lantern airship)
 
-- **Goal:** bring the lantern lights back from the night sky: reach rings of light, each with a lantern inside. Each ring **appears somewhere in the sky** (far from the previous one sideways) and **stays about 4.5 seconds**, then fades away.
+- **Goal:** bring the lantern lights back from the night sky: reach rings of light, each with a lantern inside. Each ring **appears somewhere in the sky** (far from the previous one sideways) and **stays about 5.5 seconds**, then fades away.
 - **Francesco controls the height by blowing into the microphone** (`src/microfono.js`): the harder he blows, the faster the propeller spins and the higher the airship climbs; if he stops, it slowly sinks. A wind gauge on his side shows his breath. iPhone asks for microphone permission when the mini game starts; nothing is recorded, only the loudness of the low rumble (below 250 Hz) is read. **Fallback:** if the microphone isn't available (it needs https), isn't allowed, or gives no answer within 12 seconds, he draws circles on his half instead (a crank wheel appears), and circles always work too. The microphone goes off when the mini game is won.
 - **Silvia controls left/right:** she drags on her half to fly the airship across the sky towards each ring.
 - To get a lantern they must reach the right height and the right place before the ring fades, so they talk all the time. **Neither can do it alone** (tests: only Francesco = 0 lanterns, only Silvia = 3, both = 12–14). (First version, replaced: rings flew in from the right, so Francesco could win alone.)

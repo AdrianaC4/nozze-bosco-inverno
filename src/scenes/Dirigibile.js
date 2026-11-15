@@ -23,7 +23,7 @@ const DIRIGIBILE = {
   STELLE_2: 13,
   STELLE_3: 15,
   OGNI: 3.0,                 // seconds between one ring appearing and the next
-  DURATA_ANELLO: 4.5,        // seconds a ring stays before fading away
+  DURATA_ANELLO: 5.5,        // seconds a ring stays before fading away
   TOLLERANZA: 55,            // how far sideways (pixels) from a ring's middle the airship can be and still collect it
   DISTANZA_ORIZZONTALE: 380, // a new ring is at least this far sideways from the previous one
   VELOCITA_NUVOLE: 140,      // how fast the dark clouds drift across the sky
@@ -36,7 +36,7 @@ const DIRIGIBILE = {
   GIRI_SOFFIO: 14,           // propeller speed when Francesco blows as hard as possible (hovering needs 5)
   STERZO: 1.3,               // how far the airship moves for each pixel Silvia's finger moves
   NUVOLE: 8,
-  TUFFO_MARIO: 420,          // how fast the airship drops for a moment when Mario leans out (pixels per second)
+  TUFFO_MARIO: 280,          // how fast the airship drops for a moment when Mario leans out (pixels per second)
   RAFFICA: 130,              // how hard a gust pushes the airship sideways (pixels per second)
 };
 
@@ -89,6 +89,7 @@ class Dirigibile extends Phaser.Scene {
     this.input.on('pointerup', (dito) => this.ditoSu(dito));
     this.input.on('pointerupoutside', (dito) => this.ditoSu(dito));
 
+    aggiungiSalta(this, 'Cerimonia');
     this.cameras.main.fadeIn(400, 15, 26, 46);
     if (this.ritenta) {
       this.inizia();
@@ -214,6 +215,10 @@ class Dirigibile extends Phaser.Scene {
   }
 
   ditoMuove(dito) {
+    // A finger that was already on the screen when the flight (re)started: count it from now
+    if (dito.isDown && !this.ditaSilvia.has(dito.id) && !(this.ditoFrancesco && this.ditoFrancesco.id === dito.id)) {
+      this.ditoGiu(dito);
+    }
     if (this.ditaSilvia.has(dito.id)) {
       const spostamento = dito.x - this.ditaSilvia.get(dito.id);
       this.ditaSilvia.set(dito.id, dito.x);
@@ -360,6 +365,12 @@ class Dirigibile extends Phaser.Scene {
 
     // Francesco's cranking: turning speed, smoothed, and it fades when he stops
     // (blowing into the microphone, or drawing circles: whichever is stronger)
+    if (this.usaMicrofono && !Microfono.vivo()) {
+      // The microphone stopped (iPhone can do that): fall back to circles straight away
+      this.usaMicrofono = false;
+      this.manovella.setVisible(true);
+      this.indicatoreSoffio.setVisible(false);
+    }
     const soffio = this.usaMicrofono ? Microfono.soffio() : 0;
     this.barraSoffio.scaleY = Phaser.Math.Linear(this.barraSoffio.scaleY, soffio, 0.3);
     const istantaneo = Math.max(this.carica / Math.max(secondi, 0.001), soffio * DIRIGIBILE.GIRI_SOFFIO);

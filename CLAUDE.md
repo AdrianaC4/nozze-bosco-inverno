@@ -53,6 +53,13 @@ index.html           (later)
 - **Microphone (blowing in Il Dirigibile) needs https:** run `python3 tools/server.py 8443 --https` and open `https://<address>:8443` on the iPhone, accepting the certificate warning once. The self-made certificate is in `.cert/` (not committed; the command to make it is in `tools/server.py`; remake it if the Mac's address changes). On the plain http address the game falls back to circles. To tune blowing: `MICROFONO.SOGLIA` / `PIENO` in `src/microfono.js`, `GIRI_SOFFIO` in `src/scenes/Dirigibile.js`.
 - No build step: plain `<script>` files loaded in order from `index.html` (Phaser, `src/testi.js`, scenes, `src/main.js`).
 
+## Before giving the gift (checklist)
+
+- [ ] Set `MODALITA_PROVA = false` in `src/costanti.js` (removes the "Salta ›" test button from the mini games).
+- [ ] Publish on GitHub Pages (real https: no certificate warning, the icon and the microphone work).
+- [ ] Open the published link once with `?reset=1` on the gift phone if it was used for testing.
+- [ ] Italian texts proofread by a native speaker (including Mario's lines).
+
 ## How Adri likes to work
 
 - **Align on the approach before implementing anything.** Explain the plan in plain words first, then wait for her OK.

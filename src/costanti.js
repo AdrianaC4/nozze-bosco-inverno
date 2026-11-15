@@ -9,6 +9,10 @@ const COLORE_FRANCESCO = 0xc0392b; // red, like his sweater
 const COLORE_CREMA = 0xfdf3e1;     // warm cream for text and outlines
 const COLORE_NOTTE = 0x0f1a2e;     // dark winter blue
 
+// TEST MODE: shows a small "Salta ›" button in every mini game, to jump to the next scene.
+// >>> Set this to false before giving the gift! <<<
+const MODALITA_PROVA = true;
+
 const FONT = 'Georgia, "Times New Roman", serif';
 
 // Which player owns a touch: decided by which half of the screen it lands on
