@@ -44,6 +44,7 @@ class Anelli extends Phaser.Scene {
   preload() {
     caricaMario(this);
     carica(this, 'sfondo_anelli', 'assets/game/bg_anelli.jpg');
+    TIPI.forEach((tipo) => carica(this, `tile_${tipo}`, `assets/game/tile_${tipo}.png`));
   }
 
   create() {
@@ -111,19 +112,12 @@ class Anelli extends Phaser.Scene {
     });
   }
 
-  // The hidden pictures (emoji and simple shapes for now; real art later)
+  // The hidden pictures (Adri's Gemini watercolours), fitted inside the tile
   creaFigura(tipo, x, y) {
-    if (tipo === 'pallina') {
-      const c = this.add.container(x, y);
-      c.add([
-        this.add.circle(0, 6, 32, 0xc0392b),
-        this.add.circle(-10, -4, 8, 0xffffff, 0.5),
-        this.add.rectangle(0, -30, 18, 12, 0xd4a537),
-      ]);
-      return c;
-    }
-    const emoji = { campana: '🔔', stella: '⭐', bastoncino: '🍭', guanto: '🧤', anelli: '💍' }[tipo];
-    return this.add.text(x, y, emoji, { fontSize: '64px' }).setOrigin(0.5);
+    const figura = this.add.image(x, y, `tile_${tipo}`);
+    figura.scalaBase = 88 / Math.max(figura.width, figura.height);
+    figura.setScale(figura.scalaBase);
+    return figura;
   }
 
   copriConGhiaccio(cella) {
@@ -241,7 +235,8 @@ class Anelli extends Phaser.Scene {
       cella.stato = 'trovata';
       this.tweens.killTweensOf(cella.fondo);
       cella.fondo.setScale(1);
-      this.tweens.add({ targets: cella.figura, scale: { from: 1.4, to: 1 }, duration: 300, ease: 'Back.Out' });
+      const base = cella.figura.scalaBase;
+      this.tweens.add({ targets: cella.figura, scale: { from: base * 1.4, to: base }, duration: 300, ease: 'Back.Out' });
     });
     this.trovate += 1;
     this.testoCoppie.setText(`${this.trovate} / ${TIPI.length}`);
@@ -378,7 +373,8 @@ class Anelli extends Phaser.Scene {
     cella.luce.setVisible(false);
     cella.crepe.clear();
     cella.figura.setVisible(true);
-    this.tweens.add({ targets: cella.figura, scale: { from: 0.4, to: 1 }, duration: 250, ease: 'Back.Out' });
+    const base = cella.figura.scalaBase;
+    this.tweens.add({ targets: cella.figura, scale: { from: base * 0.4, to: base }, duration: 250, ease: 'Back.Out' });
     for (let i = 0; i < 8; i++) {
       const scheggia = this.add.rectangle(cella.x, cella.y, Phaser.Math.Between(8, 16), Phaser.Math.Between(8, 16), COLORE_GHIACCIO).setDepth(25);
       this.tweens.add({

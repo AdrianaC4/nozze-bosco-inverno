@@ -5,7 +5,7 @@
 | What it's for | Tool | Notes |
 | --- | --- | --- |
 | Drawing everything (characters, backgrounds, objects) | Google Gemini — gemini.google.com | Free with a Google account, about 20 images per day. Best free option for keeping characters consistent: attach earlier images as references. |
-| Removing backgrounds, resizing, naming | Claude Code (this project) | `tools/ritaglia.py` (Python + rembg, model birefnet-general). |
+| Removing backgrounds, resizing, naming | Claude Code (this project) | `tools/ritaglia.py` (Python + rembg, model birefnet-general); `tools/dividi_icone.py` cuts one image with several objects in a row into separate pictures. |
 | Small fixes (crop, colour touch-ups) | Photopea — photopea.com | Free browser editor, rarely needed. |
 | Music and sounds | Pixabay Music and Sound Effects | Free piano / music-box Christmas music, chimes, a meow. |
 
@@ -60,7 +60,7 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 - [x] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (Prompt 10) — in the game
 - [x] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (Prompt 11) — in the game
 - [x] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (Prompt 12) — in La Slitta (Mario now uses his real picture beside it)
-- [ ] `icone_anelli.png` — ONE image with the 6 hidden pictures in a row (bell, star, red ornament, candy cane, mitten, two gold rings); Claude cuts it into 6 (Prompt 13)
+- [x] `icone_anelli.png` — ONE image with the 6 hidden pictures (Prompt 13) — cut into `tile_campana/stella/pallina/bastoncino/guanto/anelli.png` with `tools/dividi_icone.py`, in Gli Anelli
 
 **Priority C — small objects**
 - [ ] `gift.png` — one wrapped gift (recoloured in code)
