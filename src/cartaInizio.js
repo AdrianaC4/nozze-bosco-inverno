@@ -5,6 +5,7 @@
 //    each player's instruction on their own half, and Mario in the middle with his tip.
 //      preload():  caricaMario(this);
 //      create():   mostraCartaInizio(this, TESTI.slitta, () => { ...start the game... });
+//    An optional 4th argument chooses Mario's pose on the card (default 'mario'), e.g. 'mario_colpevole'.
 //    The texts object needs: nome, istruzioneSilvia, istruzioneFrancesco, mario (Mario's tip).
 //
 // 2. mostraCartaCarezze: a card with only the title and Mario, who must be petted several times.
@@ -25,12 +26,12 @@ function caricaMario(scena) {
   carica(scena, 'mario_colpevole', 'assets/game/mario_guilty.png');
 }
 
-function mostraCartaInizio(scena, testi, quandoInizia) {
+function mostraCartaInizio(scena, testi, quandoInizia, posa) {
   creaCartaMario(scena, {
     titolo: testi.nome,
     istruzioni: [testi.istruzioneSilvia, testi.istruzioneFrancesco],
     invito: TESTI.carta.accarezza,
-    tappe: [{ posa: 'mario', frase: testi.mario }],
+    tappe: [{ posa: posa || 'mario', frase: testi.mario }],
   }, quandoInizia);
 }
 

@@ -50,11 +50,11 @@ Gesture families (one finger):
 | --- | --- | --- |
 | 1. La Slitta dei Regali | Drag: steer the sled | Tap (rapid): push the sled uphill |
 | 2. La Torta Nuziale | Tap (timed): drop each cake layer | Hold (◀ / ▶ strips at the screen edges): keep the cake balanced |
-| 3. Gli Anelli Perduti | Tap: pick matching pairs | Swipe: dig through the snow |
+| 3. Gli Anelli Perduti | Tap: choose blocks and confirm pairs | Drag: join the points to break the ice |
 | 4. Il Dirigibile delle Lanterne | Drag: steer through the rings of light | Circle: crank the propeller |
 | Finale: La Cerimonia | Hold | Hold |
 
-Check: Silvia uses Drag 2, Tap 2, Hold 1. Francesco uses Tap 1, Hold 2, Swipe 1, Circle 1. Both stay within the limit.
+Check: Silvia uses Drag 2, Tap 2, Hold 1. Francesco uses Tap 1, Hold 2, Drag 1, Circle 1. Both stay within the limit.
 
 ## Mini games
 
@@ -82,12 +82,13 @@ There are four mini games, each bringing back one thing for the wedding, and the
 
 ### 3. Gli Anelli Perduti (the lost rings)
 
-- **Goal:** find the two wedding rings that Mario batted into the snow.
-- **Francesco:** swipes to dig through snow blocks on a grid, which uncovers hidden tiles.
-- **Silvia:** taps two uncovered tiles to match pairs (bell with bell, star with star). The rings are the last pair.
-- **Co-op tension:** tiles freeze again after a few seconds, so Francesco must not dig faster than Silvia can match.
-- **Win:** find the rings before time runs out.
-- **Mario:** looks guilty at the start and proud at the end.
+- **Goal:** find the two wedding rings that Mario batted into the snow, by finding all 6 pairs.
+- **The grid (Silvia's half):** 12 ice blocks hiding 6 pairs: bell, star, ornament, candy cane, mitten, rings.
+- **Silvia:** taps an ice block to choose it. **At most 2 pictures can be uncovered at a time.** When two match they glow ("Uguali! Silvia, toccale!") and she taps both to turn them green (found). When they don't match they freeze over again after 2 seconds, so they must remember them.
+- **Francesco (ice pickaxe):** as soon as a block is chosen, 3 numbered points appear on his half, one after another, in random places (different every time). He touches the first and **drags his finger through the others without lifting it**; a crack follows his finger. Lifting the finger early: "Non staccare il dito!" and new points. At the third point the ice shatters and the picture appears. (A finger already down that slides onto point 1 also counts.)
+- **Countdown:** 60 seconds (a fair test robot needs about 31–42 s; the first idea, 40 s, would be too tight for people). No lives. **Stars** by time left: 15+ s = 3 stars, 7+ s = 2 stars.
+- **Mario:** looks guilty on the start card and during the game, proud at the end.
+- (First version, replaced: Francesco swiped to dig snow layers.)
 
 ### 4. Il Dirigibile delle Lanterne (the lantern airship)
 
@@ -155,7 +156,8 @@ These are the first-draft strings. Keep them all in one file (`src/testi.js`) so
 | Game 2 | Silvia: Tocca al momento giusto · Francesco: Tieni la torta dritta con un dito solo, premendo ◀ o ▶ ai bordi | Tap at the right moment · Keep the cake straight with one finger, pressing ◀ or ▶ at the edges |
 | Game 2 | Perfetto! · Slurp! · Oh no, è caduto! · Attenzione! La torta pende troppo! · Un dito solo! | Perfect! · Slurp! · Oh no, it fell! · Careful! The cake leans too much! |
 | Game 2 (Mario) | Mmm… posso assaggiare? | Mmm… can I have a taste? |
-| Game 3 | Silvia: Tocca due tessere uguali · Francesco: Scorri per scavare | Tap two matching tiles · Swipe to dig |
+| Game 3 | Silvia: Scegli una tessera di ghiaccio, poi tocca le due uguali · Francesco: Rompi il ghiaccio unendo i punti senza staccare il dito! | Choose an ice tile, then tap the two matching ones · Break the ice joining the points without lifting your finger |
+| Game 3 | Silvia, scegli una tessera! · Non staccare il dito! · Massimo due tessere alla volta! · Uguali! Silvia, toccale! · Gli anelli! | Choose a tile! · Don't lift your finger! · Max two tiles at a time! · Same! Silvia, tap them! · The rings! |
 | Game 3 (Mario) | Ehm… forse ci ho giocato un po' io… | Um… I may have played with them a bit… |
 | Game 4 | Silvia: Trascina per guidare · Francesco: Disegna cerchi per far girare l'elica | Drag to steer · Draw circles to spin the propeller |
 | Game 4 (Mario) | Che vista da quassù! | What a view from up here! |

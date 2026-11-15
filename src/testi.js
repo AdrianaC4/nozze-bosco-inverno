@@ -62,6 +62,20 @@ const TESTI = {
     ohNo: 'Oh no! Riproviamo!',
   },
 
+  // Mini game 3: Gli Anelli Perduti
+  anelli: {
+    nome: 'Gli Anelli Perduti',
+    istruzioneSilvia: 'Silvia: Scegli una tessera di ghiaccio, poi tocca le due uguali',
+    istruzioneFrancesco: 'Francesco: Rompi il ghiaccio unendo i punti senza staccare il dito!',
+    mario: "Ehm… forse ci ho giocato un po' io…",
+    scegli: 'Silvia, scegli una tessera!',
+    nonStaccare: 'Non staccare il dito!',
+    massimoDue: 'Massimo due tessere alla volta!',
+    uguali: 'Uguali! Silvia, toccale!',
+    anelli: 'Gli anelli!',
+    tempoScaduto: 'Tempo scaduto! Riproviamo!',
+  },
+
   // Finale: La Cerimonia
   cerimonia: {
     nome: 'La Cerimonia',
