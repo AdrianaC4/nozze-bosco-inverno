@@ -60,6 +60,7 @@ class Torta extends Phaser.Scene {
   preload() {
     caricaMario(this);
     carica(this, 'sfondo_torta', 'assets/game/bg_torta.jpg');
+    carica(this, 'tavolo', 'assets/game/table.png');
     carica(this, 'schiaccianoci_1', 'assets/game/schiaccianoci_1.png');
     carica(this, 'schiaccianoci_2', 'assets/game/schiaccianoci_2.png');
   }
@@ -103,11 +104,10 @@ class Torta extends Phaser.Scene {
 
     // The table (it jitters when Francesco isn't holding it)
     this.tavolo = this.add.container(CENTRO_TORTA, 0);
-    this.tavolo.add([
-      this.add.rectangle(-240, 640, 22, 120, 0x6e4422),
-      this.add.rectangle(240, 640, 22, 120, 0x6e4422),
-      this.add.rectangle(0, 570, 580, 26, 0x8b5a2b),
-    ]);
+    // Adri's Gemini table, 600 pixels wide; its top surface sits under the cake stand
+    const tavolo = this.add.image(0, 508, 'tavolo').setOrigin(0.5, 0);
+    tavolo.setScale(600 / tavolo.width);
+    this.tavolo.add(tavolo);
 
     // The cake (stand + layers + nutcrackers) is a group that sways around the stand's base
     this.torta = this.add.container(CENTRO_TORTA, PIANO_TORTA).setDepth(5);

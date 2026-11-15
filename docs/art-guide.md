@@ -67,8 +67,8 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 - [x] `tree_obstacle.png` — small snowy pine tree (Prompt 14 sheet) — in La Slitta
 - [x] `lantern.png` — glowing paper lantern (Prompt 14 sheet) — in Il Dirigibile
 - [x] `dark_cloud.png` — grumpy dark snow cloud (Prompt 14 sheet) — in Il Dirigibile
-- [ ] `table.png` — wooden kitchen table, front view (Prompt 15)
-- [ ] `icon.png` — Home Screen app icon: Mario's face with his scarf on a round warm background (Prompt 16)
+- [x] `table.png` — wooden kitchen table (Prompt 15) — in La Torta
+- [x] `icon.png` — Home Screen app icon (Prompt 16) — corners filled with gold, sizes in `assets/icone/` (apple-touch-icon 180, 192, 512, favicon 32), linked in `index.html`
 
 **Priority D — optional**
 - [ ] Francesco with the ice pickaxe (for Gli Anelli)
