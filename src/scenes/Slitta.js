@@ -32,7 +32,6 @@ const COLORE_NEVE = 0xe8f0fa;
 const COLORE_SLITTA = 0x8b5a2b;
 const COLORE_ALBERO = 0x2e6b4f;
 const COLORI_REGALI = [0xc0392b, 0x2e86c1, 0x8e44ad, 0x27ae60, 0xe67e22];
-const COLORE_MARIO = 0x8a8f99;
 
 class Slitta extends Phaser.Scene {
   constructor() {
@@ -46,6 +45,7 @@ class Slitta extends Phaser.Scene {
 
   preload() {
     caricaMario(this);
+    carica(this, 'slitta', 'assets/game/sled.png');
   }
 
   create() {
@@ -115,16 +115,15 @@ class Slitta extends Phaser.Scene {
     }
     this.suolo = this.add.tileSprite(0, 0, LARGHEZZA, ALTEZZA, 'suoloNeve').setOrigin(0, 0);
 
-    // The sled seen from above, with Silvia (mustard) and Francesco (red) on it
+    // The sled full of gifts, seen from above (Adri's Gemini picture), 130 pixels long
     this.slitta = this.add.container(LARGHEZZA / 2, 470).setDepth(10);
-    this.slitta.add([
-      this.add.rectangle(0, 0, 70, 110, COLORE_SLITTA).setStrokeStyle(4, 0x5c3a1a),
-      this.add.circle(0, -22, 20, COLORE_SILVIA),
-      this.add.circle(0, 22, 22, COLORE_FRANCESCO),
-    ]);
+    const slitta = this.add.image(0, 0, 'slitta');
+    slitta.setScale(130 / slitta.height);
+    this.slitta.add(slitta);
 
-    // Mario running beside the sled
-    this.mario = this.add.circle(LARGHEZZA / 2 + 100, 500, 20, COLORE_MARIO).setDepth(10);
+    // Mario running beside the sled (his position is his feet)
+    this.mario = this.add.image(LARGHEZZA / 2 + 100, 530, 'mario').setOrigin(0.5, 1).setDepth(10);
+    this.mario.setScale(70 / this.mario.height);
     this.miao = this.add.text(0, 0, TESTI.slitta.miao, {
       fontFamily: FONT, fontSize: '30px', color: '#2a3d66', backgroundColor: '#fdf3e1', padding: { x: 10, y: 4 },
     }).setOrigin(0.5, 1).setDepth(30).setVisible(false);
@@ -243,8 +242,8 @@ class Slitta extends Phaser.Scene {
     // Mario follows the sled, on whichever side has room
     const latoMario = this.slitta.x > LARGHEZZA - 180 ? -100 : 100;
     this.mario.x = Phaser.Math.Linear(this.mario.x, this.slitta.x + latoMario, 0.12);
-    this.mario.y = 500 + Math.sin(this.time.now / 80) * 5;
-    this.miao.setPosition(this.mario.x, this.mario.y - 30);
+    this.mario.y = 530 - Math.abs(Math.sin(this.time.now / 90)) * 10; // little running hops
+    this.miao.setPosition(this.mario.x, this.mario.y - 75);
 
     if (this.percorso >= SLITTA.PERCORSO) this.arrivo();
   }

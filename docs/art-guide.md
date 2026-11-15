@@ -59,7 +59,7 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 - [x] `airship.png` — the little airship, side view (Prompt 9) — in the game; split by Claude into `airship_corpo.png` + `airship_elica.png` so the propeller spins in code; Mario added in the gondola
 - [x] `schiaccianoci_1.png` — navy coat, red trousers, gold crown, sceptre (Prompt 10) — in the game
 - [x] `schiaccianoci_2.png` — white and pink coat, light blue details, tall gold hat, lollipop (Prompt 11) — in the game
-- [ ] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (no people) (Prompt 12)
+- [x] `sled.png` — wooden sled seen from above/behind, piled with wrapped gifts (Prompt 12) — in La Slitta (Mario now uses his real picture beside it)
 - [ ] `icone_anelli.png` — ONE image with the 6 hidden pictures in a row (bell, star, red ornament, candy cane, mitten, two gold rings); Claude cuts it into 6 (Prompt 13)
 
 **Priority C — small objects**
