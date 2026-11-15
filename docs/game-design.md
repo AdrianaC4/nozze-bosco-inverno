@@ -107,7 +107,7 @@ There are four mini games, each bringing back one thing for the wedding, and the
 - Before: the village is dark, like night, with the characters in shadow. Both players press and hold their half at the same time. The lit, warm village appears from the bottom up behind a bright golden line with rising sparkles (about 8 seconds of holding together) until the great tree is fully lit. The tender "cerimonia" music plays loudly only while both are holding.
 - If either player lets go, the lights flicker and slip down a little. You can't lose, it just takes longer.
 - When the tree is fully lit: a golden flash, a burst of sparkles and a shining star on top of the tree; snow falls, bells ring, Mario brings the rings, Silvia and Francesco face each other, and a heart rises.
-- The final screen reads "Appena Sposati! Silvia & Francesco" and "Buon Natale", with all three characters together in an animated scene (no real photo).
+- The final screen reads "Appena Sposati! Silvia & Francesco" and "Buon Natale", with all three characters together in an animated scene (no real photo). After the animation, a painted postcard of the three under the lit tree fades in behind the texts.
 
 ## Game flow and rules
 

@@ -55,6 +55,7 @@ class Dirigibile extends Phaser.Scene {
     carica(this, 'sfondo_dirigibile', 'assets/game/bg_dirigibile.jpg');
     carica(this, 'nave_corpo', 'assets/game/airship_corpo.png');
     carica(this, 'nave_elica', 'assets/game/airship_elica.png');
+    carica(this, 'coppia', 'assets/game/coppia_gondola.png');
     carica(this, 'lanterna', 'assets/game/lantern.png');
     carica(this, 'nuvola', 'assets/game/dark_cloud.png');
   }
@@ -119,7 +120,11 @@ class Dirigibile extends Phaser.Scene {
     // Mario sits at the front of the gondola
     const mario = this.add.image((445 - CENTRO_PALLONE.x) * scala, (492 - CENTRO_PALLONE.y) * scala, 'mario').setOrigin(0.5, 1);
     mario.setScale(56 / mario.height);
-    this.nave.add([this.elica, corpo, mario]);
+    // Silvia and Francesco wave from the gondola (drawn behind the airship, so the gondola's rim hides their waists)
+    const coppia = this.add.image((318 - CENTRO_PALLONE.x) * scala, (512 - CENTRO_PALLONE.y) * scala, 'coppia').setOrigin(0.5, 1);
+    coppia.setScale(46 / coppia.height);
+    this.tweens.add({ targets: coppia, angle: { from: -3, to: 3 }, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+    this.nave.add([this.elica, coppia, corpo, mario]);
   }
 
   creaInterfaccia() {

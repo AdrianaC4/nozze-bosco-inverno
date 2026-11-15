@@ -25,6 +25,7 @@ class Cerimonia extends Phaser.Scene {
     carica(this, 'francesco', 'assets/game/francesco_sheet.png');
     carica(this, 'francesco_cheer', 'assets/game/francesco_cheer.png');
     carica(this, 'mario_anelli', 'assets/game/mario_rings.png');
+    carica(this, 'cartolina', 'assets/game/ending_scene.jpg');
     caricaMario(this);
   }
 
@@ -291,6 +292,11 @@ class Cerimonia extends Phaser.Scene {
       targets: cuore, y: 420, scale: 0.6, duration: 900, ease: 'Sine.InOut',
       onComplete: () => this.tweens.add({ targets: cuore, scale: 0.68, duration: 550, yoyo: true, repeat: -1, ease: 'Sine.InOut' }),
     });
+
+    // The painted ending (Adri's Gemini picture) fades in like a postcard, under the falling snow
+    // (zoomed in a little from the bottom, so the couple is bigger and the tree's star doesn't sit under the title)
+    const cartolina = this.add.image(LARGHEZZA / 2, ALTEZZA, 'cartolina').setOrigin(0.5, 1).setScale(1.14).setDepth(46).setAlpha(0);
+    this.tweens.add({ targets: cartolina, alpha: 1, duration: 2000, delay: 300 });
 
     const stileGrande = { fontFamily: FONT, fontSize: '78px', color: '#ffe9a8', stroke: '#2a3d66', strokeThickness: 9 };
     const stileMedio = { fontFamily: FONT, fontSize: '50px', color: '#fdf3e1', stroke: '#2a3d66', strokeThickness: 7 };

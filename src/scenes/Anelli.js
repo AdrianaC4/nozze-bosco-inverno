@@ -44,6 +44,7 @@ class Anelli extends Phaser.Scene {
   preload() {
     caricaMario(this);
     carica(this, 'sfondo_anelli', 'assets/game/bg_anelli.jpg');
+    carica(this, 'francesco_piccone', 'assets/game/francesco_piccone.png');
     TIPI.forEach((tipo) => carica(this, `tile_${tipo}`, `assets/game/tile_${tipo}.png`));
   }
 
@@ -66,6 +67,12 @@ class Anelli extends Phaser.Scene {
     // The crack Francesco draws, and the pickaxe that follows his finger
     this.crepa = this.add.graphics().setDepth(15);
     this.piccone = this.add.text(960, 360, '⛏️', { fontSize: '64px' }).setOrigin(0.2, 0.8).setDepth(22).setAlpha(0.5);
+
+    // Francesco with his ice pickaxe, at the bottom of his half
+    const francesco = this.add.image(740, 712, 'francesco_piccone').setOrigin(0.5, 1).setDepth(10);
+    const scalaFrancesco = 175 / francesco.height;
+    francesco.setScale(scalaFrancesco);
+    this.tweens.add({ targets: francesco, scaleY: scalaFrancesco * 1.025, duration: 1500, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
 
     // Mario (guilty) on the right
     this.mario = this.add.image(1180, 710, 'mario_colpevole').setOrigin(0.5, 1).setDepth(10);
@@ -291,7 +298,8 @@ class Anelli extends Phaser.Scene {
       } while (tentativi < 80 && (
         // far from ALL the earlier points (not only the previous one), and not on Mario
         this.punti.some((p) => Phaser.Math.Distance.Between(x, y, p.x, p.y) < ANELLI.DISTANZA_PUNTI)
-        || (x > 1080 && y > 480)
+        || (x > 1080 && y > 480)   // not on Mario
+        || (x < 850 && y > 470)    // not on Francesco
       ));
       const cerchio = this.add.container(x, y).setDepth(18).setVisible(i === 0);
       cerchio.add([

@@ -71,9 +71,9 @@ Not drawn in Gemini, restyled in code instead (they change shape while playing):
 - [x] `icon.png` — Home Screen app icon (Prompt 16) — corners filled with gold, sizes in `assets/icone/` (apple-touch-icon 180, 192, 512, favicon 32), linked in `index.html`
 
 **Priority D — optional**
-- [ ] Francesco with the ice pickaxe (for Gli Anelli)
-- [ ] Silvia and Francesco waving from the airship's gondola
-- [ ] `ending_scene.jpg` — all three under the lit tree
+- [x] `francesco_piccone.jpg` — Francesco with the ice pickaxe (Prompt 17) — standing on his side in Gli Anelli
+- [x] `coppia_gondola.jpg` — Silvia and Francesco waving, waist up (Prompt 18) — in the airship's gondola, behind its rim
+- [x] `ending_scene.jpg` — all three under the lit tree (Prompt 19) — fades in as a postcard behind the final texts (zoomed 1.14 from the bottom)
 
 Suggested order: day 1 = the 3 backgrounds + airship + 2 nutcrackers; day 2 = sled, icon sheet and the small objects; day 3 = optional.
 
@@ -444,3 +444,9 @@ No text, no logos, no watermark.
 ```
 
 **Every new picture of Mario must have the short stub tail.** (The app icon shows only his head and shoulders.)
+
+### Prompts 17–19 — Priority D pictures (done)
+
+- **17 `francesco_piccone.jpg`** ("Winter Wood – Francesco" chat; attach `francesco_sheet.jpg` + `silvia_sheet.jpg`): the pose template for Francesco with the pose line `standing proudly, holding a small ice pickaxe with a wooden handle in both hands, raised and ready to strike, with a determined, cheerful grin` and "Do not draw any objects except the pickaxe".
+- **18 `coppia_gondola.jpg`** (chat "Winter Wood – Couple"; attach both character sheets): both together, waist up, side by side, Silvia left and Francesco right, smiling and waving, plain white background, no boat.
+- **19 `ending_scene.jpg`** (same chat; attach `style_anchor_lit.jpg` + the three character sheets): 16:9, the village at night with the tree fully lit and a gold star on top; Silvia and Francesco holding hands in front of the tree, Mario (short stub tail) at their feet; upper third calm for the title; characters fairly small in the lower part.
