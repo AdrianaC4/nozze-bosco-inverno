@@ -28,8 +28,8 @@ const SLITTA = {
   REGALI_3_STELLE: 15,         // 15 or more = 3 stars
   VITE: 3,
   // Where each player touches (always visible on screen):
-  ZONA_FRANCESCO: { x: 860, y: 110, w: 380, h: 150 }, // a soft button at the top right: only taps here push
-  ZONA_SILVIA_Y: 275,          // Silvia: drags that start anywhere below Francesco's button steer (not marked on screen)
+  ZONA_FRANCESCO: { x: 1010, y: 100, w: 230, h: 230 }, // a big snowball at the top right: only taps here push
+  ZONA_SILVIA_Y: 340,          // Silvia: drags that start anywhere below Francesco's snowball steer (not marked on screen)
   MARIO_OGNI: [8, 10],         // seconds between Mario's dashes
   MARIO_ZIGZAG: 230,           // how fast he zigzags sideways (pixels per second)
 };
@@ -191,15 +191,22 @@ class Slitta extends Phaser.Scene {
     this.add.rectangle(LARGHEZZA / 2, 40, 400, 14, COLORE_NOTTE, 0.25).setDepth(40);
     this.barraPercorso = this.add.rectangle(LARGHEZZA / 2 - 200, 40, 0, 14, 0x2e86c1).setOrigin(0, 0.5).setDepth(40);
     this.add.text(LARGHEZZA / 2 + 215, 40, '🏠', { fontSize: '30px' }).setOrigin(0, 0.5).setDepth(40);
-    // Francesco's button (top right): a soft frosted pane that blends with the snow; only taps here push
+    // Francesco's button (top right): a big soft snowball; only taps here push the sled
     const z = SLITTA.ZONA_FRANCESCO;
     this.bottoneSpinta = this.add.container(z.x + z.w / 2, z.y + z.h / 2).setDepth(39);
     this.bottoneSpinta.add([
-      this.add.image(0, 0, creaPulsanteNeve(this, z.w, z.h)),
-      this.add.text(0, 0, TESTI.slitta.zonaFrancesco, {
-        fontFamily: FONT, fontSize: '30px', color: '#9c4a3c', align: 'center', wordWrap: { width: z.w - 40 },
+      this.add.image(0, 0, creaPallaNeve(this, z.w)),
+      this.add.text(0, 4, TESTI.slitta.zonaFrancesco, {
+        fontFamily: FONT, fontSize: '28px', color: '#9c4a3c', align: 'center', lineSpacing: 2,
       }).setOrigin(0.5),
     ]);
+    // A gentle breathing, so it looks alive and invites tapping
+    this.tweens.add({ targets: this.bottoneSpinta, angle: { from: -2, to: 2 }, duration: 1600, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+
+    // Silvia's hint at the bottom: just the words, no arrows, no band
+    this.add.text(LARGHEZZA / 2, ALTEZZA - 34, TESTI.slitta.zonaSilvia, {
+      fontFamily: FONT, fontSize: '28px', color: '#5b7aa6',
+    }).setOrigin(0.5).setDepth(3).setAlpha(0.8);
 
     // Countdown, under the bar
     this.testoTempo = this.add.text(LARGHEZZA / 2, 86, String(SLITTA.TEMPO), {
@@ -494,39 +501,42 @@ class Slitta extends Phaser.Scene {
   }
 }
 
-// A soft frosted button painted in code (once): milky white, very rounded, with a blurred edge and a faint
-// warm outline, so it marks Francesco's area without a hard frame. Returns the texture's name.
-function creaPulsanteNeve(scena, larghezza, altezza) {
-  const nome = `pulsanteNeve_${larghezza}x${altezza}`;
+// A big soft snowball painted in code (once): white with blue shadows on the lower right, a soft glow
+// around it and a few sparkles. Returns the texture's name.
+function creaPallaNeve(scena, diametro) {
+  const nome = `pallaNeve_${diametro}`;
   if (!scena.textures.exists(nome)) {
-    const margine = 24; // room for the soft blurred edge
-    const tela = scena.textures.createCanvas(nome, larghezza + margine * 2, altezza + margine * 2);
+    const margine = 26;
+    const lato = diametro + margine * 2;
+    const tela = scena.textures.createCanvas(nome, lato, lato);
     const ctx = tela.getContext();
-    const forma = () => {
-      const x = margine;
-      const y = margine;
-      const r = altezza / 2.4;
-      ctx.beginPath();
-      ctx.moveTo(x + r, y);
-      ctx.arcTo(x + larghezza, y, x + larghezza, y + altezza, r);
-      ctx.arcTo(x + larghezza, y + altezza, x, y + altezza, r);
-      ctx.arcTo(x, y + altezza, x, y, r);
-      ctx.arcTo(x, y, x + larghezza, y, r);
-      ctx.closePath();
-    };
+    const c = lato / 2;
+    const r = diametro / 2;
     ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
-    ctx.shadowBlur = 22;
-    forma();
-    const sfumatura = ctx.createLinearGradient(0, margine, 0, margine + altezza);
-    sfumatura.addColorStop(0, 'rgba(255, 255, 255, 0.62)');
-    sfumatura.addColorStop(1, 'rgba(255, 240, 235, 0.42)');
+    ctx.shadowBlur = 24;
+    const sfumatura = ctx.createRadialGradient(c - r * 0.35, c - r * 0.4, r * 0.1, c, c, r);
+    sfumatura.addColorStop(0, 'rgba(255, 255, 255, 0.97)');
+    sfumatura.addColorStop(0.65, 'rgba(240, 246, 253, 0.93)');
+    sfumatura.addColorStop(1, 'rgba(190, 210, 236, 0.9)');
     ctx.fillStyle = sfumatura;
+    ctx.beginPath();
+    ctx.arc(c, c, r, 0, Math.PI * 2);
     ctx.fill();
     ctx.shadowBlur = 0;
-    ctx.lineWidth = 2;
-    ctx.strokeStyle = 'rgba(192, 57, 43, 0.22)';
-    forma();
-    ctx.stroke();
+    // a few little lumps of snow on the edge, so it isn't a perfect circle
+    ctx.fillStyle = 'rgba(244, 248, 254, 0.95)';
+    [[0.2, 0.92, 0.16], [1.3, 0.9, 0.13], [2.4, 0.93, 0.15], [3.6, 0.9, 0.12], [4.8, 0.92, 0.14]].forEach(([a, d, s]) => {
+      ctx.beginPath();
+      ctx.arc(c + Math.cos(a) * r * d, c + Math.sin(a) * r * d, r * s, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    // sparkles
+    ctx.fillStyle = 'rgba(255, 255, 255, 1)';
+    [[-0.45, -0.5, 4], [0.4, -0.55, 3], [0.55, 0.35, 3], [-0.5, 0.45, 2.5]].forEach(([x, y, s]) => {
+      ctx.beginPath();
+      ctx.arc(c + x * r, c + y * r, s, 0, Math.PI * 2);
+      ctx.fill();
+    });
     tela.refresh();
   }
   return nome;

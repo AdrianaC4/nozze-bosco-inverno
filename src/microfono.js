@@ -44,7 +44,6 @@ const Microfono = {
     if (this.flusso) this.spegni(); // iPhone had stopped it: start again
     const contesto = contestoAudio(scena);
     this.ultimoErrore = '';
-    if (!window.isSecureContext) { this.ultimoErrore = 'non-https'; return false; }
     if (!this.disponibile()) { this.ultimoErrore = 'no-api'; return false; }
     if (!contesto) { this.ultimoErrore = 'no-audio'; return false; }
     try {
@@ -78,6 +77,26 @@ const Microfono = {
       this.ultimoErrore = (errore && errore.name) || 'errore';
       this.spegni();
       return false;
+    }
+  },
+
+  // A short explanation of the last failure, for the test-mode note: the reason, the address,
+  // whether the game runs in the browser or as a Home Screen app, and the permission state.
+  diagnosi(statoPermesso) {
+    const app = window.matchMedia('(display-mode: standalone)').matches
+      || window.matchMedia('(display-mode: fullscreen)').matches || window.navigator.standalone ? 'app' : 'browser';
+    const parti = [this.ultimoErrore || 'nessun errore', window.location.host, app,
+      window.isSecureContext ? 'sicuro' : 'NON sicuro'];
+    if (statoPermesso) parti.push(`permesso: ${statoPermesso}`);
+    return parti.join(' · ');
+  },
+
+  // The microphone permission as the phone sees it ('granted', 'denied', 'prompt'), if the phone says
+  statoPermesso() {
+    try {
+      return navigator.permissions.query({ name: 'microphone' }).then((r) => r.state).catch(() => '?');
+    } catch (errore) {
+      return Promise.resolve('?');
     }
   },
 

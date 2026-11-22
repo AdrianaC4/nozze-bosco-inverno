@@ -95,8 +95,7 @@ class Dirigibile extends Phaser.Scene {
     if (this.ritenta) {
       this.inizia();
     } else {
-      // The microphone is asked for while Mario is stroked: a real touch, which some iPhones require
-      mostraCartaInizio(this, TESTI.dirigibile, () => this.inizia(), undefined, () => { this.richiestaMic = Microfono.accendi(this); });
+      mostraCartaInizio(this, TESTI.dirigibile, () => this.inizia());
     }
   }
 
@@ -295,10 +294,8 @@ class Dirigibile extends Phaser.Scene {
       this.programmaRaffica();
       this.programmaMario();
     };
-    // (the answer to the question asked during Mario's stroke; on a retry, ask now)
-    const richiesta = this.richiestaMic || Microfono.accendi(this);
-    this.richiestaMic = null;
-    richiesta.then((acceso) => { if (acceso || !partito) parti(acceso); });
+    // Asked when the flight starts, as in the version that always worked on Adri's iPhone
+    Microfono.accendi(this).then((acceso) => { if (acceso || !partito) parti(acceso); });
     // Safety net: if no answer arrives, don't wait forever
     this.time.delayedCall(DIRIGIBILE.ATTESA_MICROFONO * 1000, () => { if (!partito) parti(false); });
   }
@@ -315,10 +312,15 @@ class Dirigibile extends Phaser.Scene {
     bottone.add([fondo, this.add.text(0, 0, TESTI.dirigibile.riprovaMicrofono, {
       fontFamily: FONT, fontSize: '24px', color: '#2a3d66',
     }).setOrigin(0.5)]);
-    if (MODALITA_PROVA && Microfono.ultimoErrore) {
-      bottone.add(this.add.text(0, 40, `(${Microfono.ultimoErrore})`, {
-        fontFamily: 'sans-serif', fontSize: '16px', color: '#fdf3e1',
-      }).setOrigin(0.5));
+    if (MODALITA_PROVA) {
+      // Test mode: why the microphone didn't work, readable, so Adri can send a screenshot
+      // (centred under the "Niente microfono" message, so it never runs off the screen)
+      const spiegazione = this.add.text(LARGHEZZA / 2 - x, 225 - y, Microfono.diagnosi(), {
+        fontFamily: 'sans-serif', fontSize: '22px', color: '#2a3d66', backgroundColor: '#fdf3e1',
+        padding: { x: 10, y: 5 }, align: 'center', wordWrap: { width: 760 },
+      }).setOrigin(0.5, 0);
+      bottone.add(spiegazione);
+      Microfono.statoPermesso().then((stato) => { if (spiegazione.active) spiegazione.setText(Microfono.diagnosi(stato)); });
     }
     const tocco = (dito) => {
       if (Math.abs(dito.x - x) > 150 || Math.abs(dito.y - y) > 30) return;

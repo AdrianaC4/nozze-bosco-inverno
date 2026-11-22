@@ -39,9 +39,9 @@ with Gioco(porta=9410 if android else 9411) as g:
     g.accarezza_mario()
     S = "gioco.scene.getScene('Slitta')"
     g.ev(f"{S}.velocita = 300")
-    g.tocca(1050, 185)
+    g.tocca(1125, 215)
     v1 = g.ev(f"{S}.velocita")
-    g.tocca(1050, 400)                      # right half but outside the box: must NOT push
+    g.tocca(1125, 400)                      # right half but outside the snowball: must NOT push
     v2 = g.ev(f"{S}.velocita")
     print(f"slitta: tocco nel riquadro {300}->{round(v1)} (deve salire), fuori dal riquadro {round(v1)}->{round(v2)} (non deve salire)")
     def trascina(x, y, verso):
@@ -52,7 +52,7 @@ with Gioco(porta=9410 if android else 9411) as g:
         g.tocco("touchend", [[9, x + verso * 140, y]], [])
     x0 = g.ev(f"Math.round({S}.slitta.x)"); trascina(900, 650, -1); x1 = g.ev(f"Math.round({S}.slitta.x)")
     trascina(300, 350, 1); x2 = g.ev(f"Math.round({S}.slitta.x)")
-    trascina(300, 200, 1); x3 = g.ev(f"Math.round({S}.slitta.x)")
+    trascina(300, 250, 1); x3 = g.ev(f"Math.round({S}.slitta.x)")
     print(f"slitta: trascina in basso a destra {x0}->{x1} (deve muoversi), a meta' schermo {x1}->{x2} (deve muoversi), in alto {x2}->{x3} (non deve)")
     time.sleep(0.5)
     g.foto(f"{cartella}/{pre}slitta.png")
