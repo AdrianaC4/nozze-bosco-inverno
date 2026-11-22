@@ -63,6 +63,11 @@ index.html           (later)
 - [x] Published on GitHub Pages: **https://adrianac4.github.io/nozze-bosco-inverno/** (public repo, history rewritten to GitHub's anonymous address; Adri kept the "Salta ›" button on purpose).
 - [x] Italian texts reviewed by Adri (all 74, including Mario's lines), 2026-11. A last read by a native speaker is still a good idea.
 
+## The gift box: Mario ornament (3D print)
+
+- The gift is delivered as a **3D-printed Mario Christmas ornament** with an **NFC tag** (25 mm round plastic) in a recess under his base; the tag holds the game's link. Printer: Bambu Lab P2S with AMS (multicolour).
+- Model built from scratch in code: `tools/mario_ornamento.py` (trimesh + manifold3d + matplotlib in `.venv`). It writes four STL parts in `assets/3d/` (grey, white, red, black), loaded in Bambu Studio as ONE object with four parts, and a preview `assets/3d/anteprima.png`. Tag thickness is an argument (default 1.2 mm): `.venv/bin/python tools/mario_ornamento.py 1.2`.
+
 ## How Adri likes to work
 
 - **Align on the approach before implementing anything.** Explain the plan in plain words first, then wait for her OK.
