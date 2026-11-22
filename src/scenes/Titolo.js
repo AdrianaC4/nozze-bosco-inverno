@@ -44,7 +44,7 @@ class Titolo extends Phaser.Scene {
     const banda = this.add.graphics();
     this.banda = banda;
     banda.fillStyle(COLORE_NOTTE, 0.45);
-    banda.fillRoundedRect(LARGHEZZA / 2 - 230, 638, 460, 60, 30);
+    banda.fillRoundedRect(LARGHEZZA / 2 - 280, 638, 560, 60, 30);
     banda.setDepth(30);
     this.invito = this.add.text(LARGHEZZA / 2, 668, TESTI.titolo.toccaPerIniziare, {
       fontFamily: FONT,
@@ -115,6 +115,7 @@ class Titolo extends Phaser.Scene {
 
   inizia() {
     this.iniziato = true;
+    schermoIntero();
     // Remove the glows of any finger still on the screen
     for (const info of this.dita.values()) info.bagliore.destroy();
     this.dita.clear();

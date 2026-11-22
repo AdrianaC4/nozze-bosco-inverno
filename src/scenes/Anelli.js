@@ -21,7 +21,7 @@ const ANELLI = {
   PUNTI: 3,               // points Francesco must join to break the ice
   RAGGIO_PUNTO: 55,       // how close (pixels) his finger must get to a point
   DISTANZA_PUNTI: 200,    // minimum distance between one point and the next
-  GELO_SBAGLIATE: 2,      // seconds before two different pictures freeze over again
+  GELO_SBAGLIATE: 1,      // seconds before two different pictures freeze over again (was 2)
   STELLE_3: 15,           // seconds left for 3 stars
   STELLE_2: 7,            // seconds left for 2 stars
 };
@@ -244,18 +244,13 @@ class Anelli extends Phaser.Scene {
       return;
     }
 
-    // An uncovered picture that's part of a matching pair: tap both to confirm (they turn green)
-    if (cella.stato === 'scoperta' && cella.uguale) {
-      cella.confermata = true;
-      cella.fondo.setFillStyle(0xd8f0d0).setStrokeStyle(4, 0x5fbf6a);
-      const coppia = this.scoperte().filter((c) => c.tipo === cella.tipo);
-      if (coppia.length === 2 && coppia.every((c) => c.confermata)) this.coppiaTrovata(coppia);
-    }
+    // (Matching pairs turn green by themselves: see controllaCoppia)
   }
 
   coppiaTrovata(coppia) {
     coppia.forEach((cella) => {
       cella.stato = 'trovata';
+      cella.fondo.setFillStyle(0xd8f0d0).setStrokeStyle(4, 0x5fbf6a);
       this.tweens.killTweensOf(cella.fondo);
       cella.fondo.setScale(1);
       const base = cella.figura.scalaBase;
@@ -279,13 +274,8 @@ class Anelli extends Phaser.Scene {
     if (scoperte.length < 2) return;
     const [a, b] = scoperte;
     if (a.tipo === b.tipo) {
-      [a, b].forEach((cella) => {
-        cella.uguale = true;
-        cella.fondo.setFillStyle(0xffe9a8).setStrokeStyle(5, 0xffd34d);
-        this.tweens.add({ targets: cella.fondo, scale: 1.06, duration: 400, yoyo: true, repeat: -1 });
-      });
-      this.mostraSuggerimento(TESTI.anelli.uguali);
-      suonaTono(this, 900, 1200, 0.12, 'sine', 0.1);
+      // Same picture: the pair is found straight away (green, stays open)
+      this.coppiaTrovata([a, b]);
     } else {
       this.time.delayedCall(ANELLI.GELO_SBAGLIATE * 1000, () => {
         if (this.fase !== 'gioco') return;

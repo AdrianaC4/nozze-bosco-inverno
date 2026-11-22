@@ -9,7 +9,7 @@ const TESTI = {
   titolo: {
     nome: 'Nozze a Natale',
     // Both players must touch together to start, but the text doesn't say so: they find out together
-    toccaPerIniziare: 'Tocca per iniziare',
+    toccaPerIniziare: 'Tieni premuto per iniziare',
     insieme: 'Insieme!',
     silvia: 'Silvia',
     francesco: 'Francesco',
@@ -54,6 +54,8 @@ const TESTI = {
     nome: 'La Slitta dei Regali',
     istruzioneSilvia: 'Silvia: Trascina per guidare',
     istruzioneFrancesco: 'Francesco: Tocca veloce per spingere!',
+    zonaFrancesco: 'Tocca veloce per spingere',
+    zonaSilvia: 'Trascina per guidare',
     mario: 'Attenti agli alberi… e a me!',
     via: 'Via!',
     traguardo: 'Traguardo',
@@ -85,7 +87,7 @@ const TESTI = {
   // Mini game 3: Gli Anelli Perduti
   anelli: {
     nome: 'Gli Anelli Perduti',
-    istruzioneSilvia: 'Silvia: Scegli una tessera di ghiaccio, poi tocca le due uguali',
+    istruzioneSilvia: 'Silvia: Scegli le tessere di ghiaccio da aprire', // (was '…, poi tocca le due uguali': pairs now turn green by themselves)
     istruzioneFrancesco: 'Francesco: Rompi il ghiaccio unendo i punti senza staccare il dito!',
     mario: 'Voglio gioc… ehm… aiutarvi anche io',
     scegli: 'Silvia, scegli una tessera!',

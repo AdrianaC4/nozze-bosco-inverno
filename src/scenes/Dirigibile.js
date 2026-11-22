@@ -130,6 +130,10 @@ class Dirigibile extends Phaser.Scene {
     this.tweens.add({ targets: coppia, angle: { from: -3, to: 3 }, duration: 700, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
     this.marioNave = mario;
     this.nave.add([this.elica, coppia, corpo, mario]);
+    // The airship faces LEFT, so its propeller is on the right, on Francesco's side, where he blows.
+    // (The whole group is mirrored; the couple's picture is mirrored back so Silvia stays on the left.)
+    this.nave.setScale(-1, 1);
+    coppia.setFlipX(true);
   }
 
   creaInterfaccia() {
@@ -160,6 +164,12 @@ class Dirigibile extends Phaser.Scene {
       this.barraSoffio,
       this.add.text(0, -128, '💨', { fontSize: '34px' }).setOrigin(0.5),
     ]);
+
+    // Fixed arrows that show each player's job: up/down for Francesco (next to his gauge or crank),
+    // left/right for Silvia (bottom middle)
+    // (its place is set when we know if Francesco blows or draws circles: see inizia)
+    this.frecciaSu = creaFreccia(this, 1135, 520, 170, true).setDepth(30);
+    creaFreccia(this, LARGHEZZA / 2, 688, 220, false).setDepth(30);
 
     this.testoVento = this.add.text(LARGHEZZA / 2, 100, '', {
       fontFamily: FONT, fontSize: '34px', color: '#fdf3e1',
@@ -267,6 +277,8 @@ class Dirigibile extends Phaser.Scene {
       this.usaMicrofono = acceso;
       this.manovella.setVisible(!acceso);
       this.indicatoreSoffio.setVisible(acceso);
+      // the up/down arrow sits next to the breath gauge, or left of the crank wheel
+      this.frecciaSu.setPosition(acceso ? 1135 : 1050, acceso ? 520 : 590);
       if (partito) return; // the answer arrived late: the flight is already going, just switch to blowing
       partito = true;
       attesa.destroy();
@@ -374,6 +386,7 @@ class Dirigibile extends Phaser.Scene {
       this.usaMicrofono = false;
       this.manovella.setVisible(true);
       this.indicatoreSoffio.setVisible(false);
+      this.frecciaSu.setPosition(1050, 590);
     }
     const soffio = this.usaMicrofono ? Microfono.soffio() : 0;
     this.barraSoffio.scaleY = Phaser.Math.Linear(this.barraSoffio.scaleY, soffio, 0.3);
@@ -390,7 +403,8 @@ class Dirigibile extends Phaser.Scene {
     const obiettivo = DIRIGIBILE.CADUTA - this.giri * DIRIGIBILE.SPINTA_ELICA;
     this.velocitaVerticale = Phaser.Math.Linear(this.velocitaVerticale, obiettivo, 1 - Math.exp(-secondi * 4));
     this.nave.y = Phaser.Math.Clamp(this.nave.y + this.velocitaVerticale * secondi, ALTO, BASSO);
-    this.nave.angle = Phaser.Math.Clamp(this.velocitaVerticale / 20, -8, 8);
+    // (nose up when climbing: the airship faces left, so the sign is reversed)
+    this.nave.angle = -Phaser.Math.Clamp(this.velocitaVerticale / 20, -8, 8);
 
     // A gust of wind pushes the airship sideways
     this.nave.x = Phaser.Math.Clamp(this.nave.x + this.vento * secondi, 120, LARGHEZZA - 120);
@@ -515,4 +529,25 @@ class Dirigibile extends Phaser.Scene {
     if (this.fase !== 'volo') return;
     this.aggiornaVolo(Math.min(delta, 50) / 1000);
   }
+}
+
+// A double arrow drawn in code (looks the same on every phone): soft cream with a dark outline.
+// verticale = true: up/down; false: left/right. lunghezza is from tip to tip.
+function creaFreccia(scena, x, y, lunghezza, verticale) {
+  const g = scena.add.graphics({ x, y });
+  const m = lunghezza / 2;
+  const punta = 26;
+  const spessore = 12;
+  // points of the arrow drawn as if horizontal; turned 90 degrees if vertical
+  const punti = [
+    [-m, 0], [-m + punta, -punta], [-m + punta, -spessore / 2], [m - punta, -spessore / 2],
+    [m - punta, -punta], [m, 0], [m - punta, punta], [m - punta, spessore / 2],
+    [-m + punta, spessore / 2], [-m + punta, punta],
+  ].map(([a, b]) => (verticale ? new Phaser.Geom.Point(b, a) : new Phaser.Geom.Point(a, b)));
+  g.fillStyle(0xfdf3e1, 0.75);
+  g.fillPoints(punti, true);
+  g.lineStyle(3, 0x2a3d66, 0.6);
+  g.strokePoints(punti, true);
+  scena.tweens.add({ targets: g, alpha: 0.55, duration: 900, yoyo: true, repeat: -1, ease: 'Sine.InOut' });
+  return g;
 }

@@ -7,8 +7,8 @@
 //    if the second nutcracker touches the first, the first falls off (and both must be placed again).
 // 3. Francesco keeps the cake balanced, with his controls on the two EDGES of the screen
 //    (◀ strip on the far left, ▶ strip on the far right: awkward on purpose, agreed with Adri).
-//    The cake keeps leaning to one side on its own (more as it grows); every drop pushes it towards
-//    the side where the piece landed (harder when off-centre), and Mario's licks push it too.
+//    The cake keeps leaning to one side on its own (more as it grows), and Mario's licks push it too.
+//    (Drops no longer push it: switched off after Adri's playtest, see COLPO.)
 //    ONE finger only: holding ◀ pushes the balance bubble left, ▶ right. Holding both does nothing
 //    (the strips turn grey, "Un dito solo!"), so he must move his finger back and forth between the edges.
 //    Outside the green zone the cake leans, pieces slide faster, and a dropped piece slides with the tilt.
@@ -36,9 +36,11 @@ const TORTA = {
   DERIVA_PER_PEZZO: 0.1,        // ...and how much stronger with each piece
   SPINTA: 1.8,                  // how strongly Francesco's pressing pushes the bubble back
   INSTABILE: 0.5,               // the more it leans, the more it wants to lean (makes it lively)
-  COLPO: 1.1,                   // the push the cake gets at every drop...
-  COLPO_PER_PEZZO: 0.18,        // ...stronger with each piece...
-  COLPO_PER_PIXEL: 0.035,       // ...and stronger the further off-centre the piece lands
+  // The push the cake gets at every drop. Switched OFF after Adri's playtest (too hard for Francesco):
+  // to bring it back, the old values were 1.1, 0.18 and 0.035.
+  COLPO: 0,                     // the push at every drop...
+  COLPO_PER_PEZZO: 0,           // ...stronger with each piece...
+  COLPO_PER_PIXEL: 0,           // ...and stronger the further off-centre the piece lands
   AVVISO: 0.7,                  // seconds the bubble can stay at the end of the bar before the top piece falls
   STRISCIA: 110,                // width of Francesco's ◀ and ▶ strips at the screen edges
   ALTEZZA_SILVIA: 420,          // Silvia can tap anywhere above this line between the strips (and on her left half)
@@ -83,6 +85,11 @@ class Torta extends Phaser.Scene {
     this.storia = [];             // the landed layers, so the top one can fall off: { oggetto, cimaPrima }
     this.tempoAlLimite = 0;       // how long the bubble has been at the end of the bar
     this.marioSulTavolo = false;  // true while Mario is on the table batting at the piece
+    // If a retry starts before they ever tapped Mario, the hint must appear again next time
+    if (this.testoScaccia) {
+      this.avvisoScaccia = false;
+      this.testoScaccia = null;
+    }
     this.avvisoUnDito = false;    // true for a moment after showing "Un dito solo!"
     this.mobile = null;           // the piece sliding above the cake
 
@@ -186,6 +193,10 @@ class Torta extends Phaser.Scene {
       this.dita.set(dito.id, null);
       suonaMiao(this);
       this.marioScende();
+      if (this.testoScaccia) {
+        this.testoScaccia.destroy();
+        this.testoScaccia = null;
+      }
       return;
     }
     const zona = this.zonaDi(dito.x, dito.y);
@@ -504,19 +515,25 @@ class Torta extends Phaser.Scene {
   // Mario jumps on the table and bats at the sliding piece until someone taps him (or he gets bored)
   marioSalta() {
     this.marioSulTavolo = true;
+    // The first time, he stays on the table until someone taps him (the hint stays too)
+    const primaVolta = !this.avvisoScaccia;
     this.tweens.add({ targets: this.mario, x: 400, y: 552, duration: 350, ease: 'Quad.Out' });
     this.time.delayedCall(350, () => {
       if (!this.marioSulTavolo) return;
       this.slurp.setText(TESTI.torta.marioGioca).setPosition(400, 395).setVisible(true);
       suonaMiao(this);
+      // The first time only: a hint that stays until someone actually taps him
       if (!this.avvisoScaccia) {
         this.avvisoScaccia = true;
-        this.mostraMessaggio(TESTI.torta.scaccia);
+        this.testoScaccia = this.add.text(LARGHEZZA / 2, 200, TESTI.torta.scaccia, {
+          fontFamily: FONT, fontSize: '44px', color: '#fdf3e1', stroke: '#2a3d66', strokeThickness: 7,
+        }).setOrigin(0.5).setDepth(30);
+        this.tweens.add({ targets: this.testoScaccia, scale: 1.06, duration: 600, yoyo: true, repeat: -1 });
       }
     });
     this.zampate = this.time.addEvent({
       delay: 1100,
-      repeat: 4,
+      repeat: primaVolta ? -1 : 4,
       callback: () => {
         if (this.fase === 'fine') return;
         // A swipe of the paw: the sliding piece changes direction

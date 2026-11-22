@@ -160,3 +160,24 @@ function suonaCampanella(scena) {
     oscillatore.stop(t + 1.7);
   });
 }
+
+// Full screen and landscape lock, on phones that allow it (Android Chrome and most other browsers).
+// iPhone Safari doesn't allow either inside a web page: there, adding the game to the Home Screen gives full screen.
+// Must be called from a touch (the browser only allows it then). Does nothing if it isn't allowed.
+function schermoIntero() {
+  try {
+    const pagina = document.documentElement;
+    const giaIntero = document.fullscreenElement || window.matchMedia('(display-mode: fullscreen)').matches
+      || window.matchMedia('(display-mode: standalone)').matches;
+    const blocca = () => {
+      if (screen.orientation && screen.orientation.lock) screen.orientation.lock('landscape').catch(() => {});
+    };
+    if (!giaIntero && pagina.requestFullscreen) {
+      pagina.requestFullscreen({ navigationUI: 'hide' }).then(blocca).catch(() => {});
+    } else {
+      blocca();
+    }
+  } catch (errore) {
+    // not allowed here: keep playing as it is
+  }
+}
