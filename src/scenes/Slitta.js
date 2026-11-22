@@ -28,8 +28,8 @@ const SLITTA = {
   REGALI_3_STELLE: 15,         // 15 or more = 3 stars
   VITE: 3,
   // Where each player touches (always visible on screen):
-  ZONA_FRANCESCO: { x: 860, y: 110, w: 380, h: 150 }, // a box at the top right: only taps here push
-  ZONA_SILVIA_Y: 560,          // a see-through band along the whole bottom, from here down: only drags that start here steer
+  ZONA_FRANCESCO: { x: 860, y: 110, w: 380, h: 150 }, // a soft button at the top right: only taps here push
+  ZONA_SILVIA_Y: 275,          // Silvia: drags that start anywhere below Francesco's button steer (not marked on screen)
   MARIO_OGNI: [8, 10],         // seconds between Mario's dashes
   MARIO_ZIGZAG: 230,           // how fast he zigzags sideways (pixels per second)
 };
@@ -191,32 +191,15 @@ class Slitta extends Phaser.Scene {
     this.add.rectangle(LARGHEZZA / 2, 40, 400, 14, COLORE_NOTTE, 0.25).setDepth(40);
     this.barraPercorso = this.add.rectangle(LARGHEZZA / 2 - 200, 40, 0, 14, 0x2e86c1).setOrigin(0, 0.5).setDepth(40);
     this.add.text(LARGHEZZA / 2 + 215, 40, '🏠', { fontSize: '30px' }).setOrigin(0, 0.5).setDepth(40);
-    // Francesco's box (top right): only taps here push the sled
+    // Francesco's button (top right): a soft frosted pane that blends with the snow; only taps here push
     const z = SLITTA.ZONA_FRANCESCO;
     this.bottoneSpinta = this.add.container(z.x + z.w / 2, z.y + z.h / 2).setDepth(39);
-    const fondo = this.add.graphics();
-    fondo.fillStyle(COLORE_FRANCESCO, 0.22);
-    fondo.fillRoundedRect(-z.w / 2, -z.h / 2, z.w, z.h, 24);
-    fondo.lineStyle(4, COLORE_FRANCESCO, 0.7);
-    fondo.strokeRoundedRect(-z.w / 2, -z.h / 2, z.w, z.h, 24);
     this.bottoneSpinta.add([
-      fondo,
+      this.add.image(0, 0, creaPulsanteNeve(this, z.w, z.h)),
       this.add.text(0, 0, TESTI.slitta.zonaFrancesco, {
-        fontFamily: FONT, fontSize: '30px', color: '#8e2b20', align: 'center', wordWrap: { width: z.w - 30 },
+        fontFamily: FONT, fontSize: '30px', color: '#9c4a3c', align: 'center', wordWrap: { width: z.w - 40 },
       }).setOrigin(0.5),
     ]);
-
-    // Silvia's band (the whole bottom of the screen): see-through, soft at the top edge
-    const banda = this.add.graphics().setDepth(3);
-    const altezzaBanda = ALTEZZA - SLITTA.ZONA_SILVIA_Y;
-    for (let i = 0; i < 5; i++) {
-      // a few faint layers, lighter towards the top: a soft edge instead of a hard line
-      banda.fillStyle(COLORE_SILVIA, 0.04);
-      banda.fillRect(0, SLITTA.ZONA_SILVIA_Y + i * 6, LARGHEZZA, altezzaBanda - i * 6);
-    }
-    this.add.text(LARGHEZZA / 2, ALTEZZA - 30, '◀  ' + TESTI.slitta.zonaSilvia + '  ▶', {
-      fontFamily: FONT, fontSize: '26px', color: '#8a6514',
-    }).setOrigin(0.5).setDepth(3).setAlpha(0.75);
 
     // Countdown, under the bar
     this.testoTempo = this.add.text(LARGHEZZA / 2, 86, String(SLITTA.TEMPO), {
@@ -509,4 +492,42 @@ class Slitta extends Phaser.Scene {
     const secondi = Math.min(delta, 50) / 1000; // cap, so a hiccup doesn't make things jump
     if (this.fase === 'discesa') this.aggiornaDiscesa(secondi);
   }
+}
+
+// A soft frosted button painted in code (once): milky white, very rounded, with a blurred edge and a faint
+// warm outline, so it marks Francesco's area without a hard frame. Returns the texture's name.
+function creaPulsanteNeve(scena, larghezza, altezza) {
+  const nome = `pulsanteNeve_${larghezza}x${altezza}`;
+  if (!scena.textures.exists(nome)) {
+    const margine = 24; // room for the soft blurred edge
+    const tela = scena.textures.createCanvas(nome, larghezza + margine * 2, altezza + margine * 2);
+    const ctx = tela.getContext();
+    const forma = () => {
+      const x = margine;
+      const y = margine;
+      const r = altezza / 2.4;
+      ctx.beginPath();
+      ctx.moveTo(x + r, y);
+      ctx.arcTo(x + larghezza, y, x + larghezza, y + altezza, r);
+      ctx.arcTo(x + larghezza, y + altezza, x, y + altezza, r);
+      ctx.arcTo(x, y + altezza, x, y, r);
+      ctx.arcTo(x, y, x + larghezza, y, r);
+      ctx.closePath();
+    };
+    ctx.shadowColor = 'rgba(255, 255, 255, 0.95)';
+    ctx.shadowBlur = 22;
+    forma();
+    const sfumatura = ctx.createLinearGradient(0, margine, 0, margine + altezza);
+    sfumatura.addColorStop(0, 'rgba(255, 255, 255, 0.62)');
+    sfumatura.addColorStop(1, 'rgba(255, 240, 235, 0.42)');
+    ctx.fillStyle = sfumatura;
+    ctx.fill();
+    ctx.shadowBlur = 0;
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'rgba(192, 57, 43, 0.22)';
+    forma();
+    ctx.stroke();
+    tela.refresh();
+  }
+  return nome;
 }

@@ -51,8 +51,9 @@ with Gioco(porta=9410 if android else 9411) as g:
             time.sleep(0.03)
         g.tocco("touchend", [[9, x + verso * 140, y]], [])
     x0 = g.ev(f"Math.round({S}.slitta.x)"); trascina(900, 650, -1); x1 = g.ev(f"Math.round({S}.slitta.x)")
-    trascina(300, 300, 1); x2 = g.ev(f"Math.round({S}.slitta.x)")
-    print(f"slitta: trascina nella banda in basso a destra {x0}->{x1} (deve muoversi), in alto a sinistra {x1}->{x2} (non deve)")
+    trascina(300, 350, 1); x2 = g.ev(f"Math.round({S}.slitta.x)")
+    trascina(300, 200, 1); x3 = g.ev(f"Math.round({S}.slitta.x)")
+    print(f"slitta: trascina in basso a destra {x0}->{x1} (deve muoversi), a meta' schermo {x1}->{x2} (deve muoversi), in alto {x2}->{x3} (non deve)")
     time.sleep(0.5)
     g.foto(f"{cartella}/{pre}slitta.png")
 
@@ -108,5 +109,20 @@ with Gioco(porta=9410 if android else 9411) as g:
     print("dirigibile: mentre sale, angolo (deve essere positivo = muso in su verso sinistra):", g.ev(f"Math.round({D}.nave.angle * 10) / 10"))
     time.sleep(0.5)
     g.foto(f"{cartella}/{pre}dirigibile.png")
+
+    # ---- The microphone: asked during the stroke; without a microphone, the retry button with the reason
+    g.apri("?scena=Dirigibile")
+    g.ev("DIRIGIBILE.ATTESA_MICROFONO = 1")
+    g.ev("window.__chiesto = 0; const o = navigator.mediaDevices.getUserMedia.bind(navigator.mediaDevices); "
+         "navigator.mediaDevices.getUserMedia = (c) => { window.__chiesto += 1; if (window.__chiesto === 1) window.__durante = !!gioco.scene.getScene('Dirigibile').children.list.find(x => x.depth === 100); return o(c); };")
+    g.accarezza_mario()
+    time.sleep(1.5)
+    print("microfono: chiesto", g.ev("window.__chiesto"), "volta/e, durante la carta:", g.ev("window.__durante"),
+          "| in uso:", g.ev(f"{D}.usaMicrofono"), "| motivo:", g.ev("Microfono.ultimoErrore"),
+          "| bottone riprova:", g.ev(f"!!({D}.bottoneMic && {D}.bottoneMic.active)"))
+    g.tocca(1110, 110)
+    time.sleep(1)
+    print("microfono: dopo il tocco su 'Prova il microfono', chiesto", g.ev("window.__chiesto"), "volte")
+    g.foto(f"{cartella}/{pre}dirigibile_senza_mic.png")
 
     print("errori:", g.errori or "nessuno")

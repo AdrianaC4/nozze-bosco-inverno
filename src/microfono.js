@@ -28,19 +28,39 @@ const Microfono = {
     return Boolean(navigator.mediaDevices && navigator.mediaDevices.getUserMedia);
   },
 
-  async accendi(scena) {
-    // Already on? Only if iPhone hasn't stopped it in the meantime (phone locked, a call, the page hidden)
-    if (this.flusso) {
-      if (this.vivo()) return true;
-      this.spegni();
-    }
+  // Asks for the microphone. Several calls at the same time share the same question.
+  // Best called from inside a touch (some iPhones only show the permission question then).
+  accendi(scena) {
+    if (this.flusso && this.vivo()) return Promise.resolve(true);
+    if (this.richiesta) return this.richiesta;
+    this.richiesta = this.chiedi(scena).then((acceso) => {
+      this.richiesta = null;
+      return acceso;
+    });
+    return this.richiesta;
+  },
+
+  async chiedi(scena) {
+    if (this.flusso) this.spegni(); // iPhone had stopped it: start again
     const contesto = contestoAudio(scena);
-    if (!this.disponibile() || !contesto) return false;
+    this.ultimoErrore = '';
+    if (!window.isSecureContext) { this.ultimoErrore = 'non-https'; return false; }
+    if (!this.disponibile()) { this.ultimoErrore = 'no-api'; return false; }
+    if (!contesto) { this.ultimoErrore = 'no-audio'; return false; }
     try {
-      this.flusso = await navigator.mediaDevices.getUserMedia({
+      try {
         // We want the raw sound: the phone's "improvements" would remove exactly the noise of blowing
-        audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
-      });
+        this.flusso = await navigator.mediaDevices.getUserMedia({
+          audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+        });
+      } catch (errore) {
+        // Some phones refuse those details: ask again for a plain microphone
+        if (errore && (errore.name === 'OverconstrainedError' || errore.name === 'TypeError')) {
+          this.flusso = await navigator.mediaDevices.getUserMedia({ audio: true });
+        } else {
+          throw errore;
+        }
+      }
       // If iPhone ends the stream later, forget it, so the next flight asks again
       this.flusso.getAudioTracks().forEach((traccia) => { traccia.onended = () => this.spegni(); });
       this.sorgente = contesto.createMediaStreamSource(this.flusso);
@@ -54,6 +74,8 @@ const Microfono = {
       if (contesto.state !== 'running') contesto.resume();
       return true;
     } catch (errore) {
+      // Remember why, so the game can show it (e.g. NotAllowedError = permission refused or blocked)
+      this.ultimoErrore = (errore && errore.name) || 'errore';
       this.spegni();
       return false;
     }

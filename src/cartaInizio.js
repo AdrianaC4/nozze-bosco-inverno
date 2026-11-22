@@ -26,12 +26,15 @@ function caricaMario(scena) {
   carica(scena, 'mario_colpevole', 'assets/game/mario_guilty.png');
 }
 
-function mostraCartaInizio(scena, testi, quandoInizia, posa) {
+// allaCarezza (optional): called at the very moment of the stroke, still inside the touch
+// (used by Il Dirigibile to ask for the microphone then).
+function mostraCartaInizio(scena, testi, quandoInizia, posa, allaCarezza) {
   creaCartaMario(scena, {
     titolo: testi.nome,
     istruzioni: [testi.istruzioneSilvia, testi.istruzioneFrancesco],
     invito: TESTI.carta.accarezza,
     tappe: [{ posa: posa || 'mario', frase: testi.mario }],
+    allaCarezza,
   }, quandoInizia);
 }
 
@@ -118,6 +121,7 @@ function creaCartaMario(scena, opzioni, quandoFinito) {
   // Mario enjoys the stroke: hearts and a purr. Then the next pose and line, or the end of the card.
   function accarezzato() {
     inAttesa = true;
+    if (opzioni.allaCarezza) opzioni.allaCarezza();
     mano.setVisible(false);
     suonaFusa(scena);
     for (let i = 0; i < 5; i++) {

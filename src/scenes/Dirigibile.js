@@ -95,7 +95,8 @@ class Dirigibile extends Phaser.Scene {
     if (this.ritenta) {
       this.inizia();
     } else {
-      mostraCartaInizio(this, TESTI.dirigibile, () => this.inizia());
+      // The microphone is asked for while Mario is stroked: a real touch, which some iPhones require
+      mostraCartaInizio(this, TESTI.dirigibile, () => this.inizia(), undefined, () => { this.richiestaMic = Microfono.accendi(this); });
     }
   }
 
@@ -287,15 +288,57 @@ class Dirigibile extends Phaser.Scene {
           fontFamily: FONT, fontSize: '32px', color: '#2a3d66', backgroundColor: '#fdf3e1', padding: { x: 14, y: 8 },
         }).setOrigin(0.5).setDepth(60);
         this.tweens.add({ targets: avviso, alpha: 0, delay: 3500, duration: 500, onComplete: () => avviso.destroy() });
+        this.bottoneMicrofono();
       }
       this.fase = 'volo';
       Musica.suona(this, 'corsa');
       this.programmaRaffica();
       this.programmaMario();
     };
-    Microfono.accendi(this).then((acceso) => { if (acceso || !partito) parti(acceso); });
+    // (the answer to the question asked during Mario's stroke; on a retry, ask now)
+    const richiesta = this.richiestaMic || Microfono.accendi(this);
+    this.richiestaMic = null;
+    richiesta.then((acceso) => { if (acceso || !partito) parti(acceso); });
     // Safety net: if no answer arrives, don't wait forever
     this.time.delayedCall(DIRIGIBILE.ATTESA_MICROFONO * 1000, () => { if (!partito) parti(false); });
+  }
+
+  // Without the microphone: a small button to try again (a tap is a real touch, which some iPhones
+  // need to show the permission question). In test mode it also shows why the microphone failed.
+  bottoneMicrofono() {
+    const x = 1110;
+    const y = 110;
+    const bottone = this.add.container(x, y).setDepth(60);
+    const fondo = this.add.graphics();
+    fondo.fillStyle(0xfdf3e1, 0.85);
+    fondo.fillRoundedRect(-150, -26, 300, 52, 26);
+    bottone.add([fondo, this.add.text(0, 0, TESTI.dirigibile.riprovaMicrofono, {
+      fontFamily: FONT, fontSize: '24px', color: '#2a3d66',
+    }).setOrigin(0.5)]);
+    if (MODALITA_PROVA && Microfono.ultimoErrore) {
+      bottone.add(this.add.text(0, 40, `(${Microfono.ultimoErrore})`, {
+        fontFamily: 'sans-serif', fontSize: '16px', color: '#fdf3e1',
+      }).setOrigin(0.5));
+    }
+    const tocco = (dito) => {
+      if (Math.abs(dito.x - x) > 150 || Math.abs(dito.y - y) > 30) return;
+      this.input.off('pointerdown', tocco);
+      Microfono.accendi(this).then((acceso) => {
+        if (!this.scene.isActive()) return;
+        if (acceso) {
+          bottone.destroy();
+          this.usaMicrofono = true;
+          this.manovella.setVisible(false);
+          this.indicatoreSoffio.setVisible(true);
+          this.frecciaSu.setPosition(1135, 520);
+        } else {
+          bottone.destroy();
+          this.bottoneMicrofono(); // still no: show the button (and the reason) again
+        }
+      });
+    };
+    this.input.on('pointerdown', tocco);
+    this.bottoneMic = bottone;
   }
 
   // Mario leans out of the gondola to bat at a snowflake: the airship dips
