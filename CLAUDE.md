@@ -67,6 +67,7 @@ index.html           (later)
 
 - The gift is delivered as a **3D-printed Mario Christmas ornament** with an **NFC tag** (25 mm round plastic) in a recess under his base; the tag holds the game's link. Printer: Bambu Lab P2S with AMS (multicolour).
 - Model built from scratch in code: `tools/mario_ornamento.py` (trimesh + manifold3d + matplotlib in `.venv`). It writes four STL parts in `assets/3d/` (grey, white, red, black), loaded in Bambu Studio as ONE object with four parts, and a preview `assets/3d/anteprima.png`. Tag thickness is an argument (default 1.2 mm): `.venv/bin/python tools/mario_ornamento.py 1.2`.
+- **The file to give Adri is `assets/3d/Mario_ornamento_Bambu.3mf`** (copied to `~/Downloads/Mario_ornamento/`): a real Bambu Studio project made by Bambu Studio's own command line from `tools/bambu_progetto.py` — P2S 0.4, 0.20 mm Standard, tree supports, four PLA Basic filaments (grey, white, red, black), each part already on its colour. Slice check: about 10 h, 157 g (0.12 mm fine was 17 h, 247 g: most of it is colour-change waste). Lessons: loading the four STLs gives a project with only ONE filament (Adri's first problem); a hand-written "Bambu" 3MF with partial project settings crashes Bambu Studio's CLI; the CLI re-orients/arranges models unless `--arrange 0 --orient 0`; the boolean cuts left slivers and pinched edges (fixed by `pulisci` and by raising the white chest under the scarf). Tag 1.2 mm confirmed by Adri.
 
 ## How Adri likes to work
 

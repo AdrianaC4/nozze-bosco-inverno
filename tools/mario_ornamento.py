@@ -48,6 +48,20 @@ def con(a, b):
     return trimesh.boolean.intersection([a, b], engine="manifold")
 
 
+def pulisci(mesh, volume_minimo=1.0):
+    """Removes the tiny slivers left by the cuts (smaller than volume_minimo mm3) and makes the mesh clean:
+    closed, every edge shared by exactly two faces, all faces pointing outwards."""
+    import manifold3d
+    m = manifold3d.Manifold(manifold3d.Mesh(vert_properties=np.asarray(mesh.vertices, dtype=np.float32),
+                                            tri_verts=np.asarray(mesh.faces, dtype=np.uint32)))
+    pezzi = [p for p in m.decompose() if p.volume() >= volume_minimo]
+    tenuto = manifold3d.Manifold.compose(pezzi) if len(pezzi) > 1 else pezzi[0]
+    risultato = tenuto.to_mesh()
+    # (kept exactly as the geometry library gives it: already closed and correctly oriented;
+    #  "process" would merge touching points and spoil it)
+    return trimesh.Trimesh(vertices=risultato.vert_properties[:, :3], faces=risultato.tri_verts, process=False)
+
+
 def ruota(mesh, gradi, asse, centro):
     mesh.apply_transform(trimesh.transformations.rotation_matrix(np.radians(gradi), asse, centro))
     return mesh
@@ -72,7 +86,7 @@ def costruisci(spessore_tag):
     anello.apply_translation((0, -1, 54.5))
 
     # white parts: chest, front paws, muzzle and the blaze between the eyes (they stick out a little)
-    petto = ellissoide((0, -9.5, 13), (10.5, 8, 12))
+    petto = ellissoide((0, -9.5, 13.5), (10.5, 8, 12.8))     # reaches up under the scarf (no thin grey edge between them)
     zampe = [ellissoide((5.8 * l, -13.5, 3), (4.6, 5.2, 4.2)) for l in (-1, 1)]
     muso = ellissoide((0, -11.6, 33.8), (6.6, 4.0, 4.6))     # a small soft muzzle (smaller: the big one looked like a dog)
     striscia = ellissoide((0, -13.2, 41), (2.4, 1.6, 6))     # thin blaze, just on the surface
@@ -116,7 +130,7 @@ def costruisci(spessore_tag):
     tasca = trimesh.creation.cylinder(radius=raggio, height=(spessore_tag + 0.2) * 2, sections=128)
     tasca.apply_translation((0, 0.5 * scala, 0))
     for nome in parti:
-        parti[nome] = meno(parti[nome], tasca)
+        parti[nome] = pulisci(meno(parti[nome], tasca))
     return parti, scala
 
 
@@ -124,8 +138,10 @@ def controlla(parti, spessore_tag, scala):
     tutto = trimesh.util.concatenate(list(parti.values()))
     b = tutto.bounds
     print(f"size: {b[1][0] - b[0][0]:.1f} x {b[1][1] - b[0][1]:.1f} x {b[1][2] - b[0][2]:.1f} mm (w x d x h)")
+    from collections import Counter
     for nome, m in parti.items():
-        print(f"  {nome}: watertight={m.is_watertight}, volume={m.volume / 1000:.2f} cm3")
+        doppi = sum(1 for v in Counter(map(tuple, m.edges_sorted.tolist())).values() if v != 2)
+        print(f"  {nome}: closed={m.is_watertight}, bad edges={doppi}, pieces={len(m.split(only_watertight=False))}, volume={m.volume / 1000:.2f} cm3")
     print(f"NFC recess: {TAG_DIAMETRO + TAG_GIOCO:.1f} mm wide, {spessore_tag + 0.2:.1f} mm deep (tag {TAG_DIAMETRO} x {spessore_tag} mm)")
     # the flat bottom must be wider than the recess, with a solid rim around it
     fondo = parti["1_grigio"].section(plane_origin=(0, 0, 0.05), plane_normal=(0, 0, 1))
@@ -175,6 +191,52 @@ def anteprima(parti, percorso):
     plt.savefig(percorso, dpi=110, facecolor="#dfe8f2")
 
 
+COLORI_FILAMENTO = {"1_grigio": "#8E9089", "2_bianco": "#FFFFFF", "3_rosso": "#C12E1F", "4_nero": "#000000"}
+
+
+def esporta_3mf(parti, percorso):
+    """One object made of four parts, each already set to its own filament (1 grey, 2 white, 3 red, 4 black).
+    Bambu Studio reads which filament each part uses from Metadata/model_settings.config."""
+    import zipfile
+    oggetti, componenti, parti_cfg = [], [], []
+    for i, (nome, m) in enumerate(parti.items(), start=1):
+        vertici = "".join(f'<vertex x="{x:.4f}" y="{y:.4f}" z="{z:.4f}"/>' for x, y, z in m.vertices)
+        facce = "".join(f'<triangle v1="{a}" v2="{b}" v3="{c}"/>' for a, b, c in m.faces)
+        oggetti.append(f'<object id="{i}" type="model"><mesh><vertices>{vertici}</vertices>'
+                       f'<triangles>{facce}</triangles></mesh></object>')
+        componenti.append(f'<component objectid="{i}" transform="1 0 0 0 1 0 0 0 1 0 0 0"/>')
+        parti_cfg.append(f'    <part id="{i}" subtype="normal_part">\n'
+                         f'      <metadata key="name" value="{nome.split("_")[1]}"/>\n'
+                         f'      <metadata key="matrix" value="1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1"/>\n'
+                         f'      <metadata key="extruder" value="{i}"/>\n'
+                         f'    </part>')
+    n = len(parti) + 1
+    modello = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+               '<model unit="millimeter" xml:lang="en-US" xmlns="http://schemas.microsoft.com/3dmanufacturing/core/2015/02" '
+               'xmlns:BambuStudio="http://schemas.bambulab.com/package/2021">\n'
+               '<metadata name="BambuStudio:3mfVersion">1</metadata>\n'
+               f'<resources>{"".join(oggetti)}<object id="{n}" type="model"><components>{"".join(componenti)}</components></object></resources>\n'
+               f'<build><item objectid="{n}" transform="1 0 0 0 1 0 0 0 1 128 128 0" printable="1"/></build>\n</model>\n')
+    impostazioni = ('<?xml version="1.0" encoding="UTF-8"?>\n<config>\n'
+                    f'  <object id="{n}">\n    <metadata key="name" value="Mario ornamento"/>\n'
+                    '    <metadata key="extruder" value="1"/>\n'
+                    # flush the old colour into Mario's hidden infill and the supports (less waste at each colour change)
+                    '    <metadata key="flush_into_infill" value="1"/>\n'
+                    '    <metadata key="flush_into_support" value="1"/>\n' + "\n".join(parti_cfg) + '\n  </object>\n</config>\n')
+    tipi = ('<?xml version="1.0" encoding="UTF-8"?>\n<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">'
+            '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>'
+            '<Default Extension="model" ContentType="application/vnd.ms-package.3dmanufacturing-3dmodel+xml"/>'
+            '<Default Extension="config" ContentType="text/xml"/></Types>')
+    relazioni = ('<?xml version="1.0" encoding="UTF-8"?>\n<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+                 '<Relationship Target="/3D/3dmodel.model" Id="rel-1" Type="http://schemas.microsoft.com/3dmanufacturing/2013/01/3dmodel"/>'
+                 '</Relationships>')
+    with zipfile.ZipFile(percorso, "w", zipfile.ZIP_DEFLATED) as z:
+        z.writestr("[Content_Types].xml", tipi)
+        z.writestr("_rels/.rels", relazioni)
+        z.writestr("3D/3dmodel.model", modello)
+        z.writestr("Metadata/model_settings.config", impostazioni)
+
+
 def main():
     spessore_tag = float(sys.argv[1]) if len(sys.argv) > 1 else 1.2
     CARTELLA.mkdir(parents=True, exist_ok=True)
@@ -182,6 +244,7 @@ def main():
     controlla(parti, spessore_tag, scala)
     for nome, m in parti.items():
         m.export(CARTELLA / f"mario_{nome}.stl")
+    esporta_3mf(parti, CARTELLA / "mario_ornamento.3mf")
     anteprima(parti, CARTELLA / "anteprima.png")
     print(f"saved in {CARTELLA}")
 
