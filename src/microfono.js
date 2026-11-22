@@ -43,7 +43,14 @@ const Microfono = {
   async chiedi(scena) {
     if (this.flusso) this.spegni(); // iPhone had stopped it: start again
     const contesto = contestoAudio(scena);
+    this.contesto = contesto;
     this.ultimoErrore = '';
+    // The opposite of ripristinaVolume: tell the phone we now also record (else the microphone may be refused)
+    try {
+      if (navigator.audioSession) navigator.audioSession.type = 'play-and-record';
+    } catch (errore) {
+      // not supported here
+    }
     if (!this.disponibile()) { this.ultimoErrore = 'no-api'; return false; }
     if (!contesto) { this.ultimoErrore = 'no-audio'; return false; }
     try {
@@ -118,10 +125,27 @@ const Microfono = {
   },
 
   spegni() {
+    const eraAcceso = Boolean(this.flusso);
     if (this.flusso) this.flusso.getTracks().forEach((traccia) => traccia.stop());
     if (this.sorgente) this.sorgente.disconnect();
     this.flusso = null;
     this.sorgente = null;
     this.analizzatore = null;
+    if (eraAcceso) this.ripristinaVolume();
+  },
+
+  // With the microphone on, iPhone switches its sound to "call mode", which is quieter, and it doesn't
+  // switch back by itself afterwards. Newer iPhones (and some Android browsers) let the page say
+  // "only playing sound now"; then the sound is briefly paused and resumed so it takes the new, louder route.
+  ripristinaVolume() {
+    try {
+      if (navigator.audioSession) navigator.audioSession.type = 'playback';
+    } catch (errore) {
+      // not supported here
+    }
+    const contesto = this.contesto;
+    if (contesto && contesto.state === 'running') {
+      contesto.suspend().then(() => contesto.resume()).catch(() => {});
+    }
   },
 };

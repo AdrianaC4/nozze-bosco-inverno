@@ -47,6 +47,7 @@ class Slitta extends Phaser.Scene {
   }
 
   preload() {
+    caricaSuoni(this);
     caricaMario(this);
     carica(this, 'slitta', 'assets/game/sled.png');
     carica(this, 'regalo', 'assets/game/gift.png');

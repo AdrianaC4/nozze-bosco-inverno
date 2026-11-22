@@ -11,6 +11,7 @@ class Titolo extends Phaser.Scene {
   }
 
   preload() {
+    caricaSuoni(this);
     carica(this, 'sfondo_titolo', 'assets/game/style_anchor.jpg');
   }
 

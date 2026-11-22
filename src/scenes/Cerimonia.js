@@ -18,6 +18,7 @@ class Cerimonia extends Phaser.Scene {
   }
 
   preload() {
+    caricaSuoni(this);
     carica(this, 'sfondo_titolo', 'assets/game/style_anchor.jpg');
     carica(this, 'sfondo_acceso', 'assets/game/style_anchor_lit.jpg');
     carica(this, 'silvia', 'assets/game/silvia_sheet.png');
@@ -172,6 +173,7 @@ class Cerimonia extends Phaser.Scene {
 
   aggiornaAccensione(secondi) {
     const insieme = this.entrambiPremono();
+    this.suonoLuce(insieme);
     if (insieme) {
       this.luce = Math.min(1, this.luce + secondi / CERIMONIA.SECONDI_PER_ACCENDERE);
       this.sfondoAcceso.setAlpha(1);
@@ -195,6 +197,18 @@ class Cerimonia extends Phaser.Scene {
     if (this.luce >= 1) this.matrimonio();
   }
 
+  // The shimmer (stretched to exactly the time it takes to light the tree) follows the light:
+  // it plays while both are holding, from the point the light has reached, and pauses when they let go.
+  suonoLuce(insieme) {
+    if (!this.cache.audio.exists('luce_albero')) return;
+    if (!this.scintillio) this.scintillio = this.sound.add('luce_albero', { volume: 0.9 });
+    if (insieme && !this.scintillio.isPlaying) {
+      this.scintillio.play({ seek: Math.min(this.luce, 0.98) * this.scintillio.duration });
+    } else if (!insieme && this.scintillio.isPlaying) {
+      this.scintillio.stop();
+    }
+  }
+
   // ---------------------------------------------------------------- the wedding
 
   matrimonio() {
@@ -209,6 +223,8 @@ class Cerimonia extends Phaser.Scene {
 
     // The magic moment: a golden flash, a burst of sparkles, a star on top of the tree
     this.cameras.main.flash(1100, 255, 228, 160);
+    if (this.scintillio) this.scintillio.stop();
+    suonaFile(this, 'vittoria_stelle', 0.9);
     const esplosione = this.add.particles(LARGHEZZA / 2, 300, 'fiocco', {
       speed: { min: 150, max: 450 },
       angle: { min: 0, max: 360 },
@@ -260,7 +276,6 @@ class Cerimonia extends Phaser.Scene {
   cuore() {
     this.cambiaPosa(this.silvia, 'silvia_cheer');
     this.cambiaPosa(this.francesco, 'francesco_cheer');
-    suonaMiao(this);
 
     // A big heart rises between them, with little hearts around it
     const grande = this.add.text(LARGHEZZA / 2, 430, '♥', {

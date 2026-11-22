@@ -12,6 +12,7 @@ class Intro extends Phaser.Scene {
   }
 
   preload() {
+    caricaSuoni(this);
     carica(this, 'sfondo_titolo', 'assets/game/style_anchor.jpg');
     carica(this, 'sfondo_acceso', 'assets/game/style_anchor_lit.jpg');
     carica(this, 'silvia', 'assets/game/silvia_sheet.png');

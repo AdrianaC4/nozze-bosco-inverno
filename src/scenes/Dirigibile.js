@@ -54,6 +54,7 @@ class Dirigibile extends Phaser.Scene {
   }
 
   preload() {
+    caricaSuoni(this);
     caricaMario(this);
     carica(this, 'sfondo_dirigibile', 'assets/game/bg_dirigibile.jpg');
     carica(this, 'nave_corpo', 'assets/game/airship_corpo.png');

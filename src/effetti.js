@@ -85,8 +85,38 @@ function suonaTonfo(scena) {
   suonaTono(scena, 160, 55, 0.35, 'sine', 0.5);
 }
 
-// A little made-up "meow" (placeholder until the sound pass, where Mario gets a real meow)
+// The real sound files (Adri's choices from Pixabay, in assets/audio/). The audio cache is shared by
+// all scenes, so each file is loaded only once; every scene calls this in its preload (so a scene
+// opened directly with ?scena=... has them too).
+const SUONI = {
+  miao: 'assets/audio/miao.mp3',                    // Mario's meow
+  luce_albero: 'assets/audio/luce_albero.m4a',      // shimmer while the tree lights up (stretched to 8 s)
+  vittoria_stelle: 'assets/audio/vittoria_stelle.mp3', // when the tree is fully lit
+};
+
+function caricaSuoni(scena) {
+  Object.entries(SUONI).forEach(([chiave, percorso]) => {
+    if (!scena.cache.audio.exists(chiave)) scena.load.audio(chiave, percorso);
+  });
+}
+
+// Plays one of the sound files (quietly does nothing if it isn't loaded or sound isn't allowed yet)
+function suonaFile(scena, chiave, volume) {
+  try {
+    if (scena.cache.audio.exists(chiave)) {
+      contestoAudio(scena);
+      scena.sound.play(chiave, { volume: volume === undefined ? 1 : volume });
+      return true;
+    }
+  } catch (errore) {
+    // no sound this time
+  }
+  return false;
+}
+
+// Mario's meow: the real recording (with the old made-up meow only if the file is missing)
 function suonaMiao(scena) {
+  if (suonaFile(scena, 'miao', 0.8)) return;
   suonaTono(scena, 650, 900, 0.12, 'triangle', 0.12);
   setTimeout(() => suonaTono(scena, 900, 520, 0.3, 'triangle', 0.12), 110);
 }

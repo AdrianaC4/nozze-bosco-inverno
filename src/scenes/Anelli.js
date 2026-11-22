@@ -45,6 +45,7 @@ class Anelli extends Phaser.Scene {
   }
 
   preload() {
+    caricaSuoni(this);
     caricaMario(this);
     carica(this, 'sfondo_anelli', 'assets/game/bg_anelli.jpg');
     carica(this, 'francesco_piccone', 'assets/game/francesco_piccone.png');

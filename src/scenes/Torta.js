@@ -63,6 +63,7 @@ class Torta extends Phaser.Scene {
   }
 
   preload() {
+    caricaSuoni(this);
     caricaMario(this);
     carica(this, 'sfondo_torta', 'assets/game/bg_torta.jpg');
     carica(this, 'tavolo', 'assets/game/table.png');
